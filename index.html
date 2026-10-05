@@ -1,0 +1,1706 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prana Life Library</title>
+<meta name="theme-color" content="#F3EDFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Spectral:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --paper:#FAF8FF; --wash:#F4EEFF; --wash-2:#ECE3FF; --card:#FFFFFF; --line:#E8E0FA; --line-2:#DCCFFB;
+  --ink:#2A2245; --muted:#776E96;
+  --violet:#7B2FF7; --violet-2:#6420E0; --violet-soft:#F2EBFF; --violet-ink:#5A1FC0;
+  --amber:#9C6508; --amber-soft:#FFF4DE;
+  --ok:#1F7F55; --ok-soft:#E5F6EE; --bad:#C0364A; --bad-soft:#FDECEF;
+  --wa:#1E8E4E;
+  --serif:'Spectral', Georgia, 'Times New Roman', serif;
+  --sans:'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+html{background:#FAF8FF}
+body{min-height:100vh}
+body{font-family:var(--sans);font-size:15px;line-height:1.5;color:var(--ink);background:radial-gradient(1100px 520px at 100% -8%, #EFE5FF 0, rgba(239,229,255,0) 62%), radial-gradient(900px 480px at -10% 110%, #F3ECFF 0, rgba(243,236,255,0) 60%), var(--paper);background-attachment:fixed;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom,0px)}
+a{color:var(--violet-ink);text-underline-offset:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.2;margin:0}
+h1{font-size:2rem;letter-spacing:-.01em}
+h2{font-size:1.22rem}
+h3{font-size:1.02rem;margin:1.1rem 0 .45rem}
+p{margin:.4rem 0}
+.muted{color:var(--muted)} .small{font-size:.84rem} .bad-text{color:var(--bad)}
+:focus-visible{outline:2px solid var(--violet);outline-offset:2px}
+[hidden]{display:none!important}
+
+/* layout */
+.shell{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:100vh}
+.side{background:linear-gradient(180deg,#F4EEFF 0%,#EEE5FF 100%);border-right:1px solid var(--line);padding:1.4rem 1rem;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:1.4rem;padding-top:calc(1.4rem + env(safe-area-inset-top,0px));min-width:0}
+.brand-name{font-family:var(--serif);font-size:1.3rem;font-weight:600;line-height:1.15;color:var(--ink)}
+.brand-sub{font-size:.82rem;color:var(--muted);margin-top:.2rem}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{color:var(--ink);text-decoration:none;padding:.5rem .7rem;border-radius:9px;display:flex;justify-content:space-between;align-items:center;font-weight:500;border-left:3px solid transparent}
+.nav a:hover{background:rgba(255,255,255,.6)}
+.nav a.on{background:#fff;color:var(--violet-ink);border-left-color:var(--violet);box-shadow:0 1px 2px rgba(90,40,180,.08),0 4px 14px -8px rgba(90,40,180,.25)}
+.badge{background:var(--violet);color:#fff;font-size:.72rem;font-weight:700;border-radius:999px;padding:0 .45rem;min-width:1.4rem;text-align:center}
+.side-foot{margin-top:auto;font-size:.85rem;color:var(--muted)}
+.main{padding:1.8rem clamp(1rem,3vw,2.6rem) 4rem;max-width:1200px;width:100%}
+@media (max-width:860px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .side{position:sticky;height:auto;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.5rem;padding:.75rem 1rem .5rem;padding-top:calc(.75rem + env(safe-area-inset-top,0px));z-index:5;border-right:0;border-bottom:1px solid var(--line)}
+  .side .nav{grid-column:1 / -1}
+  .brand-sub,.who-name{display:none}
+  .side-foot{margin:0;grid-row:1;grid-column:2}
+  .nav{flex-direction:row;overflow-x:auto;gap:.2rem;scrollbar-width:none}
+  .nav a{white-space:nowrap;border-left:0;border-bottom:3px solid transparent;gap:.4rem}
+  .nav a.on{border-bottom-color:var(--violet)}
+  h1{font-size:1.65rem}
+}
+.mhead{background:rgba(255,255,255,.82);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:.85rem clamp(1rem,3vw,2.6rem);padding-top:calc(.85rem + env(safe-area-inset-top,0px));display:flex;gap:.6rem 1.5rem;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+.mnav{display:flex;gap:.3rem;flex:1;overflow-x:auto;scrollbar-width:none}
+.mnav a{text-decoration:none;color:var(--ink);padding:.42rem .8rem;border-radius:999px;font-weight:500;white-space:nowrap}
+.mnav a.on{background:var(--violet-soft);color:var(--violet-ink)}
+.mwho{display:flex;gap:.6rem;align-items:center;font-size:.88rem}
+.mmain{max-width:1100px;margin:0 auto;padding:1.6rem clamp(1rem,3vw,2.6rem) 4rem}
+
+/* page bits */
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap}
+.page-head p{margin:.3rem 0 0}
+.back{display:inline-block;margin-bottom:.8rem;font-size:.9rem}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.25rem;margin-top:1.25rem;min-width:0;box-shadow:0 1px 0 rgba(123,47,247,.03)}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:.4rem}
+.panel-head .search{max-width:320px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:0 1.25rem}
+.empty{color:var(--muted);padding:.4rem 0}
+.row{display:flex;gap:.5rem;align-items:center}
+.row>input{flex:1}
+.wrap{flex-wrap:wrap}
+.toolbar{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem;align-items:center}
+.toolbar .search{flex:1;min-width:220px}
+.toolbar select,.toolbar input[type=date]{width:auto}
+.demo{background:var(--amber-soft);border:1px solid #F3DFB3;border-radius:10px;padding:.55rem .8rem;font-size:.86rem;margin-bottom:1.2rem}
+
+/* controls */
+.btn{font:inherit;font-weight:600;font-size:.92rem;border:1px solid transparent;background:var(--violet);color:#fff;padding:.55rem .95rem;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;text-decoration:none;white-space:nowrap;line-height:1.2;box-shadow:0 6px 16px -10px rgba(123,47,247,.7)}
+.btn:hover{background:var(--violet-2)}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line-2);box-shadow:none}
+.btn.ghost:hover{background:var(--violet-soft)}
+.btn.wa{background:var(--wa);color:#fff;box-shadow:none}
+.btn.wa:hover{filter:brightness(1.08)}
+.btn.danger{background:var(--bad);color:#fff;box-shadow:none}
+.btn.sm{padding:.34rem .62rem;font-size:.82rem}
+.btn.lg{padding:.75rem 1.25rem;font-size:1rem}
+.btn.block{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.link{background:none;border:0;padding:0;font:inherit;color:var(--violet-ink);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+input,select,textarea{font:inherit;color:var(--ink);background:#fff;border:1px solid var(--line-2);border-radius:9px;padding:.55rem .7rem;width:100%;min-width:0}
+textarea{min-height:5rem;resize:vertical;line-height:1.45}
+input:focus,select:focus,textarea:focus{border-color:var(--violet);outline:none;box-shadow:0 0 0 3px rgba(123,47,247,.16)}
+.field{margin:0 0 .95rem;border:0;padding:0;min-width:0}
+.field>label,.field legend{display:block;font-weight:600;font-size:.88rem;margin-bottom:.3rem;padding:0}
+.hint{font-size:.8rem;color:var(--muted);margin-top:.25rem}
+.radio{display:flex;gap:.5rem;align-items:center;font-size:.92rem;padding:.15rem 0}
+.radio input{width:auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 .8rem}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 .8rem}
+@media (max-width:560px){.grid2,.grid3{grid-template-columns:1fr}}
+fieldset.group{border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem .2rem;margin:0 0 1rem}
+fieldset.group legend{font-family:var(--serif);font-weight:600;font-size:1.02rem;padding:0 .35rem}
+
+/* tags + lists */
+.tag{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:999px;background:var(--violet-soft);color:var(--violet-ink);white-space:nowrap}
+.tag.ok{background:var(--ok-soft);color:var(--ok)}
+.tag.bad{background:var(--bad-soft);color:var(--bad)}
+.tag.warn{background:var(--amber-soft);color:var(--amber)}
+.tag.plain{background:#F6F3FC;color:var(--muted)}
+.code{font-variant-numeric:tabular-nums;font-weight:600;color:var(--muted)}
+.list{list-style:none;margin:0;padding:0}
+.item{display:flex;flex-wrap:wrap;gap:.6rem 1rem;justify-content:space-between;align-items:center;padding:.75rem 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.item-main{min-width:0;flex:1 1 220px}
+.item .title{font-weight:600;color:var(--ink);text-decoration:none}
+.item a.title:hover{text-decoration:underline}
+.sub{font-size:.88rem;color:var(--muted);margin-top:.1rem}
+.sub a{color:inherit}
+.item-actions{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end;flex:none}
+@media (max-width:640px){.item{flex-direction:column;align-items:flex-start}.item-actions{justify-content:flex-start}}
+.note{padding:.55rem .75rem;border-radius:9px;margin:.4rem 0;font-size:.9rem;background:var(--amber-soft)}
+.note.bad{background:var(--bad-soft);color:var(--bad)}
+.note.ok{background:var(--ok-soft);color:var(--ok)}
+.note.info{background:var(--violet-soft);color:var(--violet-ink)}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem}
+.chip{font:inherit;font-size:.8rem;border:1px solid var(--line-2);background:#fff;color:var(--ink);padding:.22rem .65rem;border-radius:999px;cursor:pointer}
+.chip.on{background:var(--violet);border-color:var(--violet);color:#fff}
+.seg{display:inline-flex;gap:.25rem;flex-wrap:wrap}
+.seg button{font:inherit;font-size:.86rem;font-weight:500;background:#fff;border:1px solid var(--line-2);color:var(--ink);padding:.34rem .75rem;border-radius:999px;cursor:pointer}
+.seg button.on{background:var(--violet-soft);border-color:var(--violet);color:var(--violet-ink)}
+.viewbar{display:flex;justify-content:space-between;gap:.8rem;flex-wrap:wrap;margin-top:1rem;align-items:center}
+.viewbar .lbl{font-size:.82rem;color:var(--muted);margin-right:.2rem}
+
+/* dashboard */
+.scanbar{margin-top:1.3rem;background:linear-gradient(130deg,#EDE2FF 0%,#F7F2FF 60%,#FFFFFF 100%);border:1px solid var(--line-2);border-radius:16px;padding:1.2rem 1.3rem}
+.scanbar label{display:block;font-family:var(--serif);font-size:1.15rem;margin-bottom:.6rem}
+.scanbar input{font-size:1.1rem;padding:.72rem .85rem}
+.scanbar .btn{padding:.74rem 1rem}
+@media (max-width:520px){.scanbar .row{flex-wrap:wrap}.scanbar .row input{flex-basis:100%}.scanbar .row .btn{flex:1}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.7rem;margin-top:1.2rem}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.75rem 1rem;text-decoration:none;color:var(--ink);display:block}
+a.stat:hover{border-color:var(--violet)}
+.stat .n{font-family:var(--serif);font-size:1.7rem;display:block;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .l{font-size:.84rem;color:var(--muted)}
+.stat.alert .n{color:var(--bad)}
+.action-card .btn.lg{margin-top:.6rem}
+
+/* books */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:1.5rem 1.1rem;margin-top:1rem}
+.tile{text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:.12rem;min-width:0}
+.tile .cover{margin-bottom:.5rem;transition:transform .15s ease}
+a.tile:hover .cover{transform:translateY(-3px)}
+.t-title{font-weight:600;line-height:1.3;font-size:.94rem}
+.t-author{font-size:.84rem;color:var(--muted)}
+.t-avail{font-size:.8rem;font-weight:600;color:var(--ok);margin-top:.15rem}
+.t-avail.out{color:var(--amber)}
+.t-loc{font-size:.78rem;color:var(--muted)}
+.cover{position:relative;aspect-ratio:2/3;background:var(--c,#7B5CD6);color:#fff;border-radius:3px 8px 8px 3px;padding:16px 12px 12px 19px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;box-shadow:0 1px 2px rgba(60,20,120,.18),0 12px 22px -14px rgba(60,20,120,.55)}
+.cover::before{content:"";position:absolute;top:0;bottom:0;left:0;width:9px;background:linear-gradient(90deg,rgba(40,10,90,.28),rgba(255,255,255,.18) 70%,rgba(40,10,90,.1));z-index:1}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,0) 45%);pointer-events:none}
+.cv-title{font-family:var(--serif);font-weight:600;font-size:1rem;line-height:1.18;border-top:1px solid rgba(255,255,255,.55);padding-top:8px;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.cv-author{font-size:.72rem;opacity:.9;border-top:1px solid rgba(255,255,255,.45);padding-top:6px}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.cover.lg{width:180px;flex:none}
+.cover.lg .cv-title{font-size:1.3rem}
+.cover.sm{width:64px;flex:none;padding:8px 6px 6px 11px;border-radius:2px 5px 5px 2px}
+.cover.sm::before{width:6px}
+.cover.sm .cv-title{font-size:.62rem;padding-top:4px;-webkit-line-clamp:5}
+.cover.sm .cv-author{display:none}
+.book-hero{display:flex;gap:2rem;align-items:flex-start}
+.book-title{font-size:2.05rem}
+.byline{font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--muted);margin:.2rem 0 1rem}
+.meta{display:grid;grid-template-columns:max-content 1fr;gap:.25rem 1rem;margin:0 0 1rem;font-size:.92rem}
+.meta dt{color:var(--muted)} .meta dd{margin:0}
+.desc{max-width:62ch;line-height:1.6}
+@media (max-width:640px){.book-hero{flex-direction:column}.cover.lg{width:140px}}
+.group-h{margin-top:1.6rem;display:flex;gap:.6rem;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:.35rem}
+.copy-in{margin-bottom:.4rem}
+.copy-in .muted{width:4.5rem;flex:none}
+
+/* member home */
+.loan-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:.9rem;margin-top:1rem}
+.loan-card{display:flex;gap:1rem;background:linear-gradient(140deg,#F3ECFF,#FFFFFF 70%);border:1px solid var(--line-2);border-radius:14px;padding:.9rem}
+.loan-card.over{background:linear-gradient(140deg,#FDECEF,#FFFFFF 70%);border-color:#F5C9D0}
+.loan-card h3{margin:0 0 .3rem;font-size:1.08rem}
+.days{font-family:var(--serif);font-size:1.5rem;line-height:1.1;margin-top:.4rem}
+.days small{font-family:var(--sans);font-size:.8rem;color:var(--muted);display:block}
+
+/* tables */
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:.92rem}
+.tbl th{text-align:left;font-weight:600;color:var(--muted);font-size:.8rem;padding:.5rem .6rem;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:.6rem;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td select{width:auto;padding:.25rem .4rem;font-size:.85rem}
+tr.click{cursor:pointer}
+tr.click:hover{background:var(--violet-soft)}
+.money{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.6rem 0 1rem}
+.money dt{font-size:.82rem;color:var(--muted)}
+.money dd{margin:0;font-family:var(--serif);font-size:1.5rem}
+.money dd.bad{color:var(--bad)}
+.pf{display:grid;grid-template-columns:max-content 1fr;gap:.35rem 1.2rem;margin:.4rem 0 0;font-size:.93rem}
+.pf dt{color:var(--muted)} .pf dd{margin:0;white-space:pre-line}
+.course-row{display:grid;grid-template-columns:2fr 1fr 1.2fr 1.2fr auto;gap:.4rem;margin-bottom:.45rem;align-items:center}
+@media (max-width:640px){.course-row{grid-template-columns:1fr 1fr;padding:.6rem;border:1px solid var(--line);border-radius:10px}.course-row .c-name{grid-column:1/-1}}
+
+/* pickers */
+.picklist{display:flex;flex-direction:column;gap:3px;margin-top:5px}
+.pick{text-align:left;background:var(--violet-soft);border:0;border-radius:7px;padding:.5rem .65rem;font:inherit;font-size:.92rem;color:var(--ink);cursor:pointer}
+.pick:hover{outline:1px solid var(--violet)}
+.pick.disabled{opacity:.6;cursor:default}
+.pad{padding:.4rem 0}
+.chosen{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.6rem .8rem;border:1px solid var(--line-2);border-left:3px solid var(--violet);border-radius:9px;margin-top:.4rem;background:#FCFAFF}
+
+/* login */
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:2rem 1rem;padding-top:calc(2rem + env(safe-area-inset-top,0px))}
+.login-card{width:min(440px,100%);background:#fff;border:1px solid var(--line);border-radius:20px;padding:1.6rem 1.6rem 1.4rem;box-shadow:0 30px 60px -30px rgba(90,40,180,.35)}
+.spines{display:flex;align-items:flex-end;gap:4px;height:64px;margin-bottom:1.2rem}
+.spines span{width:15px;border-radius:2px 2px 1px 1px;background:var(--c);box-shadow:inset 3px 0 0 rgba(255,255,255,.25)}
+.spines span.tilt{transform:rotate(10deg);transform-origin:bottom left;margin-left:3px}
+.login-card h1{font-size:1.75rem}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--wash);border-radius:11px;padding:4px;margin:1.2rem 0 1.1rem}
+.tabs button{font:inherit;font-weight:600;font-size:.9rem;border:0;background:transparent;padding:.5rem;border-radius:8px;color:var(--muted);cursor:pointer}
+.tabs button.on{background:#fff;color:var(--violet-ink);box-shadow:0 1px 3px rgba(90,40,180,.15)}
+.pin{letter-spacing:.4em;font-size:1.15rem;font-variant-numeric:tabular-nums}
+
+/* dialogs */
+dialog{border:0;border-radius:16px;padding:0;width:min(600px,94vw);max-height:90vh;background:var(--card);color:var(--ink);box-shadow:0 30px 80px -20px rgba(60,20,120,.45);overflow:auto}
+dialog.wide{width:min(820px,96vw)}
+dialog::backdrop{background:rgba(60,35,110,.28);backdrop-filter:blur(2px)}
+.m-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card);z-index:3}
+.m-head h3{margin:0;font-size:1.2rem}
+.m-body{padding:1.05rem 1.25rem 1.25rem}
+.m-actions{display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap;margin-top:1.1rem}
+.icon-btn{background:none;border:0;font-size:1.05rem;cursor:pointer;color:var(--muted);padding:.25rem .45rem;border-radius:6px}
+.icon-btn:hover{background:var(--violet-soft)}
+#scan-region{width:100%;min-height:220px;background:#1d1530;border-radius:10px;overflow:hidden}
+#scan-region video{width:100%!important;height:auto!important;display:block}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:.7rem 1.1rem;border-radius:11px;font-size:.92rem;z-index:1000;box-shadow:0 12px 30px -10px rgba(40,20,90,.5);max-width:min(560px,92vw);animation:rise .2s ease}
+.toast.bad{background:var(--bad)}
+@keyframes rise{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.loading,.fatal{max-width:560px;margin:20vh auto;padding:1.5rem;text-align:center;font-family:var(--serif);font-size:1.2rem;color:var(--muted)}
+.fatal{font-family:var(--sans);font-size:1rem;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;color:var(--ink)}
+</style>
+</head>
+<body>
+<div id="app"><div class="loading">Opening the library…</div></div>
+
+<dialog id="modal" aria-labelledby="m-title">
+  <div class="m-head"><h3 id="m-title"></h3><button class="icon-btn" onclick="closeModal()" aria-label="Close">✕</button></div>
+  <div class="m-body" id="m-body"></div>
+</dialog>
+
+<dialog id="scanner" aria-label="Scan a code">
+  <div class="m-head"><h3>Scan a code</h3><button class="icon-btn" onclick="Scan.close()" aria-label="Close scanner">✕</button></div>
+  <div class="m-body">
+    <div id="scan-region"></div>
+    <p id="scan-msg" class="muted small"></p>
+    <div class="row"><input id="scan-manual" placeholder="Or type the code" onkeydown="if(event.key==='Enter'){event.preventDefault();Scan.manual()}"><button class="btn" onclick="Scan.manual()">Use code</button></div>
+  </div>
+</dialog>
+<datalist id="course-list"></datalist>
+<datalist id="tag-list"></datalist>
+
+<script>
+'use strict';
+/* =========================================================
+   1. CONNECT YOUR DATABASE
+   Paste your Supabase Project URL and anon public key below.
+   While they are empty, the app runs in DEMO mode with sample
+   data saved only in this browser.
+   ========================================================= */
+const CONFIG = {
+  SUPABASE_URL: '',        // e.g. 'https://abcd1234.supabase.co'
+  SUPABASE_ANON_KEY: '',   // the long "anon public" key
+  // Members sign in with mobile + PIN. Behind the scenes each member gets a
+  // private login address on this domain. No emails are ever sent to it.
+  MEMBER_LOGIN_DOMAIN: 'members.pranalife.in',
+};
+
+const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY;
+const TABLES = ['books','copies','members','loans','reservations','payments','activity'];
+const DEFAULT_COURSES = ['Basic Pranic Healing (Level 1)','Advanced Pranic Healing (Level 2)','Pranic Psychotherapy (Level 3)','Pranic Crystal Healing','Pranic Psychic Self-Defense','Achieving Oneness with the Higher Soul','Arhatic Yoga Preparatory','Kriyashakti','Spiritual Business Management','Om Mani Padme Hum','Higher Clairvoyance','Pranic Feng Shui','Inner Teachings of Hinduism Revealed','Universal and Kabbalistic Mysteries of the Lord\'s Prayer'];
+const DEFAULT_SETTINGS = {
+  id:1, library_name:'Prana Life Library', currency:'₹', country_code:'91',
+  loan_days:14, max_books:3, renewal_days:14, max_renewals:1, hold_days:2, due_soon_days:2,
+  fine_per_day:5, fine_grace_days:0, max_fine:0, deposit_amount:500,
+  categories:'Pranic Healing,Arhatic Yoga,Spiritual,Esoteric,Meditation,Course books,Other',
+  courses:DEFAULT_COURSES.join('\n'),
+  tpl_issued:'Namaste {name} 🙏 You have borrowed "{title}" from {library}. Please return it by {due}. Happy reading!',
+  tpl_due:'Namaste {name} 🙏 A gentle reminder from {library}: "{title}" is due on {due}. Please return or renew it on time. Thank you!',
+  tpl_overdue:'Namaste {name} 🙏 "{title}" from {library} was due on {due}, {days} day(s) ago. The late fee so far is {fine}. Kindly return it at the earliest. Thank you!',
+  tpl_ready:'Namaste {name} 🙏 "{title}", which you reserved, is back at {library}. It is kept for you until {until}. If it is not collected by then, it goes to the next reader.',
+  tpl_login:'Namaste {name} 🙏 Your {library} account is ready. Open {link}, tap "First time here?", enter your mobile number and this code: {code}. Then choose a 6-digit PIN.',
+};
+
+/* ---------- small helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx'.replace(/x/g, () => (Math.random() * 16 | 0).toString(16));
+const nowIso = () => new Date().toISOString();
+const clone = o => JSON.parse(JSON.stringify(o));
+const uniq = a => [...new Set(a)];
+const cmp = (a, b) => String(a).localeCompare(String(b), undefined, {numeric:true, sensitivity:'base'});
+function ymd(d){ const x = new Date(d); return x.getFullYear() + '-' + String(x.getMonth()+1).padStart(2,'0') + '-' + String(x.getDate()).padStart(2,'0'); }
+const today = () => ymd(new Date());
+function addDays(s, n){ const [y,m,d] = s.split('-').map(Number); return ymd(new Date(y, m-1, d + Number(n||0))); }
+function daysBetween(a, b){ const [y1,m1,d1] = a.split('-').map(Number), [y2,m2,d2] = b.split('-').map(Number); return Math.round((Date.UTC(y2,m2-1,d2) - Date.UTC(y1,m1-1,d1)) / 864e5); }
+function fmtDate(s){ if(!s) return '—'; const d = s.length === 10 ? new Date(s + 'T00:00:00') : new Date(s); return d.toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'}); }
+function fmtDateTime(s){ if(!s) return '—'; const d = new Date(s); return d.toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'}) + ', ' + d.toLocaleTimeString('en-IN', {hour:'numeric', minute:'2-digit'}); }
+function fmtMonth(s){ if(!s) return ''; const [y, m] = s.split('-'); return m ? new Date(+y, +m - 1, 1).toLocaleDateString('en-IN', {month:'short', year:'numeric'}) : y; }
+function relDue(d){ const n = daysBetween(today(), d); if(n === 0) return 'today'; if(n === 1) return 'tomorrow'; if(n < 0) return `${-n} days ago`; if(n < 7) return `in ${n} days`; return fmtDate(d); }
+function relTime(iso){ const n = daysBetween(ymd(iso), today()); return n <= 0 ? 'today' : n === 1 ? 'yesterday' : `${n} days ago`; }
+const money = n => (S.settings.currency || '₹') + Number(n || 0).toLocaleString('en-IN', {maximumFractionDigits:2});
+const firstName = n => String(n || '').trim().split(/\s+/)[0] || '';
+const plural = (n, w, p) => `${n} ${n === 1 ? w : (p || w + 's')}`;
+const fill = (tpl, v) => String(tpl || '').replace(/\{(\w+)\}/g, (m, k) => v[k] !== undefined ? v[k] : m);
+const stripNull = o => Object.fromEntries(Object.entries(o || {}).filter(([, v]) => v !== null && v !== undefined));
+function loadScript(src){ return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('Could not load ' + src)); document.head.appendChild(s); }); }
+function download(name, text, type){ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], {type})); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+function normPhone(p){
+  let d = String(p || '').replace(/\D/g, ''); if(d.startsWith('00')) d = d.slice(2);
+  const cc = String(S.settings.country_code || '91').replace(/\D/g, '');
+  if(d.length === 10) d = cc + d; else if(d.length === 11 && d.startsWith('0')) d = cc + d.slice(1);
+  return d;
+}
+function fmtPhone(p){ const d = String(p || ''); if(!d) return ''; if(d.length === 12 && d.startsWith('91')) return `+91 ${d.slice(2, 7)} ${d.slice(7)}`; return '+' + d; }
+function genCode(){ const a = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; let s = ''; const r = new Uint32Array(6); (window.crypto || {getRandomValues:x => x.map(() => Math.random() * 1e9)}).getRandomValues(r); r.forEach(n => s += a[n % a.length]); return s; }
+const tagsOf = b => Array.isArray(b.tags) ? b.tags.filter(Boolean) : String(b.tags || '').split(',').map(s => s.trim()).filter(Boolean);
+const locStr = b => [b.room && 'Room ' + b.room, b.rack && 'Rack ' + b.rack, b.row_no && 'Row ' + b.row_no].filter(Boolean).join(', ');
+const backText = d => d && d >= today() ? `expected back by <b>${fmtDate(d)}</b>` : 'running late, expected back soon';
+const coursesOf = m => Array.isArray(m && m.courses) ? m.courses : [];
+
+/* ---------- state ---------- */
+const S = { settings:{...DEFAULT_SETTINGS}, books:[], copies:[], members:[], loans:[], reservations:[], payments:[], activity:[], me:null, session:null, availMap:null, noProfile:false, ui:{loginTab:'member', memberStep:'login'} };
+
+/* ---------- data layer: demo (browser) ---------- */
+const Local = {
+  key:'pranalife-library-demo-v2', mem:null, sessKey:'pranalife-library-demo-v2-session', sessMem:null,
+  load(){ if(this.mem) return this.mem; let d = null; try { d = JSON.parse(localStorage.getItem(this.key)); } catch(e) {} this.mem = d || seedDemo(); this.save(); return this.mem; },
+  save(){ try { localStorage.setItem(this.key, JSON.stringify(this.mem)); } catch(e) {} },
+  getSession(){ if(this.sessMem !== null) return this.sessMem; try { this.sessMem = localStorage.getItem(this.sessKey) || ''; } catch(e) { this.sessMem = ''; } return this.sessMem; },
+  setSession(id){ this.sessMem = id || ''; try { localStorage.setItem(this.sessKey, this.sessMem); } catch(e) {} },
+  async list(t){ return clone(this.load()[t] || []); },
+  async getSettings(){ return clone(this.load().settings); },
+  async insert(t, row){ const d = this.load(); const rows = (Array.isArray(row) ? row : [row]).map(r => ({id:uid(), created_at:nowIso(), ...r})); d[t].push(...rows); this.save(); return clone(rows); },
+  async update(t, id, p){ const d = this.load(); const r = d[t].find(x => x.id === id); if(!r) throw new Error('That record no longer exists.'); Object.assign(r, p); this.save(); return clone(r); },
+  async remove(t, id){ const d = this.load(); d[t] = d[t].filter(x => x.id !== id); this.save(); },
+  async saveSettings(p){ const d = this.load(); Object.assign(d.settings, p); this.save(); return clone(d.settings); },
+  reset(){ try { localStorage.removeItem(this.key); localStorage.removeItem(this.sessKey); } catch(e) {} this.mem = null; this.sessMem = null; },
+};
+
+/* ---------- data layer: Supabase ---------- */
+const Remote = {
+  sb:null,
+  init(){ if(!window.supabase) throw new Error('The Supabase script did not load. Check your internet connection.'); this.sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY); },
+  async list(t){ let all = [], from = 0; for(;;){ const {data, error} = await this.sb.from(t).select('*').range(from, from + 999); if(error) throw error; all = all.concat(data); if(data.length < 1000) break; from += 1000; } return all; },
+  async getSettings(){ const {data, error} = await this.sb.from('settings').select('*').eq('id', 1).maybeSingle(); if(error) throw error; return data || {}; },
+  async insert(t, row){ const {data, error} = await this.sb.from(t).insert(row).select(); if(error) throw error; return data; },
+  async update(t, id, p){ const {data, error} = await this.sb.from(t).update(p).eq('id', id).select(); if(error) throw error; if(!data.length) throw new Error('You do not have permission to change this.'); return data[0]; },
+  async remove(t, id){ const {error} = await this.sb.from(t).delete().eq('id', id); if(error) throw error; },
+  async saveSettings(p){ const {data, error} = await this.sb.from('settings').update(p).eq('id', 1).select(); if(error) throw error; return data[0]; },
+  async rpc(fn, args){ const {data, error} = await this.sb.rpc(fn, args || {}); if(error) throw error; return data; },
+};
+const DB = DEMO ? Local : Remote;
+
+async function addRow(t, row){ const r = await DB.insert(t, row); S[t].push(...r); return r[0]; }
+async function addRows(t, rows){ if(!rows.length) return []; const r = await DB.insert(t, rows); S[t].push(...r); return r; }
+async function patch(t, id, p){ const r = await DB.update(t, id, p); const i = S[t].findIndex(x => x.id === id); if(i >= 0) S[t][i] = r; else S[t].push(r); return r; }
+async function delRow(t, id){ await DB.remove(t, id); S[t] = S[t].filter(x => x.id !== id); }
+async function logAct(kind, o = {}){
+  try { await addRow('activity', {kind, member_id:o.m || null, book_id:o.b || null, copy_id:o.c || null, loan_id:o.l || null, amount:o.amt ?? null, detail:o.d || null, by_name:S.me ? S.me.name : '', created_at:nowIso()}); }
+  catch(e){ console.warn('Could not log activity', e); }
+}
+
+/* ---------- lookups + rules ---------- */
+const byId = (t, id) => S[t].find(x => x.id === id);
+const book = id => byId('books', id), copy = id => byId('copies', id), member = id => byId('members', id), loan = id => byId('loans', id), resv = id => byId('reservations', id);
+const isStaff = () => !!S.me && ['librarian','admin'].includes(S.me.role) && S.me.status !== 'suspended';
+const isAdmin = () => isStaff() && S.me.role === 'admin';
+const activeLoans = () => S.loans.filter(l => !l.returned_at);
+const loanOfCopy = cid => S.loans.find(l => l.copy_id === cid && !l.returned_at);
+const copiesOf = bid => S.copies.filter(c => c.book_id === bid).sort((a, b) => cmp(a.code, b.code));
+const copyByCode = code => { const k = String(code || '').trim().toLowerCase(); return k ? S.copies.find(c => c.code.toLowerCase() === k) : null; };
+const memberActive = mid => activeLoans().filter(l => l.member_id === mid);
+const isOverdue = l => !l.returned_at && daysBetween(l.due_at, today()) > 0;
+const overdueDays = l => l.returned_at ? 0 : Math.max(0, daysBetween(l.due_at, today()));
+const isDueSoon = l => { if(l.returned_at) return false; const d = daysBetween(today(), l.due_at); return d >= 0 && d <= Number(S.settings.due_soon_days); };
+function accruedFine(l){
+  const end = l.returned_at ? ymd(l.returned_at) : today();
+  const late = daysBetween(l.due_at, end) - Number(S.settings.fine_grace_days || 0);
+  let f = Math.max(0, late) * Number(S.settings.fine_per_day || 0);
+  const cap = Number(S.settings.max_fine || 0); if(cap > 0) f = Math.min(f, cap);
+  return f;
+}
+const finesDue = mid => S.loans.filter(l => l.member_id === mid && l.fine_status === 'due').reduce((s, l) => s + Number(l.fine_amount || 0), 0);
+const nextDue = bid => activeLoans().filter(l => l.book_id === bid).map(l => l.due_at).sort()[0];
+function availInfo(bid){
+  if(S.availMap){ const a = S.availMap[bid]; return a ? {total:a.total, avail:a.available, nextBack:a.next_back} : {total:0, avail:0, nextBack:null}; }
+  const cs = copiesOf(bid).filter(c => !['lost','retired'].includes(c.status));
+  return {total:cs.length, avail:cs.filter(c => c.status === 'available').length, nextBack:nextDue(bid)};
+}
+const pendingFor = bid => S.reservations.filter(r => r.book_id === bid && r.status === 'pending').sort((a, b) => cmp(a.created_at, b.created_at));
+const holdFor = cid => S.reservations.find(r => r.copy_id === cid && r.status === 'ready');
+const holdUntil = r => addDays(ymd(r.ready_at), S.settings.hold_days);
+const lastReminder = lid => S.activity.filter(a => a.kind === 'reminder' && a.loan_id === lid).sort((a, b) => cmp(b.created_at, a.created_at))[0];
+function categories(){ const base = String(S.settings.categories || '').split(',').map(s => s.trim()).filter(Boolean); S.books.forEach(b => { if(b.category && !base.includes(b.category)) base.push(b.category); }); return base; }
+const allTags = () => uniq(S.books.flatMap(tagsOf)).sort(cmp);
+const courseOptions = () => String(S.settings.courses || '').split('\n').map(s => s.trim()).filter(Boolean);
+function nextNum(list, re){ let max = 0; list.forEach(v => { const m = re.exec(v || ''); if(m) max = Math.max(max, Number(m[1])); }); return max + 1; }
+const codeFmt = n => 'PL-' + String(n).padStart(4, '0');
+const nextCopyNum = () => nextNum(S.copies.map(c => c.code), /^PL-(\d+)$/i);
+const nextMemberCode = () => 'PLM-' + String(nextNum(S.members.map(m => m.member_code), /^PLM-(\d+)$/i)).padStart(3, '0');
+const FINE_LABEL = {due:'due', paid:'paid', waived:'waived'};
+const KIND_LABEL = {fine:'Late fee', deposit:'Deposit received', deposit_refund:'Deposit refunded', lost_book:'Lost book', other:'Other'};
+const METHOD_LABEL = {cash:'Cash', upi:'UPI', deposit:'From deposit'};
+const ACT = {
+  issued:['Issued','borrow'], returned:['Returned','borrow'], renewed:['Renewed','borrow'], lost:['Marked lost','borrow'],
+  reserved:['Reserved','reserve'], res_cancelled:['Reservation cancelled','reserve'], hold:['Kept aside for pickup','reserve'], hold_released:['Hold released','reserve'], hold_expired:['Hold expired, not collected','reserve'],
+  fee_paid:['Late fee paid','money'], fee_due:['Late fee added to dues','money'], fee_waived:['Late fee waived','money'], deposit:['Deposit received','money'], refund:['Deposit refunded','money'],
+  reminder:['WhatsApp message','remind'],
+  member_added:['Member added','people'], member_edited:['Member details updated','people'], profile_edited:['Profile updated by member','people'], login_reset:['Login reset','people'], login_code:['Login code sent','people'],
+  book_added:['Book added','catalog'], book_edited:['Book details updated','catalog'], copies_added:['Copies added','catalog'], copy_status:['Copy status changed','catalog'], barcode:['Barcode changed','catalog'], book_deleted:['Book deleted','catalog'], import:['Books imported','catalog'],
+};
+const ACT_GROUPS = [['', 'All activity'], ['borrow', 'Borrowing'], ['reserve', 'Reservations'], ['money', 'Money'], ['remind', 'WhatsApp messages'], ['people', 'Members'], ['catalog', 'Catalog']];
+
+/* ---------- WhatsApp ---------- */
+const waUrl = (p, msg) => `https://wa.me/${normPhone(p)}?text=${encodeURIComponent(msg)}`;
+function openWA(p, msg){ if(!p){ toast('Add a mobile number for this member first.', 'bad'); return false; } window.open(waUrl(p, msg), '_blank', 'noopener'); return true; }
+function msgVars(m, b, extra = {}){ return {name:firstName(m && m.name), title:(b && b.title) || '', library:S.settings.library_name, ...extra}; }
+const appLink = () => location.origin + location.pathname;
+
+/* ---------- UI primitives ---------- */
+function openModal(title, html, wide){
+  $('#m-title').textContent = title; $('#m-body').innerHTML = html; const d = $('#modal'); d.classList.toggle('wide', !!wide); if(!d.open) d.showModal();
+  const f = d.querySelector('#m-body input:not([readonly]):not([type=radio]), #m-body select, #m-body textarea');
+  if(f && !f.closest('[hidden]')) f.focus(); else { const b = d.querySelector('#m-body .m-actions .btn:last-child'); if(b) b.focus(); }
+}
+function closeModal(){ const d = $('#modal'); if(d.open) d.close(); }
+function toast(msg, kind = 'ok'){
+  document.querySelectorAll('.toast').forEach(t => t.remove());
+  const t = document.createElement('div'); t.className = 'toast ' + kind; t.setAttribute('role', 'status'); t.textContent = msg;
+  const host = $('#scanner').open ? $('#scanner') : $('#modal').open ? $('#modal') : document.body;
+  host.appendChild(t); setTimeout(() => t.remove(), 4500);
+}
+const go = h => { if(location.hash === '#' + h) render(); else location.hash = h; };
+const PALETTE = ['#7B5CD6','#9468D9','#6B5BC9','#8A5FC2','#5F6BD3','#A06BCB','#7868BA','#6D4FC6'];
+function shade(s){ let h = 0; for(const ch of String(s || '')) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return PALETTE[h % PALETTE.length]; }
+function cover(b, size = ''){
+  return `<div class="cover ${size}" style="--c:${shade(b.category || b.title)}"><span class="cv-title">${esc(b.title)}</span><span class="cv-author">${esc(b.author || '')}</span>${b.cover_url ? `<img src="${esc(b.cover_url)}" alt="" loading="lazy" onerror="this.remove()">` : ''}</div>`;
+}
+function statusTag(s){ const m = {available:['ok','On the shelf'], issued:['','Issued'], on_hold:['warn','Kept aside'], damaged:['bad','Damaged'], lost:['bad','Lost'], retired:['plain','Retired']}[s] || ['', s]; return `<span class="tag ${m[0]}">${m[1]}</span>`; }
+const statBox = (n, l, href, alert) => href ? `<a class="stat ${alert ? 'alert' : ''}" href="${href}"><span class="n">${n}</span><span class="l">${l}</span></a>` : `<div class="stat ${alert ? 'alert' : ''}"><span class="n">${n}</span><span class="l">${l}</span></div>`;
+const notFound = (msg, back) => `<a class="back" href="${back}">Go back</a><p class="empty">${msg}</p>`;
+const roleTag = m => m.role === 'admin' ? '<span class="tag">Admin</span>' : m.role === 'librarian' ? '<span class="tag">Librarian</span>' : '';
+const tagChips = b => tagsOf(b).map(t => `<span class="tag plain">${esc(t)}</span>`).join(' ');
+function fillDatalists(){
+  const c = $('#course-list'); if(c) c.innerHTML = courseOptions().map(o => `<option value="${esc(o)}">`).join('');
+  const t = $('#tag-list'); if(t) t.innerHTML = allTags().map(o => `<option value="${esc(o)}">`).join('');
+}
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+function vLogin(){
+  const tab = S.ui.loginTab, step = S.ui.memberStep;
+  const spines = ['#B9A4F5:52','#8E6BE6:62','#CDBDF8:44','#7B2FF7:58','#A98BEF:48','#DCCFFB:40','#9A7CEA:56'].map((s, i) => { const [c, h] = s.split(':'); return `<span style="--c:${c};height:${h}px" class="${i === 6 ? 'tilt' : ''}"></span>`; }).join('');
+  let form;
+  if(tab === 'staff'){
+    form = `<div class="field"><label for="lg-email">Email</label><input id="lg-email" type="email" autocomplete="username" onkeydown="if(event.key==='Enter'){event.preventDefault();A.staffLogin()}"></div>
+      <div class="field"><label for="lg-pw">Password</label><input id="lg-pw" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter'){event.preventDefault();A.staffLogin()}"></div>
+      <button class="btn block lg" onclick="A.staffLogin()">Sign in to the library desk</button>`;
+  } else if(step === 'setup'){
+    form = `<p class="muted small">The library gives you a 6-letter code when you join. Use it once to choose your PIN.</p>
+      <div class="field"><label for="lg-phone">Mobile number</label><input id="lg-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98xxxxxxxx"></div>
+      <div class="field"><label for="lg-code">Code from the library</label><input id="lg-code" autocomplete="one-time-code" style="text-transform:uppercase;letter-spacing:.2em" maxlength="6"></div>
+      <div class="grid2"><div class="field"><label for="lg-pin">Choose a 6-digit PIN</label><input id="lg-pin" class="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"></div>
+      <div class="field"><label for="lg-pin2">Type it again</label><input id="lg-pin2" class="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" onkeydown="if(event.key==='Enter'){event.preventDefault();A.memberSetup()}"></div></div>
+      <button class="btn block lg" onclick="A.memberSetup()">Set my PIN</button>
+      <p class="small" style="margin-top:.8rem"><button class="link" onclick="A.memberStep('login')">I already have a PIN</button></p>`;
+  } else {
+    form = `<div class="field"><label for="lg-phone">Mobile number</label><input id="lg-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98xxxxxxxx"></div>
+      <div class="field"><label for="lg-pin">PIN</label><input id="lg-pin" class="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="current-password" onkeydown="if(event.key==='Enter'){event.preventDefault();A.memberLogin()}"></div>
+      <button class="btn block lg" onclick="A.memberLogin()">Sign in</button>
+      <p class="small" style="margin-top:.8rem"><button class="link" onclick="A.memberStep('setup')">First time here? Set up your PIN</button></p>
+      <p class="small muted">Forgot your PIN? Ask the librarian to reset your login.</p>`;
+  }
+  const demo = DEMO ? `<div class="demo" style="margin:1.2rem 0 0">
+      <b>Demo logins.</b> Member: mobile 98000 00002, PIN 123456.
+      First-time setup: mobile 98000 00006, code PRANA6.
+      Library desk: admin@pranalife.in, password admin123.</div>` : '';
+  return `<div class="login-wrap"><div class="login-card">
+    <div class="spines" aria-hidden="true">${spines}</div>
+    <h1>${esc(S.settings.library_name)}</h1>
+    <p class="muted">Borrow spiritual, esoteric and course books, and keep track of your reading.</p>
+    <div class="tabs" role="tablist"><button role="tab" class="${tab === 'member' ? 'on' : ''}" aria-selected="${tab === 'member'}" onclick="A.loginTab('member')">Member</button><button role="tab" class="${tab === 'staff' ? 'on' : ''}" aria-selected="${tab === 'staff'}" onclick="A.loginTab('staff')">Library desk</button></div>
+    ${form}<div id="lg-msg" aria-live="polite"></div>${demo}
+  </div></div>`;
+}
+function vNoProfile(){
+  return `<div class="login-wrap"><div class="login-card"><h1>Account not linked</h1><p>You're signed in, but this login isn't connected to a library member or staff record.</p><p class="muted small">Members: ask the librarian for a new code. Staff: ask the admin to link your login from your member page.</p><button class="btn" onclick="A.signOut()">Sign out</button></div></div>`;
+}
+const loginMsg = (t, kind = 'bad') => { const el = $('#lg-msg'); if(el) el.innerHTML = `<div class="note ${kind}" style="margin-top:.8rem">${t}</div>`; };
+
+/* =========================================================
+   STAFF VIEWS
+   ========================================================= */
+function greeting(){ const h = new Date().getHours(); return (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + (S.me ? ', ' + firstName(S.me.name) : ''); }
+
+function vDashboard(){
+  const act = activeLoans(), over = act.filter(isOverdue).sort((a, b) => cmp(a.due_at, b.due_at)), soon = act.filter(isDueSoon).sort((a, b) => cmp(a.due_at, b.due_at));
+  const pend = S.reservations.filter(r => r.status === 'pending'), ready = S.reservations.filter(r => r.status === 'ready');
+  const owed = S.loans.filter(l => l.fine_status === 'due').reduce((s, l) => s + Number(l.fine_amount || 0), 0);
+  const recent = [...S.activity].sort((a, b) => cmp(b.created_at, a.created_at)).slice(0, 8);
+  return `<header class="page-head"><div><h1>${esc(greeting())}</h1><p class="muted">${new Date().toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long'})}</p></div></header>
+  <section class="scanbar">
+    <label for="quick">Scan or type a book barcode to issue or return it</label>
+    <div class="row"><input id="quick" placeholder="e.g. PL-0012" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();A.quick()}"><button class="btn" onclick="A.quick()">Open</button><button class="btn ghost" onclick="Scan.open(c=>{$('#quick').value=c;A.quick()})" aria-label="Scan with camera">📷 Scan</button></div>
+    <p class="hint">A USB or Bluetooth barcode scanner works here too.</p>
+  </section>
+  <div class="stats">
+    ${statBox(act.length, 'Books out now', '#circulation')}
+    ${statBox(over.length, 'Overdue', '#reminders', over.length > 0)}
+    ${statBox(soon.length, `Due in ${S.settings.due_soon_days} days`, '#reminders')}
+    ${statBox(pend.length + ready.length, 'Reservations open', '#reservations')}
+    ${statBox(money(owed), 'Late fees owed', '#reports')}
+  </div>
+  <div class="two">
+    <section class="panel"><h2>Overdue</h2><ul class="list">${over.map(l => loanRow(l)).join('') || '<li class="empty">Nothing overdue.</li>'}</ul></section>
+    <section class="panel"><h2>Due soon</h2><ul class="list">${soon.map(l => loanRow(l)).join('') || '<li class="empty">Nothing due in the next few days.</li>'}</ul></section>
+  </div>
+  <section class="panel"><div class="panel-head"><h2>Latest activity</h2><a href="#records">All records</a></div>${actTable(recent, true)}</section>`;
+}
+
+function loanRow(l, o = {}){
+  const b = book(l.book_id), m = member(l.member_id), c = copy(l.copy_id), od = overdueDays(l), last = lastReminder(l.id);
+  const due = od > 0
+    ? `<span class="tag bad">${plural(od, 'day')} overdue</span> <span class="small">late fee so far ${money(accruedFine(l))}</span>`
+    : `<span class="${isDueSoon(l) ? 'tag warn' : ''}">Due ${relDue(l.due_at)}</span>`;
+  const rem = last ? `<br><span class="small">${ymd(last.created_at) === today() ? 'Reminded today' : 'Reminded ' + relTime(last.created_at)}</span>` : '';
+  return `<li class="item"><div class="item-main">
+    <a class="title" href="#book/${l.book_id}">${esc(b ? b.title : 'Removed book')}</a>
+    <div class="sub">${o.hideMember ? '' : `<a href="#member/${l.member_id}">${esc(m ? m.name : 'Unknown member')}</a>, `}<span class="code">${esc(c ? c.code : '')}</span>, since ${fmtDate(l.issued_at)}${l.renewals ? `, renewed ${l.renewals}×` : ''}</div>
+    <div class="sub">${due}${rem}</div></div>
+    <div class="item-actions"><button class="btn sm wa" onclick="A.remind('${l.id}')">WhatsApp</button>${o.full ? `<button class="btn sm ghost" onclick="A.renew('${l.id}')">Renew</button>` : ''}<button class="btn sm ghost" onclick="A.returnModal('${l.id}')">Return</button>${o.full ? `<button class="btn sm ghost" onclick="A.lostModal('${l.id}')">Lost</button>` : ''}</div></li>`;
+}
+
+function vCirc(){
+  return `<header class="page-head"><h1>Issue &amp; return</h1></header>
+  <div class="two">
+    <section class="panel action-card"><h2>Issue a book</h2><p class="muted">Pick the member, then scan or search the book.</p><button class="btn lg" onclick="A.issueModal()">Issue a book</button></section>
+    <section class="panel action-card"><h2>Return a book</h2><p class="muted">Scan or type the barcode on the returned book.</p>
+      <div class="row" style="margin-top:.6rem"><input id="ret-code" placeholder="Barcode" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();A.retByCode()}"><button class="btn" onclick="A.retByCode()">Return</button><button class="btn ghost" onclick="Scan.open(c=>{$('#ret-code').value=c;A.retByCode()})" aria-label="Scan with camera">📷</button></div></section>
+  </div>
+  <section class="panel"><div class="panel-head"><h2>Who has which book (${activeLoans().length})</h2><input class="search" placeholder="Filter by title, member or barcode" value="${esc(S.ui.circQ || '')}" oninput="S.ui.circQ=this.value;$('#circ-list').innerHTML=circList()"></div>
+  <ul class="list" id="circ-list">${circList()}</ul></section>`;
+}
+function circList(){
+  const q = (S.ui.circQ || '').toLowerCase().trim();
+  const rows = activeLoans().filter(l => !q || [book(l.book_id)?.title, member(l.member_id)?.name, copy(l.copy_id)?.code, member(l.member_id)?.phone].some(v => (v || '').toLowerCase().includes(q))).sort((a, b) => cmp(a.due_at, b.due_at));
+  return rows.map(l => loanRow(l, {full:true})).join('') || `<li class="empty">${q ? 'No books out match that filter.' : 'Every book is on the shelf.'}</li>`;
+}
+
+/* ---------- catalog ---------- */
+function vCatalog(){
+  const u = S.ui, cats = categories(), authors = uniq(S.books.map(b => b.author).filter(Boolean)).sort(cmp), rooms = uniq(S.books.map(b => b.room).filter(Boolean)).sort(cmp), tags = allTags();
+  const live = S.copies.filter(c => !['lost','retired'].includes(c.status)).length;
+  const opt = (list, cur, all) => `<option value="">${all}</option>` + list.map(v => `<option value="${esc(v)}" ${cur === v ? 'selected' : ''}>${esc(v)}</option>`).join('');
+  const seg = (key, cur, items) => `<div class="seg">${items.map(([v, t]) => `<button class="${cur === v ? 'on' : ''}" onclick="S.ui.${key}='${v}';render()">${t}</button>`).join('')}</div>`;
+  return `<header class="page-head"><div><h1>Books</h1><p class="muted">${plural(S.books.length, 'title')}, ${plural(live, 'copy', 'copies')}</p></div>
+    <div class="row wrap"><button class="btn ghost" onclick="A.importModal()">Import spreadsheet</button><button class="btn ghost" onclick="A.labelsAll()">Print labels</button><button class="btn" onclick="A.bookForm()">Add book</button></div></header>
+  <div class="toolbar"><input class="search" type="search" placeholder="Search title, author, ISBN, tag or barcode" value="${esc(u.catQ || '')}" oninput="S.ui.catQ=this.value;$('#catbody').innerHTML=catBody()">
+    <select aria-label="Category" onchange="S.ui.cat=this.value;$('#catbody').innerHTML=catBody()">${opt(cats, u.cat, 'All categories')}</select>
+    <select aria-label="Author" onchange="S.ui.author=this.value;$('#catbody').innerHTML=catBody()">${opt(authors, u.author, 'All authors')}</select>
+    <select aria-label="Room" onchange="S.ui.room=this.value;$('#catbody').innerHTML=catBody()">${opt(rooms, u.room, 'All rooms')}</select></div>
+  ${tags.length ? `<div class="chips" aria-label="Tags">${tags.map(t => `<button class="chip ${u.tag === t ? 'on' : ''}" data-t="${esc(t)}" onclick="S.ui.tag=(S.ui.tag===this.dataset.t?'':this.dataset.t);render()">${esc(t)}</button>`).join('')}</div>` : ''}
+  <div class="viewbar"><div><span class="lbl">Group by</span>${seg('group', u.group || 'none', [['none', 'Nothing'], ['category', 'Category'], ['author', 'Author'], ['location', 'Room and rack']])}</div>
+    <div>${seg('view', u.view || 'grid', [['grid', 'Covers'], ['list', 'List']])}</div></div>
+  <div id="catbody">${catBody()}</div>`;
+}
+function filteredBooks(){
+  const u = S.ui, q = (u.catQ || '').toLowerCase().trim();
+  return S.books.filter(b => (!u.cat || b.category === u.cat) && (!u.author || b.author === u.author) && (!u.room || b.room === u.room) && (!u.tag || tagsOf(b).includes(u.tag))
+    && (!q || [b.title, b.author, b.isbn, b.publisher, tagsOf(b).join(' ')].some(v => (v || '').toLowerCase().includes(q)) || copiesOf(b.id).some(c => c.code.toLowerCase() === q)))
+    .sort((a, b) => cmp(a.title, b.title));
+}
+function catBody(){
+  let bs = filteredBooks();
+  if(!bs.length) return `<p class="empty" style="margin-top:1rem">${S.books.length ? 'No books match these filters.' : 'No books yet. Use “Add book” or “Import spreadsheet” to start the catalog.'}</p>`;
+  const g = S.ui.group || 'none';
+  if(g === 'none') return booksBlock(bs);
+  if(g === 'location') bs = [...bs].sort((a, b) => cmp(a.room || '~', b.room || '~') || cmp(a.rack || '~', b.rack || '~') || cmp(a.row_no || '~', b.row_no || '~') || cmp(a.title, b.title));
+  const key = g === 'category' ? b => b.category || 'No category' : g === 'author' ? b => b.author || 'Author not added' : b => b.room ? `Room ${b.room}${b.rack ? ', Rack ' + b.rack : ''}` : 'Location not added';
+  const groups = new Map(); bs.forEach(b => { const k = key(b); if(!groups.has(k)) groups.set(k, []); groups.get(k).push(b); });
+  const keys = [...groups.keys()]; if(g !== 'location') keys.sort(cmp);
+  return keys.map(k => `<section><h2 class="group-h">${esc(k)} <span class="muted small">${groups.get(k).length}</span></h2>${booksBlock(groups.get(k))}</section>`).join('');
+}
+function availText(b){ const a = availInfo(b.id); if(!a.total) return ['out', 'No copies yet']; if(a.avail) return ['', `${a.avail} of ${a.total} on the shelf`]; return ['out', 'All copies out' + (a.nextBack ? (a.nextBack >= today() ? `, back by ${fmtDate(a.nextBack)}` : ', running late') : '')]; }
+function booksBlock(bs){
+  if((S.ui.view || 'grid') === 'list') return `<section class="panel"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Tags</th><th>Location</th><th>On shelf</th></tr></thead><tbody>${bs.map(b => { const a = availInfo(b.id); return `<tr class="click" onclick="go('book/${b.id}')"><td><a href="#book/${b.id}" onclick="event.stopPropagation()"><b>${esc(b.title)}</b></a></td><td>${esc(b.author || '')}</td><td>${esc(b.category || '')}</td><td>${tagChips(b)}</td><td>${esc(locStr(b) || '—')}</td><td>${a.avail} / ${a.total}</td></tr>`; }).join('')}</tbody></table></div></section>`;
+  return `<div class="grid">${bs.map(b => { const [cls, txt] = availText(b); return `<a class="tile" href="#book/${b.id}">${cover(b)}<span class="t-title">${esc(b.title)}</span><span class="t-author">${esc(b.author || '')}</span><span class="t-loc">${esc(locStr(b))}</span><span class="t-avail ${cls}">${txt}</span></a>`; }).join('')}</div>`;
+}
+
+function vBook(id){
+  const b = book(id); if(!b) return notFound('This book is not in the catalog.', '#catalog');
+  const cs = copiesOf(id), hist = S.loans.filter(l => l.book_id === id).sort((x, y) => cmp(y.issued_at, x.issued_at));
+  const queue = S.reservations.filter(r => r.book_id === id && ['pending','ready'].includes(r.status)).sort((x, y) => cmp(x.created_at, y.created_at));
+  const firstAvail = cs.find(c => c.status === 'available');
+  const meta = [['Category', esc(b.category)], ['Tags', tagChips(b)], ['Location', esc(locStr(b))], ['Language', esc(b.language)], ['Publisher', esc(b.publisher)], ['ISBN', esc(b.isbn)]].filter(r => r[1]).map(r => `<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('');
+  return `<a class="back" href="#catalog">Back to books</a>
+  <div class="book-hero">${cover(b, 'lg')}<div>
+    <h1 class="book-title">${esc(b.title)}</h1><p class="byline">${esc(b.author || 'Author not added')}</p>
+    ${meta ? `<dl class="meta">${meta}</dl>` : ''}
+    ${b.description ? `<p class="desc">${esc(b.description)}</p>` : ''}
+    <div class="row wrap" style="margin-top:1rem">
+      <button class="btn" ${firstAvail ? `onclick="A.issueModal({copyId:'${firstAvail.id}'})"` : 'disabled'}>Issue a copy</button>
+      <button class="btn ghost" onclick="A.bookForm('${id}')">Edit details</button>
+      <button class="btn ghost" onclick="A.addCopies('${id}')">Add copies</button>
+      <button class="btn ghost" onclick="A.labelsBook('${id}')" ${cs.length ? '' : 'disabled'}>Print labels</button>
+      <button class="btn ghost" onclick="A.deleteBook('${id}')">Delete</button>
+    </div></div></div>
+  <section class="panel"><h2>Copies (${cs.length})</h2>${cs.length ? `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Barcode</th><th>Status</th><th>With</th><th></th></tr></thead><tbody>${cs.map(copyRow).join('')}</tbody></table></div>` : '<p class="empty">No copies yet. Use “Add copies”.</p>'}</section>
+  ${queue.length ? `<section class="panel"><h2>Waiting list</h2><ul class="list">${queue.map(r => `<li class="item"><div class="item-main"><a class="title" href="#member/${r.member_id}">${esc(member(r.member_id)?.name || 'Unknown member')}</a><div class="sub">${r.status === 'ready' ? `<span class="tag ok">Kept aside</span> until ${fmtDate(holdUntil(r))}` : `Waiting since ${fmtDate(r.created_at)}`}</div></div></li>`).join('')}</ul></section>` : ''}
+  <section class="panel"><h2>Borrowing history (${hist.length})</h2>${historyTable(hist, 'member')}</section>`;
+}
+function copyRow(c){
+  const l = loanOfCopy(c.id), h = holdFor(c.id);
+  const withWho = l ? `<a href="#member/${l.member_id}">${esc(member(l.member_id)?.name || '')}</a><div class="small ${isOverdue(l) ? 'bad-text' : 'muted'}">Since ${fmtDate(l.issued_at)}, due ${fmtDate(l.due_at)}</div>` : h ? `Kept for <a href="#member/${h.member_id}">${esc(member(h.member_id)?.name || '')}</a><div class="small muted">until ${fmtDate(holdUntil(h))}</div>` : '—';
+  let act = `<button class="btn sm ghost" onclick="A.editBarcode('${c.id}')">Barcode</button> `;
+  if(l) act += `<button class="btn sm ghost" onclick="A.returnModal('${l.id}')">Return</button>`;
+  else if(c.status === 'available') act += `<button class="btn sm ghost" onclick="A.issueModal({copyId:'${c.id}'})">Issue</button>`;
+  const names = {available:'On the shelf', damaged:'Damaged', lost:'Lost', retired:'Retired', on_hold:'Kept aside'};
+  const sel = l ? statusTag('issued') : `<select aria-label="Status of ${esc(c.code)}" onchange="A.copyStatus('${c.id}',this.value)">${['available','damaged','lost','retired'].concat(c.status === 'on_hold' ? ['on_hold'] : []).map(s => `<option value="${s}" ${c.status === s ? 'selected' : ''}>${names[s]}</option>`).join('')}</select>`;
+  return `<tr><td class="code">${esc(c.code)}</td><td>${sel}</td><td>${withWho}</td><td style="text-align:right;white-space:nowrap">${act}</td></tr>`;
+}
+function historyTable(rows, show){
+  if(!rows.length) return '<p class="empty">No borrowing yet.</p>';
+  return `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>${show === 'book' ? 'Book' : 'Member'}</th><th>Barcode</th><th>Borrowed</th><th>Due</th><th>Returned</th><th>Late fee</th></tr></thead><tbody>${rows.map(l => {
+    const who = show === 'book' ? `<a href="#book/${l.book_id}">${esc(book(l.book_id)?.title || 'Removed book')}</a>` : `<a href="#member/${l.member_id}">${esc(member(l.member_id)?.name || 'Unknown')}</a>`;
+    const ret = l.lost ? '<span class="tag bad">Lost</span>' : l.returned_at ? fmtDate(l.returned_at) : isOverdue(l) ? '<span class="tag bad">Overdue</span>' : '<span class="tag">Still out</span>';
+    const fee = Number(l.fine_amount) ? `${money(l.fine_amount)} <span class="muted small">${FINE_LABEL[l.fine_status] || ''}</span>` : '—';
+    return `<tr><td>${who}</td><td class="code">${esc(copy(l.copy_id)?.code || '')}</td><td>${fmtDate(l.issued_at)}</td><td>${fmtDate(l.due_at)}</td><td>${ret}</td><td>${fee}</td></tr>`;
+  }).join('')}</tbody></table></div>`;
+}
+
+/* ---------- members ---------- */
+function vMembers(){
+  return `<header class="page-head"><div><h1>Members</h1><p class="muted">${plural(S.members.length, 'member')}</p></div><button class="btn" onclick="A.memberForm()">Add member</button></header>
+  <div class="toolbar"><input class="search" type="search" placeholder="Search name, mobile, email, member ID or course" value="${esc(S.ui.memQ || '')}" oninput="S.ui.memQ=this.value;$('#mem-list').innerHTML=memRows()">
+    <select aria-label="Show" onchange="S.ui.memF=this.value;$('#mem-list').innerHTML=memRows()">${[['', 'Everyone'], ['out', 'Has books now'], ['overdue', 'Has overdue books'], ['fees', 'Owes late fees'], ['nodep', 'No deposit'], ['nologin', 'Login not set up'], ['suspended', 'Suspended'], ['staff', 'Library staff']].map(([v, t]) => `<option value="${v}" ${S.ui.memF === v ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
+  <section class="panel"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Member</th><th>Mobile</th><th>With them now</th><th>Borrowed in total</th><th>Last borrowed</th><th></th></tr></thead><tbody id="mem-list">${memRows()}</tbody></table></div></section>`;
+}
+function memRows(){
+  const q = (S.ui.memQ || '').toLowerCase().trim(), f = S.ui.memF || '';
+  const rows = S.members.filter(m => {
+    if(q && ![m.name, m.phone, m.email, m.member_code, m.center, coursesOf(m).map(c => c.course).join(' ')].some(v => (v || '').toLowerCase().includes(q))) return false;
+    const out = memberActive(m.id);
+    if(f === 'out') return out.length > 0; if(f === 'overdue') return out.some(isOverdue); if(f === 'fees') return finesDue(m.id) > 0;
+    if(f === 'nodep') return !Number(m.deposit_held); if(f === 'nologin') return m.role === 'member' && !m.auth_user_id && !m.demo_pin;
+    if(f === 'suspended') return m.status === 'suspended'; if(f === 'staff') return m.role !== 'member';
+    return true;
+  }).sort((a, b) => cmp(a.name, b.name));
+  return rows.map(m => {
+    const all = S.loans.filter(l => l.member_id === m.id), out = all.filter(l => !l.returned_at), od = out.filter(isOverdue).length, fd = finesDue(m.id);
+    const last = all.map(l => l.issued_at).sort().pop();
+    const tags = [m.status === 'suspended' ? '<span class="tag bad">Suspended</span>' : '', od ? `<span class="tag bad">${od} overdue</span>` : '', fd ? `<span class="tag warn">${money(fd)} due</span>` : '', roleTag(m)].join(' ');
+    return `<tr class="click" onclick="go('member/${m.id}')"><td><a href="#member/${m.id}" onclick="event.stopPropagation()"><b>${esc(m.name)}</b></a><div class="muted small">${esc([m.member_code, m.email].filter(Boolean).join(', '))}</div></td><td>${esc(fmtPhone(m.phone) || '—')}</td><td>${out.length}</td><td>${all.length}</td><td>${last ? fmtDate(last) : '—'}</td><td>${tags}</td></tr>`;
+  }).join('') || `<tr><td colspan="6" class="empty">${S.members.length ? 'No members match.' : 'No members yet. Use “Add member”.'}</td></tr>`;
+}
+function loginState(m){
+  if(m.role !== 'member') return m.auth_user_id || m.demo_password ? 'linked' : 'unlinked';
+  return (m.auth_user_id || m.demo_pin) ? 'linked' : m.activation_code ? 'code' : 'none';
+}
+function profileDl(m, admin){
+  const rows = [['Mobile', fmtPhone(m.phone)], ['Email', m.email], ['Date of birth', m.dob ? fmtDate(m.dob) : ''], ['Gender', m.gender], ['Occupation', m.occupation], ['Languages', m.languages], ['City', m.city], ['Address', m.address],
+    ['Emergency contact', [m.emergency_name, fmtPhone(normPhone(m.emergency_phone))].filter(Boolean).join(', ')], ['Member since', m.joined_on ? fmtDate(m.joined_on) : ''], ['Home center', m.center], ['Healing practice', m.healer_status], ['Interests and seva', m.interests]];
+  if(admin) rows.push(['Notes for staff', m.admin_notes]);
+  const dl = rows.filter(r => r[1]).map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('');
+  const cs = coursesOf(m);
+  return `${dl ? `<dl class="pf">${dl}</dl>` : '<p class="empty">No details added yet.</p>'}
+    <h3>Pranic Healing courses (${cs.length})</h3>${cs.length ? `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Course</th><th>Completed</th><th>Instructor</th><th>Place</th></tr></thead><tbody>${[...cs].sort((a, b) => cmp(b.date || '', a.date || '')).map(c => `<tr><td>${esc(c.course)}</td><td>${esc(fmtMonth(c.date))}</td><td>${esc(c.instructor || '')}</td><td>${esc(c.place || '')}</td></tr>`).join('')}</tbody></table></div>` : '<p class="empty">No courses added yet.</p>'}`;
+}
+function vMember(id){
+  const m = member(id); if(!m) return notFound('This member was not found.', '#members');
+  const all = S.loans.filter(l => l.member_id === id), out = all.filter(l => !l.returned_at).sort((a, b) => cmp(a.due_at, b.due_at));
+  const hist = [...all].sort((a, b) => cmp(b.issued_at, a.issued_at));
+  const rs = S.reservations.filter(r => r.member_id === id && ['pending','ready'].includes(r.status));
+  const pays = S.payments.filter(p => p.member_id === id).sort((a, b) => cmp(b.created_at, a.created_at));
+  const acts = S.activity.filter(a => a.member_id === id).sort((a, b) => cmp(b.created_at, a.created_at));
+  const fd = finesDue(id), paidFees = pays.filter(p => p.kind === 'fine').reduce((s, p) => s + Number(p.amount || 0), 0);
+  const ls = loginState(m);
+  const loginPanel = m.role === 'member'
+    ? `<p>${ls === 'linked' ? '<span class="tag ok">PIN set up</span> They sign in with their mobile number and PIN.' : ls === 'code' ? `<span class="tag warn">Not set up yet</span> Their one-time code is <b style="letter-spacing:.15em">${esc(m.activation_code)}</b>.` : '<span class="tag plain">No login</span>'}</p>
+       <div class="row wrap" style="margin-top:.5rem">${ls === 'code' ? `<button class="btn sm wa" onclick="A.sendLoginCode('${id}')">Send code on WhatsApp</button>` : ''}<button class="btn sm ghost" onclick="A.resetLogin('${id}')">${ls === 'linked' ? 'Reset login (forgot PIN)' : 'Make a new code'}</button></div>`
+    : `<p>${ls === 'linked' ? '<span class="tag ok">Login linked</span> Signs in at the library desk with email and password.' : '<span class="tag warn">Login not linked</span> Create their login in Supabase first, then link it.'}</p>${ls === 'linked' || DEMO ? '' : `<button class="btn sm ghost" onclick="A.linkStaff('${id}')">Link login</button>`}`;
+  return `<a class="back" href="#members">Back to members</a>
+  <header class="page-head"><div><h1>${esc(m.name)}</h1><p class="muted">${esc([m.member_code, fmtPhone(m.phone)].filter(Boolean).join(', '))} ${roleTag(m)} ${m.status === 'suspended' ? '<span class="tag bad">Suspended</span>' : ''}</p></div>
+    <div class="row wrap"><button class="btn" onclick="A.issueModal({memberId:'${id}'})">Issue a book</button>${m.phone ? `<a class="btn wa" href="${esc(waUrl(m.phone, 'Namaste ' + firstName(m.name) + ' 🙏 '))}" target="_blank" rel="noopener">WhatsApp</a>` : ''}<button class="btn ghost" onclick="A.memberForm('${id}')">Edit profile</button></div></header>
+  <div class="stats">${statBox(out.length, 'With them now')}${statBox(all.length, 'Borrowed in total')}${statBox(all.filter(l => l.returned_at && daysBetween(l.due_at, ymd(l.returned_at)) > 0).length, 'Returned late')}${statBox(money(paidFees), 'Late fees paid')}${statBox(money(m.deposit_held), 'Deposit held')}${statBox(m.joined_on ? fmtDate(m.joined_on) : '—', 'Member since')}</div>
+  <div class="two">
+    <section class="panel"><h2>Books with ${esc(firstName(m.name))} (${out.length})</h2><ul class="list">${out.map(l => loanRow(l, {full:true, hideMember:true})).join('') || '<li class="empty">No books with them right now.</li>'}</ul>
+      ${rs.length ? `<h3>Reservations</h3><ul class="list">${rs.map(resRow).join('')}</ul>` : ''}</section>
+    <section class="panel"><h2>Money</h2>
+      <dl class="money"><div><dt>Deposit held</dt><dd>${money(m.deposit_held)}</dd></div><div><dt>Late fees due</dt><dd class="${fd ? 'bad' : ''}">${money(fd)}</dd></div></dl>
+      <div class="row wrap"><button class="btn sm ghost" onclick="A.money('${id}','deposit')">Collect deposit</button><button class="btn sm ghost" onclick="A.money('${id}','refund')" ${Number(m.deposit_held) > 0 ? '' : 'disabled'}>Refund deposit</button><button class="btn sm ghost" onclick="A.money('${id}','fine')" ${fd > 0 ? '' : 'disabled'}>Collect late fees</button></div>
+      ${pays.length ? `<h3>Payments</h3><div class="tbl-wrap"><table class="tbl"><tbody>${pays.map(p => `<tr><td>${fmtDate(p.created_at)}</td><td>${KIND_LABEL[p.kind] || esc(p.kind)}</td><td>${money(p.amount)}</td><td class="muted">${METHOD_LABEL[p.method] || esc(p.method || '')}</td></tr>`).join('')}</tbody></table></div>` : ''}
+      <h3>Login</h3>${loginPanel}
+    </section>
+  </div>
+  <section class="panel"><div class="panel-head"><h2>Profile</h2><button class="btn sm ghost" onclick="A.memberForm('${id}')">Edit profile</button></div>${profileDl(m, true)}</section>
+  <section class="panel"><h2>Every book borrowed (${hist.length})</h2>${historyTable(hist, 'book')}</section>
+  <section class="panel"><h2>All transactions with the library (${acts.length})</h2>${actTable(acts.slice(0, 300), false)}</section>`;
+}
+
+/* ---------- reservations ---------- */
+function resRow(r){
+  const b = book(r.book_id), m = member(r.member_id), a = availInfo(r.book_id);
+  let sub, acts;
+  if(r.status === 'ready'){
+    const until = holdUntil(r), last = until === today();
+    sub = `<span class="code">${esc(copy(r.copy_id)?.code || '')}</span> kept aside until <b>${fmtDate(until)}</b> ${last ? '<span class="tag warn">Last day</span>' : ''}`;
+    acts = `<button class="btn sm" onclick="A.issueModal({memberId:'${r.member_id}',copyId:'${r.copy_id}'})">Issue</button><button class="btn sm wa" onclick="A.remindRes('${r.id}')">WhatsApp</button><button class="btn sm ghost" onclick="A.release('${r.id}')">Release</button>`;
+  } else {
+    const pos = pendingFor(r.book_id).findIndex(x => x.id === r.id) + 1;
+    sub = `Reserved ${fmtDate(r.created_at)}, ${pos === 1 ? 'first' : 'number ' + pos} in line. ${a.avail ? '<span class="tag ok">A copy is on the shelf</span>' : a.nextBack ? 'Expected back ' + fmtDate(a.nextBack) : ''}`;
+    acts = `${a.avail ? `<button class="btn sm" onclick="A.holdPick('${r.id}')">Keep a copy aside</button>` : ''}<button class="btn sm ghost" onclick="A.cancelRes('${r.id}')">Cancel</button>`;
+  }
+  return `<li class="item"><div class="item-main"><a class="title" href="#book/${r.book_id}">${esc(b ? b.title : 'Removed book')}</a><div class="sub"><a href="#member/${r.member_id}">${esc(m ? m.name : 'Unknown member')}</a>${m && m.phone ? ', ' + esc(fmtPhone(m.phone)) : ''}</div><div class="sub">${sub}</div></div><div class="item-actions">${acts}</div></li>`;
+}
+function vRes(){
+  const ready = S.reservations.filter(r => r.status === 'ready').sort((a, b) => cmp(a.ready_at, b.ready_at));
+  const pend = S.reservations.filter(r => r.status === 'pending').sort((a, b) => cmp(a.created_at, b.created_at));
+  return `<header class="page-head"><div><h1>Reservations</h1><p class="muted">When a reserved book comes back, it is kept aside for ${plural(Number(S.settings.hold_days), 'day')}. If the member doesn't come in by then, the hold ends on its own and the book goes to whoever comes in.</p></div><button class="btn" onclick="A.resForm()">Add a reservation</button></header>
+  <section class="panel"><h2>Kept aside for pickup (${ready.length})</h2><ul class="list">${ready.map(resRow).join('') || '<li class="empty">No books are kept aside.</li>'}</ul></section>
+  <section class="panel"><h2>Waiting for a copy (${pend.length})</h2><ul class="list">${pend.map(resRow).join('') || '<li class="empty">Nobody is waiting for a book.</li>'}</ul></section>`;
+}
+
+function vReminders(){
+  const act = activeLoans(), over = act.filter(isOverdue).sort((a, b) => cmp(a.due_at, b.due_at)), soon = act.filter(isDueSoon).sort((a, b) => cmp(a.due_at, b.due_at));
+  const ready = S.reservations.filter(r => r.status === 'ready');
+  const sentToday = S.activity.filter(r => r.kind === 'reminder' && ymd(r.created_at) === today()).length;
+  return `<header class="page-head"><div><h1>Reminders</h1><p class="muted">“WhatsApp” opens a ready-written message to the member. Press send in WhatsApp and it's logged in the records. ${sentToday ? plural(sentToday, 'message') + ' sent today.' : ''}</p></div></header>
+  <section class="panel"><h2>Overdue (${over.length})</h2><ul class="list">${over.map(l => loanRow(l, {full:true})).join('') || '<li class="empty">Nothing overdue.</li>'}</ul></section>
+  <section class="panel"><h2>Due in the next ${plural(Number(S.settings.due_soon_days), 'day')} (${soon.length})</h2><ul class="list">${soon.map(l => loanRow(l, {full:true})).join('') || '<li class="empty">Nothing due soon.</li>'}</ul></section>
+  <section class="panel"><h2>Kept aside for pickup (${ready.length})</h2><ul class="list">${ready.map(resRow).join('') || '<li class="empty">No books are kept aside.</li>'}</ul></section>`;
+}
+
+/* ---------- records ---------- */
+function actTable(rows, compact){
+  if(!rows.length) return '<p class="empty">No records yet.</p>';
+  return `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>When</th><th>What</th>${compact ? '' : '<th>Member</th>'}<th>Book</th><th>Amount</th><th>Details</th>${compact ? '' : '<th>By</th>'}</tr></thead><tbody>${rows.map(a => {
+    const m = member(a.member_id), b = book(a.book_id), c = copy(a.copy_id);
+    const memberCell = m ? `<a href="#member/${m.id}">${esc(m.name)}</a>` : '';
+    return `<tr><td style="white-space:nowrap">${fmtDateTime(a.created_at)}</td><td><b>${esc((ACT[a.kind] || [a.kind])[0])}</b>${compact && m ? `<div class="small">${memberCell}</div>` : ''}</td>${compact ? '' : `<td>${memberCell}</td>`}<td>${b ? `<a href="#book/${b.id}">${esc(b.title)}</a>` : ''}${c ? ` <span class="code small">${esc(c.code)}</span>` : ''}</td><td>${a.amount != null ? money(a.amount) : ''}</td><td class="small">${esc(a.detail || '')}</td>${compact ? '' : `<td class="small muted">${esc(a.by_name || '')}</td>`}</tr>`;
+  }).join('')}</tbody></table></div>`;
+}
+function recordRows(){
+  const u = S.ui, q = (u.rq || '').toLowerCase().trim();
+  return S.activity.filter(a => {
+    if(u.rgroup && (ACT[a.kind] || [])[1] !== u.rgroup) return false;
+    const d = ymd(a.created_at); if(u.rfrom && d < u.rfrom) return false; if(u.rto && d > u.rto) return false;
+    if(q){ const m = member(a.member_id), b = book(a.book_id), c = copy(a.copy_id); if(![m && m.name, m && m.phone, m && m.member_code, b && b.title, c && c.code, a.detail, a.by_name].some(v => (v || '').toLowerCase().includes(q))) return false; }
+    return true;
+  }).sort((a, b) => cmp(b.created_at, a.created_at));
+}
+function vRecords(){
+  const u = S.ui, rows = recordRows(), lim = u.rlimit || 200;
+  return `<header class="page-head"><div><h1>Records</h1><p class="muted">Every issue, return, renewal, reservation, payment, message and change, with who did it and when.</p></div><button class="btn ghost" onclick="A.recordsCsv()">Download CSV</button></header>
+  <div class="toolbar"><input class="search" type="search" placeholder="Search member, mobile, book or barcode" value="${esc(u.rq || '')}" onchange="S.ui.rq=this.value;S.ui.rlimit=200;render()" onkeydown="if(event.key==='Enter'){event.preventDefault();S.ui.rq=this.value;render()}">
+    <select aria-label="Type" onchange="S.ui.rgroup=this.value;render()">${ACT_GROUPS.map(([v, t]) => `<option value="${v}" ${(u.rgroup || '') === v ? 'selected' : ''}>${t}</option>`).join('')}</select>
+    <label class="row small">From <input type="date" value="${esc(u.rfrom || '')}" onchange="S.ui.rfrom=this.value;render()"></label>
+    <label class="row small">To <input type="date" value="${esc(u.rto || '')}" onchange="S.ui.rto=this.value;render()"></label></div>
+  <section class="panel"><p class="muted small" style="margin-top:0">${plural(rows.length, 'record')}</p>${actTable(rows.slice(0, lim), false)}
+  ${rows.length > lim ? `<div class="m-actions" style="justify-content:center"><button class="btn ghost" onclick="S.ui.rlimit=${lim + 300};render()">Show more</button></div>` : ''}</section>`;
+}
+
+/* ---------- reports ---------- */
+function periodStart(){ const p = S.ui.period || '90'; return p === 'all' ? '0000-00-00' : addDays(today(), -Number(p)); }
+const inPeriod = iso => !!iso && ymd(iso) >= periodStart();
+const bt = l => book(l.book_id)?.title || '', mn = l => member(l.member_id)?.name || '';
+const REPORTS = {
+  overdue:{label:'Overdue', build:() => ({rows:activeLoans().filter(isOverdue).sort((a, b) => cmp(a.due_at, b.due_at)),
+    cols:[['Book', bt], ['Barcode', l => copy(l.copy_id)?.code || ''], ['Member', mn], ['Mobile', l => fmtPhone(member(l.member_id)?.phone)], ['Due', l => fmtDate(l.due_at)], ['Days late', overdueDays], ['Late fee so far', l => money(accruedFine(l))]]})},
+  out:{label:'Books out', build:() => ({rows:activeLoans().sort((a, b) => cmp(a.due_at, b.due_at)),
+    cols:[['Book', bt], ['Barcode', l => copy(l.copy_id)?.code || ''], ['Member', mn], ['Mobile', l => fmtPhone(member(l.member_id)?.phone)], ['Borrowed', l => fmtDate(l.issued_at)], ['Due', l => fmtDate(l.due_at)], ['Renewals', l => l.renewals || 0]]})},
+  popular:{label:'Most borrowed', period:true, build:() => {
+    const cnt = {}; S.loans.filter(l => inPeriod(l.issued_at)).forEach(l => { cnt[l.book_id] = (cnt[l.book_id] || 0) + 1; });
+    const rows = Object.entries(cnt).map(([id, n]) => ({id, n, b:book(id)})).filter(r => r.b).sort((a, b) => b.n - a.n).map((r, i) => ({...r, rank:i + 1}));
+    return {rows, cols:[['Rank', r => r.rank], ['Book', r => r.b.title], ['Author', r => r.b.author || ''], ['Category', r => r.b.category || ''], ['Times borrowed', r => r.n], ['Waiting now', r => pendingFor(r.id).length]]};
+  }},
+  readers:{label:'Most active members', period:true, build:() => {
+    const cnt = {}; S.loans.filter(l => inPeriod(l.issued_at)).forEach(l => { cnt[l.member_id] = (cnt[l.member_id] || 0) + 1; });
+    const rows = Object.entries(cnt).map(([id, n]) => ({id, n, m:member(id)})).filter(r => r.m).sort((a, b) => b.n - a.n);
+    return {rows, cols:[['Member', r => r.m.name], ['Member ID', r => r.m.member_code || ''], ['Mobile', r => fmtPhone(r.m.phone)], ['Books borrowed', r => r.n], ['With them now', r => memberActive(r.id).length], ['Late fees due', r => money(finesDue(r.id))]]};
+  }},
+  money:{label:'Fees and deposits', period:true, build:() => {
+    const pays = S.payments.filter(p => inPeriod(p.created_at)).sort((a, b) => cmp(b.created_at, a.created_at));
+    const sum = k => pays.filter(p => p.kind === k).reduce((s, p) => s + Number(p.amount || 0), 0);
+    const held = S.members.reduce((s, m) => s + Number(m.deposit_held || 0), 0), owed = S.loans.filter(l => l.fine_status === 'due').reduce((s, l) => s + Number(l.fine_amount || 0), 0);
+    return {rows:pays, summary:`<div class="stats">${statBox(money(sum('fine')), 'Late fees collected')}${statBox(money(sum('deposit')), 'Deposits received')}${statBox(money(sum('deposit_refund')), 'Deposits refunded')}${statBox(money(held), 'Deposits held now')}${statBox(money(owed), 'Late fees still owed')}</div>`,
+      cols:[['Date', p => fmtDate(p.created_at)], ['Member', mn], ['Type', p => KIND_LABEL[p.kind] || p.kind], ['Amount', p => money(p.amount)], ['Method', p => METHOD_LABEL[p.method] || p.method || ''], ['Note', p => p.note || '']]};
+  }},
+  inventory:{label:'Inventory', build:() => {
+    const times = {}; S.loans.forEach(l => { times[l.book_id] = (times[l.book_id] || 0) + 1; });
+    const cnt = (b, st) => copiesOf(b.id).filter(c => st.includes(c.status)).length;
+    const rows = [...S.books].sort((a, b) => cmp(a.room || '~', b.room || '~') || cmp(a.rack || '~', b.rack || '~') || cmp(a.row_no || '~', b.row_no || '~') || cmp(a.title, b.title));
+    const never = rows.filter(b => !times[b.id]).length;
+    return {rows, summary:`<div class="stats">${statBox(S.books.length, 'Titles')}${statBox(S.copies.filter(c => !['lost','retired'].includes(c.status)).length, 'Copies in use')}${statBox(S.copies.filter(c => ['damaged','lost'].includes(c.status)).length, 'Damaged or lost')}${statBox(never, 'Never borrowed')}</div>`,
+      cols:[['Room', b => b.room || ''], ['Rack', b => b.rack || ''], ['Row', b => b.row_no || ''], ['Book', b => b.title], ['Author', b => b.author || ''], ['Category', b => b.category || ''], ['Tags', b => tagsOf(b).join(', ')], ['Barcodes', b => copiesOf(b.id).map(c => c.code).join(' ')], ['Copies', b => copiesOf(b.id).length], ['On the shelf', b => cnt(b, ['available'])], ['Out', b => cnt(b, ['issued'])], ['Damaged or lost', b => cnt(b, ['damaged','lost'])], ['Times borrowed', b => times[b.id] || 0]]};
+  }},
+};
+function vReports(){
+  const k = REPORTS[S.ui.report] ? S.ui.report : 'overdue', R = REPORTS[k], {rows, cols, summary} = R.build();
+  const period = R.period ? `<select aria-label="Period" onchange="S.ui.period=this.value;render()">${[['30', 'Last 30 days'], ['90', 'Last 90 days'], ['365', 'Last 12 months'], ['all', 'All time']].map(([v, t]) => `<option value="${v}" ${(S.ui.period || '90') === v ? 'selected' : ''}>${t}</option>`).join('')}</select>` : '';
+  return `<header class="page-head"><h1>Reports</h1></header>
+  <div class="toolbar"><div class="seg">${Object.entries(REPORTS).map(([kk, r]) => `<button class="${kk === k ? 'on' : ''}" onclick="S.ui.report='${kk}';render()">${r.label}</button>`).join('')}</div></div>
+  <div class="toolbar">${period}<button class="btn ghost" onclick="A.csv()">Download CSV</button></div>
+  ${summary || ''}
+  <section class="panel"><div class="tbl-wrap"><table class="tbl"><thead><tr>${cols.map(c => `<th>${esc(c[0])}</th>`).join('')}</tr></thead><tbody>${rows.length ? rows.map(r => `<tr>${cols.map(c => `<td>${esc(c[1](r))}</td>`).join('')}</tr>`).join('') : `<tr><td colspan="${cols.length}" class="empty">Nothing to show for this report.</td></tr>`}</tbody></table></div></section>`;
+}
+
+/* ---------- settings ---------- */
+const SETTINGS_FIELDS = [
+  ['Library', [['library_name', 'Library name', 'text'], ['currency', 'Currency symbol', 'text'], ['country_code', 'Country code for mobile numbers', 'text', 'Added in front of 10-digit numbers. Use 91 for India.']]],
+  ['Borrowing rules', [['loan_days', 'Loan period in days', 'number'], ['max_books', 'Books a member can have at once', 'number'], ['renewal_days', 'Days added on renewal', 'number'], ['max_renewals', 'Renewals allowed per loan', 'number'], ['hold_days', 'Days a returned book is kept aside for the member who reserved it', 'number', 'After this the hold ends on its own and anyone can borrow the book.'], ['due_soon_days', 'Show a reminder this many days before the due date', 'number']]],
+  ['Fees and deposit', [['fine_per_day', 'Late fee per day', 'number'], ['fine_grace_days', 'Grace days before late fees start', 'number'], ['max_fine', 'Maximum late fee per book (0 means no limit)', 'number'], ['deposit_amount', 'Membership deposit', 'number']]],
+  ['Catalog and courses', [['categories', 'Book categories', 'text', 'Separate categories with commas.'], ['courses', 'Pranic Healing courses for member profiles', 'textarea', 'One course per line. Members and staff pick from this list, and can also type a course that is not listed.']]],
+  ['WhatsApp messages', [['tpl_issued', 'When a book is issued', 'textarea'], ['tpl_due', 'Before the due date', 'textarea'], ['tpl_overdue', 'When a book is overdue', 'textarea'], ['tpl_ready', 'When a reserved book is back', 'textarea'], ['tpl_login', 'Login code for a new member', 'textarea']], 'You can use {name}, {title}, {due}, {days}, {fine}, {until}, {code}, {link} and {library}. They are filled in for each member.'],
+];
+function vSettings(){
+  const f = ([k, label, type, hint]) => `<div class="field"><label for="st-${k}">${label}</label>${type === 'textarea' ? `<textarea id="st-${k}" ${k === 'courses' ? 'style="min-height:12rem"' : ''}>${esc(S.settings[k])}</textarea>` : `<input id="st-${k}" type="${type}" ${type === 'number' ? 'min="0" step="any"' : ''} value="${esc(S.settings[k])}">`}${hint ? `<div class="hint">${hint}</div>` : ''}</div>`;
+  return `<header class="page-head"><div><h1>Settings</h1><p class="muted">These rules apply to every new loan. Library staff are members with the role Librarian or Admin.</p></div><button class="btn" onclick="A.saveSettings()">Save settings</button></header>
+  ${SETTINGS_FIELDS.map(([title, fields, note]) => `<section class="panel"><h2>${title}</h2>${note ? `<p class="muted small">${note}</p>` : ''}<div style="margin-top:.8rem" class="${fields.every(x => x[2] !== 'textarea') ? 'grid2' : ''}">${fields.map(f).join('')}</div></section>`).join('')}
+  <section class="panel"><h2>Your data</h2><p class="muted">Download a full copy of the library records to keep as a backup.</p><div class="row wrap" style="margin-top:.6rem"><button class="btn ghost" onclick="A.backup()">Download backup</button>${DEMO ? '<button class="btn ghost" onclick="A.resetDemo()">Reset demo data</button>' : ''}</div></section>
+  <div class="m-actions"><button class="btn" onclick="A.saveSettings()">Save settings</button></div>`;
+}
+
+/* =========================================================
+   MEMBER VIEWS
+   ========================================================= */
+function vMyBooks(){
+  const me = S.me;
+  const all = S.loans.filter(l => l.member_id === me.id), out = all.filter(l => !l.returned_at).sort((a, b) => cmp(a.due_at, b.due_at));
+  const past = all.filter(l => l.returned_at).sort((a, b) => cmp(b.returned_at, a.returned_at));
+  const rs = S.reservations.filter(r => r.member_id === me.id && ['pending','ready'].includes(r.status));
+  const fd = finesDue(me.id);
+  const cards = out.map(l => {
+    const b = book(l.book_id) || {title:'Book'}, od = overdueDays(l), left = daysBetween(today(), l.due_at);
+    return `<div class="loan-card ${od ? 'over' : ''}">${cover(b, 'sm')}<div><h3>${esc(b.title)}</h3><div class="small muted">${esc(b.author || '')}</div><div class="small muted">Borrowed ${fmtDate(l.issued_at)}</div>
+      <div class="days">${od ? `${plural(od, 'day')} late<small>Please return it soon. Late fee so far ${money(accruedFine(l))}.</small>` : left === 0 ? 'Due today<small>Return or renew it at the library today.</small>' : `${plural(left, 'day')} left<small>Return by ${fmtDate(l.due_at)}</small>`}</div></div></div>`;
+  }).join('');
+  return `<header class="page-head"><div><h1>Namaste, ${esc(firstName(me.name))}</h1><p class="muted">${all.length ? `You've borrowed ${plural(all.length, 'book')} from the library${me.joined_on ? ' since ' + fmtDate(me.joined_on) : ''}.` : 'Welcome to the library.'}</p></div></header>
+  ${fd ? `<div class="note bad" style="margin-top:1rem">You have ${money(fd)} in late fees due. Please settle it at the library desk.</div>` : ''}
+  <section class="panel"><h2>Books with you now (${out.length})</h2>${out.length ? `<div class="loan-cards">${cards}</div>` : '<p class="empty">You have no library books right now. <a href="#shelf">See what is on the shelf</a></p>'}</section>
+  ${rs.length ? `<section class="panel"><h2>Your reservations</h2><ul class="list">${rs.map(r => { const a = availInfo(r.book_id); return `<li class="item"><div class="item-main"><span class="title">${esc(book(r.book_id)?.title || '')}</span><div class="sub">${r.status === 'ready' ? `<span class="tag ok">Kept aside for you</span> Collect it from the library by <b>${fmtDate(holdUntil(r))}</b>. After that it goes to the next reader.` : `Waiting for a copy, ${backText(a.nextBack)}. When it's back it is kept aside for you for ${plural(Number(S.settings.hold_days), 'day')}.`}</div></div>${r.status === 'pending' ? `<div class="item-actions"><button class="btn sm ghost" onclick="A.cancelRes('${r.id}')">Cancel</button></div>` : ''}</li>`; }).join('')}</ul></section>` : ''}
+  <section class="panel"><h2>Books you've read (${past.length})</h2>${past.length ? `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Book</th><th>Borrowed</th><th>Returned</th></tr></thead><tbody>${past.map(l => `<tr><td><b>${esc(book(l.book_id)?.title || '')}</b><div class="small muted">${esc(book(l.book_id)?.author || '')}</div></td><td>${fmtDate(l.issued_at)}</td><td>${l.lost ? 'Marked lost' : fmtDate(l.returned_at)}</td></tr>`).join('')}</tbody></table></div>` : '<p class="empty">Books you return will be listed here.</p>'}</section>`;
+}
+function vShelf(){
+  const u = S.ui, cats = categories();
+  return `<header class="page-head"><div><h1>Library shelf</h1><p class="muted">See which books are in the library right now. If a book is out, you can reserve it for when it comes back.</p></div></header>
+  <div class="toolbar"><input class="search" type="search" placeholder="Search by title or author" value="${esc(u.shQ || '')}" oninput="S.ui.shQ=this.value;$('#shelf-list').innerHTML=shelfRows()">
+    <select aria-label="Category" onchange="S.ui.shCat=this.value;$('#shelf-list').innerHTML=shelfRows()"><option value="">All categories</option>${cats.map(c => `<option ${u.shCat === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select>
+    <select aria-label="Show" onchange="S.ui.shF=this.value;$('#shelf-list').innerHTML=shelfRows()"><option value="">All books</option><option value="in" ${u.shF === 'in' ? 'selected' : ''}>In the library</option><option value="out" ${u.shF === 'out' ? 'selected' : ''}>Borrowed by someone</option></select></div>
+  <section class="panel"><ul class="list" id="shelf-list">${shelfRows()}</ul></section>`;
+}
+function shelfRows(){
+  const u = S.ui, q = (u.shQ || '').toLowerCase().trim(), me = S.me;
+  const rows = S.books.filter(b => { const a = availInfo(b.id); if(!a.total) return false; if(u.shCat && b.category !== u.shCat) return false; if(u.shF === 'in' && !a.avail) return false; if(u.shF === 'out' && a.avail) return false; return !q || [b.title, b.author].some(v => (v || '').toLowerCase().includes(q)); }).sort((a, b) => cmp(a.title, b.title));
+  return rows.map(b => {
+    const a = availInfo(b.id);
+    const mine = S.reservations.find(r => r.book_id === b.id && r.member_id === me.id && ['pending','ready'].includes(r.status));
+    const have = S.loans.find(l => l.book_id === b.id && l.member_id === me.id && !l.returned_at);
+    let status, action = '';
+    if(a.avail) status = `<span class="tag ok">In the library</span> ${plural(a.avail, 'copy', 'copies')} on the shelf`;
+    else status = `<span class="tag warn">Borrowed</span> ${backText(a.nextBack)}`;
+    if(have) action = '<span class="tag">With you</span>';
+    else if(mine) action = `<span class="tag ${mine.status === 'ready' ? 'ok' : ''}">${mine.status === 'ready' ? 'Kept aside for you' : 'You reserved this'}</span>`;
+    else if(!a.avail) action = `<button class="btn sm" onclick="A.reserve('${b.id}')">Reserve</button>`;
+    return `<li class="item"><div class="item-main" style="display:flex;gap:.8rem;align-items:center">${cover(b, 'sm')}<div><span class="title">${esc(b.title)}</span><div class="sub">${esc([b.author, b.category].filter(Boolean).join(', '))}</div><div class="sub">${status}</div></div></div><div class="item-actions">${action}</div></li>`;
+  }).join('') || '<li class="empty">No books match.</li>';
+}
+function vProfile(){
+  const me = S.me;
+  return `<header class="page-head"><div><h1>Your profile</h1><p class="muted">${esc([me.member_code, me.name].filter(Boolean).join(', '))}</p></div><button class="btn" onclick="A.profileSelf()">Edit my profile</button></header>
+  <section class="panel">${profileDl(me, false)}</section>
+  <p class="muted small" style="margin-top:1rem">To change your name or mobile number, please ask the librarian.</p>`;
+}
+
+/* =========================================================
+   SHELLS + ROUTER
+   ========================================================= */
+const STAFF_NAV = () => {
+  const over = activeLoans().filter(isOverdue).length, open = S.reservations.filter(r => ['pending','ready'].includes(r.status)).length;
+  return [['dashboard', 'Today'], ['circulation', 'Issue & return'], ['catalog', 'Books'], ['members', 'Members'], ['reservations', 'Reservations', open], ['reminders', 'Reminders', over], ['records', 'Records'], ['reports', 'Reports'], ['settings', 'Settings']];
+};
+function staffShell(r, body){
+  const cur = r === 'book' ? 'catalog' : r === 'member' ? 'members' : r;
+  const nav = STAFF_NAV().map(([k, label, n]) => `<a href="#${k}" class="${k === cur ? 'on' : ''}" ${k === cur ? 'aria-current="page"' : ''}>${esc(label)}${n ? `<span class="badge">${n}</span>` : ''}</a>`).join('');
+  return `<div class="shell"><aside class="side"><div><div class="brand-name">${esc(S.settings.library_name)}</div><div class="brand-sub">Library desk</div></div><nav class="nav" aria-label="Main">${nav}</nav>
+    <div class="side-foot"><span class="who-name">${esc(S.me.name)}${S.me.role === 'admin' ? ', admin' : ''}<br></span><button class="link" onclick="A.signOut()">Sign out</button></div></aside>
+    <main class="main" id="view">${DEMO ? '<div class="demo"><b>Demo mode.</b> Sample data saved only in this browser. Sign out to try the member side.</div>' : ''}${body}</main></div>`;
+}
+function memberShell(r, body){
+  const nav = [['mybooks', 'My books'], ['shelf', 'Library shelf'], ['profile', 'Profile']].map(([k, t]) => `<a href="#${k}" class="${r === k ? 'on' : ''}" ${r === k ? 'aria-current="page"' : ''}>${t}</a>`).join('');
+  const notice = S.me.status === 'suspended' ? '<div class="note bad">Your membership is paused. Please speak to the librarian.</div>' : '';
+  return `<header class="mhead"><div class="brand-name">${esc(S.settings.library_name)}</div><nav class="mnav" aria-label="Main">${nav}</nav><div class="mwho"><span>${esc(S.me.name)}</span><button class="link" onclick="A.signOut()">Sign out</button></div></header>
+  <main class="mmain" id="view">${DEMO ? '<div class="demo"><b>Demo mode.</b> You are seeing the member side. Sign out to try the library desk.</div>' : ''}${notice}${body}</main>`;
+}
+const STAFF_VIEWS = {dashboard:vDashboard, circulation:vCirc, catalog:vCatalog, book:vBook, members:vMembers, member:vMember, reservations:vRes, reminders:vReminders, records:vRecords, reports:vReports, settings:vSettings};
+const MEMBER_VIEWS = {mybooks:vMyBooks, shelf:vShelf, profile:vProfile};
+function render(){
+  fillDatalists();
+  let h = location.hash.replace(/^#\/?/, '');
+  if(/access_token|error=|refresh_token|type=/.test(h)) h = '';
+  let [r, arg] = h.split('/');
+  if(!S.me){ $('#app').innerHTML = S.noProfile ? vNoProfile() : vLogin(); return; }
+  if(isStaff()){ if(!STAFF_VIEWS[r]) r = 'dashboard'; $('#app').innerHTML = staffShell(r, STAFF_VIEWS[r](arg)); }
+  else { if(!MEMBER_VIEWS[r]) r = 'mybooks'; $('#app').innerHTML = memberShell(r, MEMBER_VIEWS[r](arg)); }
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+const A = {};
+const IS = {memberId:null, copyId:null};
+
+/* login */
+A.loginTab = t => { S.ui.loginTab = t; S.ui.memberStep = 'login'; render(); };
+A.memberStep = s => { S.ui.memberStep = s; render(); };
+A.memberLogin = async () => {
+  const phone = normPhone($('#lg-phone').value), pin = $('#lg-pin').value.trim();
+  if(phone.length < 11) return loginMsg('Enter your 10-digit mobile number.');
+  if(!/^\d{6}$/.test(pin)) return loginMsg('Your PIN is 6 digits.');
+  if(DEMO){
+    const m = Local.load().members.find(x => x.phone === phone);
+    if(!m || !m.demo_pin) return loginMsg('This number isn\'t set up yet. Tap “First time here?” and use the code from the library.');
+    if(m.demo_pin !== pin) return loginMsg('That PIN isn\'t right. If you forgot it, ask the librarian to reset your login.');
+    Local.setSession(m.id); return reload();
+  }
+  const email = await Remote.rpc('member_login_email', {p_phone:phone});
+  if(!email) return loginMsg('This number isn\'t set up yet. Tap “First time here?” and use the code from the library.');
+  const {error} = await Remote.sb.auth.signInWithPassword({email, password:pin});
+  if(error) return loginMsg('That PIN isn\'t right. If you forgot it, ask the librarian to reset your login.');
+  await reload();
+};
+A.memberSetup = async () => {
+  const phone = normPhone($('#lg-phone').value), code = $('#lg-code').value.trim().toUpperCase(), pin = $('#lg-pin').value.trim(), pin2 = $('#lg-pin2').value.trim();
+  if(phone.length < 11) return loginMsg('Enter your 10-digit mobile number.');
+  if(code.length !== 6) return loginMsg('The code from the library has 6 letters and numbers.');
+  if(!/^\d{6}$/.test(pin)) return loginMsg('Choose a PIN of exactly 6 digits.');
+  if(pin !== pin2) return loginMsg('The two PINs don\'t match.');
+  const mismatch = 'The mobile number and code don\'t match, or this account is already set up. Check the code the library sent you.';
+  if(DEMO){
+    const d = Local.load(), m = d.members.find(x => x.phone === phone && x.activation_code && x.activation_code === code && !x.demo_pin);
+    if(!m) return loginMsg(mismatch);
+    m.demo_pin = pin; m.activation_code = null; Local.save(); Local.setSession(m.id); await reload(); return toast('Your PIN is set. Welcome!');
+  }
+  const email = await Remote.rpc('start_member_login', {p_phone:phone, p_code:code, p_domain:CONFIG.MEMBER_LOGIN_DOMAIN});
+  if(!email) return loginMsg(mismatch);
+  const {data:su, error} = await Remote.sb.auth.signUp({email, password:pin});
+  if(error) throw error;
+  if(!su.session) return loginMsg('Almost done, but the library\'s Supabase project still asks for email confirmation. The admin needs to switch off “Confirm email” (see the setup guide).');
+  const ok = await Remote.rpc('finish_member_login', {p_phone:phone, p_code:code});
+  if(!ok) return loginMsg('Your account could not be linked. Please ask the librarian for a new code.');
+  await reload(); toast('Your PIN is set. Welcome!');
+};
+A.staffLogin = async () => {
+  const email = $('#lg-email').value.trim().toLowerCase(), pw = $('#lg-pw').value;
+  if(!email || !pw) return loginMsg('Enter your email and password.');
+  if(DEMO){
+    const m = Local.load().members.find(x => (x.email || '').toLowerCase() === email && x.demo_password);
+    if(!m || m.demo_password !== pw) return loginMsg('The email or password isn\'t right.');
+    Local.setSession(m.id); history.replaceState(null, '', location.pathname); return reload();
+  }
+  const {error} = await Remote.sb.auth.signInWithPassword({email, password:pw});
+  if(error) return loginMsg('The email or password isn\'t right.');
+  history.replaceState(null, '', location.pathname); await reload();
+};
+A.signOut = async () => {
+  if(DEMO) Local.setSession(null); else await Remote.sb.auth.signOut();
+  S.ui.loginTab = 'member'; S.ui.memberStep = 'login'; history.replaceState(null, '', location.pathname); await reload();
+};
+
+A.quick = () => {
+  const v = $('#quick').value.trim(); if(!v) return;
+  const c = copyByCode(v); $('#quick').value = '';
+  if(!c) return toast(`No book has the barcode “${v}”.`, 'bad');
+  const l = loanOfCopy(c.id); if(l) A.returnModal(l.id); else A.issueModal({copyId:c.id});
+};
+A.retByCode = () => {
+  const v = $('#ret-code').value.trim(); if(!v) return;
+  const c = copyByCode(v); if(!c) return toast(`No book has the barcode “${v}”.`, 'bad');
+  const l = loanOfCopy(c.id); if(!l) return toast(`${c.code} is not issued to anyone.`, 'bad');
+  $('#ret-code').value = ''; A.returnModal(l.id);
+};
+
+/* issue */
+A.issueModal = (pre = {}) => {
+  IS.memberId = pre.memberId || null; IS.copyId = pre.copyId || null;
+  openModal('Issue a book', `
+    <div class="field"><label for="is-mq">Member</label><input id="is-mq" placeholder="Search by name, mobile or member ID" autocomplete="off" oninput="A.isMemberSearch()"><div id="is-mlist" class="picklist"></div><div id="is-msum"></div></div>
+    <div class="field"><label for="is-cq">Book</label><div class="row" id="is-crow"><input id="is-cq" placeholder="Scan the barcode or search by title" autocomplete="off" oninput="A.isCopySearch()" onkeydown="if(event.key==='Enter'){event.preventDefault();A.isCopySearch(true)}"><button class="btn ghost" type="button" onclick="Scan.open(c=>{$('#is-cq').value=c;A.isCopySearch(true)})" aria-label="Scan with camera">📷</button></div><div id="is-clist" class="picklist"></div><div id="is-csum"></div></div>
+    <div class="field"><label for="is-due">Return by</label><input type="date" id="is-due" value="${addDays(today(), S.settings.loan_days)}"></div>
+    <div id="is-warn"></div>
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.doIssue()">Issue book</button></div>`);
+  isRefresh();
+  setTimeout(() => { const el = IS.memberId ? $('#is-cq') : $('#is-mq'); if(el && !el.closest('[hidden]')) el.focus(); }, 60);
+};
+A.isMemberSearch = () => {
+  const q = $('#is-mq').value.trim().toLowerCase(); if(!q){ $('#is-mlist').innerHTML = ''; return; }
+  const qd = q.replace(/\D/g, '');
+  const res = S.members.filter(m => [m.name, m.member_code, m.email].some(v => (v || '').toLowerCase().includes(q)) || (qd.length >= 3 && (m.phone || '').includes(qd))).slice(0, 6);
+  $('#is-mlist').innerHTML = res.length ? res.map(m => `<button type="button" class="pick" onclick="A.isPickMember('${m.id}')"><b>${esc(m.name)}</b> <span class="muted">${esc([m.member_code, fmtPhone(m.phone)].filter(Boolean).join(', '))}</span></button>`).join('')
+    : `<div class="muted small pad">No member matches. <button class="link" onclick="closeModal();A.memberForm()">Add a new member</button></div>`;
+};
+A.isPickMember = id => { IS.memberId = id; $('#is-mq').value = ''; $('#is-mlist').innerHTML = ''; isRefresh(); if(!IS.copyId) $('#is-cq').focus(); };
+A.isCopySearch = exact => {
+  const q = $('#is-cq').value.trim(), c = copyByCode(q);
+  if(c){ IS.copyId = c.id; $('#is-cq').value = ''; $('#is-clist').innerHTML = ''; isRefresh(); return; }
+  const ql = q.toLowerCase();
+  if(ql.length < 2){ $('#is-clist').innerHTML = exact && q ? `<div class="muted small pad">No book has the barcode “${esc(q)}”.</div>` : ''; return; }
+  const books = S.books.filter(b => (b.title + ' ' + (b.author || '')).toLowerCase().includes(ql)).slice(0, 6);
+  $('#is-clist').innerHTML = books.length ? books.map(b => {
+    const usable = copiesOf(b.id).filter(c => c.status === 'available' || c.status === 'on_hold')
+      .sort((x, y) => (holdFor(x.id)?.member_id === IS.memberId ? -1 : x.status === 'available' ? 0 : 1) - (holdFor(y.id)?.member_id === IS.memberId ? -1 : y.status === 'available' ? 0 : 1));
+    return usable.length ? `<button type="button" class="pick" onclick="A.isPickCopy('${usable[0].id}')"><b>${esc(b.title)}</b> <span class="muted">${esc(usable[0].code)}, ${esc(locStr(b))}</span></button>`
+      : `<div class="pick disabled"><b>${esc(b.title)}</b> <span class="muted">no copy in the library</span></div>`;
+  }).join('') : `<div class="muted small pad">No book or barcode matches “${esc(q)}”.</div>`;
+};
+A.isPickCopy = id => { IS.copyId = id; $('#is-cq').value = ''; $('#is-clist').innerHTML = ''; isRefresh(); };
+function isRefresh(){
+  const m = member(IS.memberId), c = copy(IS.copyId), b = c && book(c.book_id);
+  $('#is-mq').hidden = !!m;
+  $('#is-crow').hidden = !!c;
+  if(m){ const out = memberActive(m.id), od = out.filter(isOverdue).length, f = finesDue(m.id);
+    $('#is-msum').innerHTML = `<div class="chosen"><div><b>${esc(m.name)}</b> <span class="muted small">${esc(m.member_code || '')}</span><div class="muted small">${out.length} of ${S.settings.max_books} books with them${od ? `, ${od} overdue` : ''}${f ? `, ${money(f)} late fees due` : ''}, deposit ${money(m.deposit_held)}</div></div><button class="link" type="button" onclick="IS.memberId=null;isRefresh();$('#is-mq').focus()">Change</button></div>`;
+  } else $('#is-msum').innerHTML = '';
+  $('#is-csum').innerHTML = c ? `<div class="chosen"><div><b>${esc(b ? b.title : '')}</b><div class="muted small">${esc(c.code)} ${statusTag(c.status)}</div></div><button class="link" type="button" onclick="IS.copyId=null;isRefresh();$('#is-cq').focus()">Change</button></div>` : '';
+  $('#is-warn').innerHTML = issueWarnings().map(w => `<div class="note ${w.block ? 'bad' : ''}">${w.t}</div>`).join('');
+}
+function issueWarnings(){
+  const w = [], m = member(IS.memberId), c = copy(IS.copyId);
+  if(m){
+    if(m.status === 'suspended') w.push({block:true, t:`${esc(m.name)}'s membership is suspended.`});
+    const out = memberActive(m.id);
+    if(out.length >= Number(S.settings.max_books)) w.push({t:`${esc(firstName(m.name))} already has ${out.length} book(s). The limit is ${S.settings.max_books}.`});
+    const od = out.filter(isOverdue).length; if(od) w.push({t:`Has ${plural(od, 'overdue book')}.`});
+    const f = finesDue(m.id); if(f > 0) w.push({t:`Owes ${money(f)} in late fees.`});
+    if(Number(m.deposit_held || 0) < Number(S.settings.deposit_amount || 0)) w.push({t:`Deposit held is ${money(m.deposit_held)}. The membership deposit is ${money(S.settings.deposit_amount)}.`});
+    if(c && out.some(l => l.book_id === c.book_id)) w.push({t:'This member already has a copy of this book.'});
+  }
+  if(c){
+    if(c.status === 'issued') w.push({block:true, t:'This copy is already issued. Return it first.'});
+    else if(['lost','retired'].includes(c.status)) w.push({block:true, t:`This copy is marked ${c.status}. Change its status on the book page first.`});
+    else if(c.status === 'damaged') w.push({t:'This copy is marked damaged.'});
+    else if(c.status === 'on_hold'){ const h = holdFor(c.id); if(h && h.member_id !== IS.memberId) w.push({t:`This copy is kept aside for ${esc(member(h.member_id)?.name || 'another member')} until ${fmtDate(holdUntil(h))}. You can still give it to this reader. Their reservation goes back to the waiting list.`}); }
+  }
+  return w;
+}
+A.doIssue = async () => {
+  const m = member(IS.memberId), c = copy(IS.copyId);
+  if(!m) return toast('Choose a member first.', 'bad');
+  if(!c) return toast('Choose a book first.', 'bad');
+  if(issueWarnings().some(w => w.block)) return toast('This book can’t be issued. See the note in red.', 'bad');
+  const due = $('#is-due').value || addDays(today(), S.settings.loan_days);
+  const hold = holdFor(c.id);
+  const l = await addRow('loans', {copy_id:c.id, book_id:c.book_id, member_id:m.id, issued_at:nowIso(), due_at:due, renewals:0, fine_amount:0, fine_status:'none', lost:false, issued_by:S.me.name});
+  await patch('copies', c.id, {status:'issued'});
+  await logAct('issued', {m:m.id, b:c.book_id, c:c.id, l:l.id, d:'Due ' + fmtDate(due)});
+  const r = S.reservations.find(x => x.member_id === m.id && x.book_id === c.book_id && ['pending','ready'].includes(x.status));
+  if(r){
+    if(r.status === 'ready' && r.copy_id && r.copy_id !== c.id && copy(r.copy_id)) await patch('copies', r.copy_id, {status:'available'});
+    await patch('reservations', r.id, {status:'fulfilled'});
+  }
+  if(hold && hold.member_id !== m.id) await patch('reservations', hold.id, {status:'pending', copy_id:null, ready_at:null});
+  render();
+  const b = book(c.book_id);
+  openModal('Book issued', `<p><b>${esc(b ? b.title : '')}</b> (${esc(c.code)}) is issued to <b>${esc(m.name)}</b>. Return by <b>${fmtDate(due)}</b>.</p>
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Done</button><button class="btn ghost" onclick="A.issueModal({memberId:'${m.id}'})">Issue another book</button>${m.phone ? `<button class="btn wa" onclick="A.sendIssued('${l.id}')">Send due date on WhatsApp</button>` : ''}</div>`);
+};
+A.sendIssued = async lid => {
+  const l = loan(lid), m = member(l.member_id), b = book(l.book_id);
+  if(!openWA(m.phone, fill(S.settings.tpl_issued, msgVars(m, b, {due:fmtDate(l.due_at)})))) return;
+  closeModal(); await logAct('reminder', {m:m.id, b:l.book_id, c:l.copy_id, l:lid, d:'Due date message'});
+};
+
+/* return */
+A.returnModal = lid => {
+  const l = loan(lid), b = book(l.book_id), m = member(l.member_id), c = copy(l.copy_id), od = overdueDays(l), fine = accruedFine(l);
+  const grace = Number(S.settings.fine_grace_days || 0);
+  openModal('Return a book', `
+    <div class="chosen"><div><b>${esc(b ? b.title : '')}</b><div class="muted small">${esc(c ? c.code : '')}, borrowed by ${esc(m ? m.name : '')} on ${fmtDate(l.issued_at)}</div></div></div>
+    <p style="margin:.9rem 0">${od ? `<span class="tag bad">${plural(od, 'day')} late</span>` : '<span class="tag ok">On time</span>'} <span class="muted">Due ${fmtDate(l.due_at)}</span></p>
+    ${od ? `<div class="field"><label for="rt-fine">Late fee</label><input id="rt-fine" type="number" min="0" step="1" value="${fine}"><div class="hint">${od} days × ${money(S.settings.fine_per_day)}${grace ? `, first ${plural(grace, 'day')} free` : ''}${Number(S.settings.max_fine) ? `, capped at ${money(S.settings.max_fine)}` : ''}. You can change the amount.</div></div>
+    <fieldset class="field"><legend>How is the late fee settled?</legend>
+      <label class="radio"><input type="radio" name="rt-how" value="cash" checked> Paid now in cash</label>
+      <label class="radio"><input type="radio" name="rt-how" value="upi"> Paid now by UPI</label>
+      <label class="radio"><input type="radio" name="rt-how" value="deposit"> Take from deposit (${money(m ? m.deposit_held : 0)} held)</label>
+      <label class="radio"><input type="radio" name="rt-how" value="due"> Add to the member's dues</label>
+      <label class="radio"><input type="radio" name="rt-how" value="waive"> Waive it</label></fieldset>` : ''}
+    <div class="field"><label for="rt-cond">Condition</label><select id="rt-cond"><option value="available">Good, back on the shelf</option><option value="damaged">Damaged, keep it off the shelf</option></select></div>
+    <div class="field"><label for="rt-note">Note (optional)</label><input id="rt-note" placeholder="e.g. cover slightly torn"></div>
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.doReturn('${lid}')">Return book</button></div>`);
+};
+A.doReturn = async lid => {
+  const l = loan(lid), m = member(l.member_id);
+  const fine = Math.max(0, Number(($('#rt-fine') || {}).value || 0));
+  const how = (document.querySelector('input[name=rt-how]:checked') || {}).value || 'cash';
+  const cond = $('#rt-cond').value, note = $('#rt-note').value.trim();
+  let status = 'none'; if(fine > 0) status = how === 'due' ? 'due' : how === 'waive' ? 'waived' : 'paid';
+  if(fine > 0 && how === 'deposit' && Number(m.deposit_held || 0) < fine) return toast(`Only ${money(m.deposit_held)} deposit is held. Choose another way.`, 'bad');
+  await patch('loans', lid, {returned_at:nowIso(), fine_amount:fine, fine_status:status, notes:[l.notes, note].filter(Boolean).join(' | ') || null});
+  const od = overdueDays({...l, returned_at:null});
+  await logAct('returned', {m:m.id, b:l.book_id, c:l.copy_id, l:lid, d:[od ? plural(od, 'day') + ' late' : 'On time', cond === 'damaged' ? 'damaged' : '', note].filter(Boolean).join(', ')});
+  if(status === 'paid'){
+    await addRow('payments', {member_id:m.id, loan_id:lid, kind:'fine', amount:fine, method:how, recorded_by:S.me.name});
+    if(how === 'deposit') await patch('members', m.id, {deposit_held:Number(m.deposit_held || 0) - fine});
+    await logAct('fee_paid', {m:m.id, b:l.book_id, l:lid, amt:fine, d:METHOD_LABEL[how]});
+  } else if(status === 'due') await logAct('fee_due', {m:m.id, b:l.book_id, l:lid, amt:fine});
+  else if(status === 'waived') await logAct('fee_waived', {m:m.id, b:l.book_id, l:lid, amt:fine});
+  if(l.copy_id && copy(l.copy_id)) await patch('copies', l.copy_id, {status:cond});
+  render();
+  const msg = 'Returned' + (fine > 0 ? `. Late fee ${money(fine)} ${status === 'paid' ? 'collected' : status === 'due' ? 'added to dues' : 'waived'}.` : '.');
+  const q = pendingFor(l.book_id);
+  if(q.length && cond === 'available' && l.copy_id){
+    const r = q[0], rm = member(r.member_id);
+    openModal('Someone reserved this book', `<p>${esc(msg)}</p><p><b>${esc(rm ? rm.name : 'A member')}</b> reserved <b>${esc(book(l.book_id)?.title || '')}</b>. Keep this copy aside for them until <b>${fmtDate(addDays(today(), S.settings.hold_days))}</b>? If they don't come by then, it goes back on the shelf for anyone.</p>
+      <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Not now</button><button class="btn wa" onclick="A.hold('${r.id}','${l.copy_id}')">Keep aside and message them</button></div>`);
+  } else { closeModal(); toast(msg); }
+};
+
+A.renew = async lid => {
+  const l = loan(lid), max = Number(S.settings.max_renewals || 0);
+  if((l.renewals || 0) >= max && !confirm(`This loan has been renewed ${l.renewals || 0} time(s). The limit is ${max}. Renew anyway?`)) return;
+  if(isOverdue(l) && !confirm(`This book is overdue. Renewing it moves the due date forward and the late fee so far (${money(accruedFine(l))}) won't be charged. Renew anyway?`)) return;
+  const waiting = pendingFor(l.book_id).filter(r => r.member_id !== l.member_id);
+  if(waiting.length && !confirm(`${plural(waiting.length, 'member')} ${waiting.length === 1 ? 'has' : 'have'} reserved this book. Renew anyway?`)) return;
+  const base = daysBetween(today(), l.due_at) > 0 ? l.due_at : today();
+  const due = addDays(base, S.settings.renewal_days);
+  await patch('loans', lid, {due_at:due, renewals:(l.renewals || 0) + 1});
+  await logAct('renewed', {m:l.member_id, b:l.book_id, c:l.copy_id, l:lid, d:'New due date ' + fmtDate(due)});
+  render(); toast(`Renewed until ${fmtDate(due)}.`);
+};
+A.lostModal = lid => {
+  const l = loan(lid), b = book(l.book_id), m = member(l.member_id);
+  openModal('Mark as lost', `<p><b>${esc(b ? b.title : '')}</b>, borrowed by ${esc(m ? m.name : '')}. The copy will be marked lost and the loan closed.</p>
+    <div class="field"><label for="lost-amt">Charge for the lost book</label><input id="lost-amt" type="number" min="0" value="0"><div class="hint">Added to the member's dues. Leave at 0 for no charge.</div></div>
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn danger" onclick="A.doLost('${lid}')">Mark as lost</button></div>`);
+};
+A.doLost = async lid => {
+  const l = loan(lid), amt = Math.max(0, Number($('#lost-amt').value || 0));
+  await patch('loans', lid, {returned_at:nowIso(), lost:true, fine_amount:amt, fine_status:amt > 0 ? 'due' : 'none'});
+  if(l.copy_id && copy(l.copy_id)) await patch('copies', l.copy_id, {status:'lost'});
+  await logAct('lost', {m:l.member_id, b:l.book_id, c:l.copy_id, l:lid, amt:amt || null, d:amt ? 'Charge added to dues' : ''});
+  closeModal(); render(); toast('Marked as lost.');
+};
+
+/* reminders */
+A.remind = async lid => {
+  const l = loan(lid), m = member(l.member_id), b = book(l.book_id), od = overdueDays(l);
+  const tpl = od > 0 ? S.settings.tpl_overdue : S.settings.tpl_due;
+  if(!openWA(m && m.phone, fill(tpl, msgVars(m, b, {due:fmtDate(l.due_at), days:od, fine:money(accruedFine(l))})))) return;
+  await logAct('reminder', {m:m.id, b:l.book_id, c:l.copy_id, l:lid, d:od > 0 ? 'Overdue reminder' : 'Due-date reminder'});
+  render();
+};
+A.remindRes = async rid => {
+  const r = resv(rid), m = member(r.member_id), b = book(r.book_id);
+  if(!openWA(m && m.phone, fill(S.settings.tpl_ready, msgVars(m, b, {until:fmtDate(holdUntil(r))})))) return;
+  await logAct('reminder', {m:m.id, b:r.book_id, c:r.copy_id, d:'Ready-to-collect message'});
+  toast('Message logged.');
+};
+
+/* reservations */
+A.hold = async (rid, cid) => {
+  const r = resv(rid), m = member(r.member_id), b = book(r.book_id), until = addDays(today(), S.settings.hold_days);
+  const sent = m && m.phone ? openWA(m.phone, fill(S.settings.tpl_ready, msgVars(m, b, {until:fmtDate(until)}))) : false;
+  await patch('copies', cid, {status:'on_hold'});
+  await patch('reservations', rid, {status:'ready', copy_id:cid, ready_at:nowIso()});
+  await logAct('hold', {m:r.member_id, b:r.book_id, c:cid, d:'Until ' + fmtDate(until)});
+  if(sent) await logAct('reminder', {m:r.member_id, b:r.book_id, c:cid, d:'Ready-to-collect message'});
+  closeModal(); render();
+  toast(`${copy(cid)?.code || 'Copy'} kept aside for ${m ? m.name : 'the member'} until ${fmtDate(until)}.`);
+};
+A.holdPick = rid => { const r = resv(rid), c = copiesOf(r.book_id).find(x => x.status === 'available'); if(!c) return toast('No copy of this book is on the shelf.', 'bad'); A.hold(rid, c.id); };
+A.release = async rid => {
+  const r = resv(rid); if(!confirm('Release this hold? The copy goes back on the shelf and the reservation is closed.')) return;
+  if(r.copy_id && copy(r.copy_id)) await patch('copies', r.copy_id, {status:'available'});
+  await patch('reservations', rid, {status:'expired'});
+  await logAct('hold_released', {m:r.member_id, b:r.book_id, c:r.copy_id});
+  render(); toast('Hold released. The copy is back on the shelf.');
+};
+A.cancelRes = async rid => {
+  const r = resv(rid); if(!confirm('Cancel this reservation?')) return;
+  if(r.status === 'ready' && r.copy_id && isStaff() && copy(r.copy_id)) await patch('copies', r.copy_id, {status:'available'});
+  await patch('reservations', rid, {status:'cancelled'});
+  await logAct('res_cancelled', {m:r.member_id, b:r.book_id, d:isStaff() ? '' : 'Cancelled by the member'});
+  render(); toast('Reservation cancelled.');
+};
+A.resForm = () => {
+  const ms = [...S.members].sort((a, b) => cmp(a.name, b.name)), bs = [...S.books].sort((a, b) => cmp(a.title, b.title));
+  openModal('Add a reservation', `<p class="muted">For members who ask in person or on the phone.</p>
+    <div class="field"><label for="rf-m">Member</label><select id="rf-m">${ms.map(m => `<option value="${m.id}">${esc(m.name)}${m.member_code ? ' (' + esc(m.member_code) + ')' : ''}</option>`).join('')}</select></div>
+    <div class="field"><label for="rf-b">Book</label><select id="rf-b">${bs.map(b => `<option value="${b.id}">${esc(b.title)}</option>`).join('')}</select></div>
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.doResForm()">Add reservation</button></div>`);
+};
+A.doResForm = async () => {
+  const mid = $('#rf-m').value, bid = $('#rf-b').value; if(!mid || !bid) return;
+  if(S.reservations.some(r => r.member_id === mid && r.book_id === bid && ['pending','ready'].includes(r.status))) return toast('This member already has this book reserved.', 'bad');
+  await addRow('reservations', {member_id:mid, book_id:bid, status:'pending'});
+  await logAct('reserved', {m:mid, b:bid, d:'Added at the desk'});
+  closeModal(); render(); toast('Reservation added.');
+};
+async function expireHolds(){
+  for(const r of S.reservations.filter(r => r.status === 'ready' && r.ready_at && today() > holdUntil(r))){
+    await patch('reservations', r.id, {status:'expired'});
+    if(r.copy_id && copy(r.copy_id) && copy(r.copy_id).status === 'on_hold') await patch('copies', r.copy_id, {status:'available'});
+    await logAct('hold_expired', {m:r.member_id, b:r.book_id, c:r.copy_id, d:'Not collected by ' + fmtDate(holdUntil(r))});
+  }
+}
+
+/* member side */
+A.reserve = async bid => {
+  const me = S.me;
+  if(me.status === 'suspended') return toast('Your membership is paused. Please speak to the librarian.', 'bad');
+  if(S.reservations.some(r => r.member_id === me.id && r.book_id === bid && ['pending','ready'].includes(r.status))) return toast('You have already reserved this book.', 'bad');
+  const a = availInfo(bid), b = book(bid);
+  if(!confirm(`Reserve “${b.title}”?\n\nIt is ${backText(a.nextBack).replace(/<\/?b>/g, '')}. When it's back, the library keeps it aside for you for ${plural(Number(S.settings.hold_days), 'day')}. You need to come to the library to collect it. If you don't, it goes to the next reader.`)) return;
+  await addRow('reservations', {member_id:me.id, book_id:bid, status:'pending'});
+  await logAct('reserved', {m:me.id, b:bid, d:'Reserved online'});
+  render(); toast('Reserved. The library will message you on WhatsApp when it is back.');
+};
+
+/* books */
+function copyInputs(n, start){
+  return Array.from({length:n}, (_, i) => `<div class="row copy-in"><span class="muted small">Copy ${i + 1}</span><input class="bc" value="${codeFmt(start + i)}" aria-label="Barcode for copy ${i + 1}"><button type="button" class="btn ghost" onclick="scanInto(this.previousElementSibling)" aria-label="Scan the barcode for copy ${i + 1}">📷</button></div>`).join('');
+}
+function scanInto(el){ Scan.open(c => { el.value = c; }); }
+function setCopyRows(boxSel, n){
+  const box = $(boxSel), old = [...box.querySelectorAll('.bc')].map(i => i.value);
+  box.innerHTML = copyInputs(Math.min(50, Math.max(0, n)), nextCopyNum());
+  [...box.querySelectorAll('.bc')].forEach((el, i) => { if(old[i]) el.value = old[i]; });
+}
+function readCodes(boxSel){
+  const codes = [...document.querySelectorAll(boxSel + ' .bc')].map(i => i.value.trim()).filter(Boolean);
+  const lower = codes.map(c => c.toLowerCase());
+  const dupIn = lower.find((c, i) => lower.indexOf(c) !== i);
+  if(dupIn) throw new Error(`The barcode “${dupIn}” is used twice.`);
+  const taken = codes.find(c => copyByCode(c)); if(taken) throw new Error(`The barcode “${taken}” is already on another copy.`);
+  return codes;
+}
+A.bookForm = id => {
+  const b = id ? book(id) : {}, cats = categories();
+  const inp = (k, label, extra = '') => `<div class="field"><label for="bf-${k}">${label}</label><input id="bf-${k}" value="${esc(b[k] || '')}" ${extra}></div>`;
+  openModal(id ? 'Edit book' : 'Add a book', `
+    <div class="field"><label for="bf-isbn">ISBN</label><div class="row"><input id="bf-isbn" value="${esc(b.isbn || '')}" inputmode="numeric" onkeydown="if(event.key==='Enter'){event.preventDefault();A.isbnLookup()}"><button class="btn ghost" type="button" onclick="A.isbnLookup()">Fill details</button><button class="btn ghost" type="button" aria-label="Scan the ISBN barcode" onclick="Scan.open(c=>{$('#bf-isbn').value=c;A.isbnLookup()})">📷</button></div><div class="hint">Scan the ISBN barcode on the back cover to fill in the title, author and cover. Works for most published books.</div></div>
+    ${inp('title', 'Title')}${inp('author', 'Author')}
+    <div class="grid2"><div class="field"><label for="bf-category">Category</label><select id="bf-category"><option value="">Choose…</option>${cats.map(c => `<option ${b.category === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select></div>${inp('language', 'Language', 'placeholder="English"')}</div>
+    <div class="field"><label for="bf-tags">Tags</label><input id="bf-tags" value="${esc(tagsOf(b).join(', '))}" list="tag-list" placeholder="e.g. healing, chakras, beginners"><div class="hint">Separate tags with commas. Used to find and group books.</div></div>
+    <fieldset class="group"><legend>Where it is kept</legend><div class="grid3">${inp('room', 'Room', 'placeholder="1"')}${inp('rack', 'Rack', 'placeholder="B"')}${inp('row_no', 'Row', 'placeholder="3"')}</div></fieldset>
+    <div class="grid2">${inp('publisher', 'Publisher')}${inp('cover_url', 'Cover image link', 'placeholder="https://…"')}</div>
+    <div class="field"><label for="bf-description">Description</label><textarea id="bf-description">${esc(b.description || '')}</textarea></div>
+    ${id ? '' : `<fieldset class="group"><legend>Copies and barcodes</legend>
+      <div class="field"><label for="bf-n">Number of copies</label><input id="bf-n" type="number" min="0" max="50" value="1" style="max-width:8rem" oninput="setCopyRows('#bf-copies',parseInt(this.value)||0)"></div>
+      <div id="bf-copies">${copyInputs(1, nextCopyNum())}</div>
+      <p class="hint">If the book already has a barcode sticker, scan it into the box. Otherwise keep the code shown and print a label for it.</p></fieldset>`}
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.saveBook(${id ? `'${id}'` : ''})">${id ? 'Save changes' : 'Add book'}</button></div>`, true);
+  setTimeout(() => $(id ? '#bf-title' : '#bf-isbn').focus(), 60);
+};
+A.isbnLookup = async () => {
+  const isbn = $('#bf-isbn').value.replace(/[^0-9Xx]/g, ''); if(isbn.length < 10) return toast('Enter a 10 or 13 digit ISBN.', 'bad');
+  $('#bf-isbn').value = isbn; toast('Looking up the book…');
+  const r = await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
+  const d = (await r.json())['ISBN:' + isbn];
+  if(!d) return toast('No details found for this ISBN. Please type them in.', 'bad');
+  const set = (k, v) => { const el = $('#bf-' + k); if(el && v && !el.value) el.value = v; };
+  set('title', d.title + (d.subtitle ? ': ' + d.subtitle : '')); set('author', (d.authors || []).map(a => a.name).join(', '));
+  set('publisher', (d.publishers || [])[0]?.name); set('cover_url', d.cover && (d.cover.medium || d.cover.large));
+  toast('Details filled in. Check them before saving.');
+};
+A.saveBook = async id => {
+  const v = k => ($('#bf-' + k).value || '').trim();
+  if(!v('title')) return toast('A title is needed.', 'bad');
+  const row = {title:v('title'), author:v('author') || null, category:v('category') || null, tags:uniq(v('tags').split(',').map(s => s.trim()).filter(Boolean)), language:v('language') || null, isbn:v('isbn') || null, publisher:v('publisher') || null, room:v('room') || null, rack:v('rack') || null, row_no:v('row_no') || null, cover_url:v('cover_url') || null, description:v('description') || null};
+  if(id){ await patch('books', id, row); await logAct('book_edited', {b:id}); closeModal(); render(); return toast('Book saved.'); }
+  const codes = readCodes('#bf-copies');
+  const nb = await addRow('books', row);
+  if(codes.length) await addRows('copies', codes.map(code => ({book_id:nb.id, code, status:'available'})));
+  await logAct('book_added', {b:nb.id, d:codes.length ? 'Barcodes ' + codes.join(', ') : 'No copies yet'});
+  closeModal(); go('book/' + nb.id); toast(`Book added with ${plural(codes.length, 'copy', 'copies')}.`);
+};
+A.addCopies = bid => {
+  openModal('Add copies', `<p class="muted">${esc(book(bid).title)}</p>
+    <div class="field"><label for="ac-n">Number of copies</label><input id="ac-n" type="number" min="1" max="50" value="1" style="max-width:8rem" oninput="setCopyRows('#ac-copies',parseInt(this.value)||0)"></div>
+    <div id="ac-copies">${copyInputs(1, nextCopyNum())}</div>
+    <p class="hint">Scan an existing barcode sticker into a box, or keep the code shown and print a label.</p>
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.doAddCopies('${bid}')">Add copies</button></div>`);
+};
+A.doAddCopies = async bid => {
+  const codes = readCodes('#ac-copies'); if(!codes.length) return toast('Add at least one barcode.', 'bad');
+  await addRows('copies', codes.map(code => ({book_id:bid, code, status:'available'})));
+  await logAct('copies_added', {b:bid, d:codes.join(', ')});
+  closeModal(); render(); toast(`Added ${plural(codes.length, 'copy', 'copies')}.`);
+};
+A.editBarcode = async cid => {
+  const c = copy(cid), v = (prompt(`New barcode for ${c.code}`, c.code) || '').trim();
+  if(!v || v === c.code) return;
+  if(copyByCode(v)) return toast(`The barcode “${v}” is already on another copy.`, 'bad');
+  await patch('copies', cid, {code:v}); await logAct('barcode', {b:c.book_id, c:cid, d:`${c.code} → ${v}`}); render(); toast('Barcode changed.');
+};
+A.copyStatus = async (cid, st) => {
+  const c = copy(cid), h = holdFor(cid), before = c.status;
+  if(h && st !== 'on_hold') await patch('reservations', h.id, {status:'pending', copy_id:null, ready_at:null});
+  await patch('copies', cid, {status:st}); await logAct('copy_status', {b:c.book_id, c:cid, d:`${before} → ${st}`}); render(); toast(`${c.code} updated.`);
+};
+A.deleteBook = async bid => {
+  const b = book(bid);
+  if(S.loans.some(l => l.book_id === bid)) return toast('This book has borrowing history, so it is kept. Set its copies to “Retired” instead.', 'bad');
+  if(!confirm(`Delete “${b.title}” and all its copies? This can't be undone.`)) return;
+  for(const r of S.reservations.filter(r => r.book_id === bid)) await delRow('reservations', r.id);
+  for(const c of copiesOf(bid)) await delRow('copies', c.id);
+  await delRow('books', bid); await logAct('book_deleted', {d:b.title}); go('catalog'); toast('Book deleted.');
+};
+A.labelsBook = bid => printLabels(copiesOf(bid).map(c => c.id));
+A.labelsAll = () => {
+  const ids = S.copies.filter(c => !['lost','retired'].includes(c.status)).sort((a, b) => cmp(a.code, b.code)).map(c => c.id);
+  if(!ids.length) return toast('Add some books first.', 'bad');
+  printLabels(ids);
+};
+function printLabels(ids){
+  const items = ids.map(id => { const c = copy(id), b = c && book(c.book_id); return {code:c.code, title:b ? b.title : '', loc:b ? locStr(b) : ''}; });
+  const w = window.open('', '_blank'); if(!w) return toast('Allow pop-ups for this site to print labels.', 'bad');
+  const codes = JSON.stringify(items.map(i => i.code)).replace(/</g, '\\u003c');
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Book labels</title><style>
+    body{font-family:system-ui,sans-serif;margin:10mm;color:#2A2245}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
+    .l{border:1px dashed #b9a4f5;border-radius:2mm;padding:3mm;display:flex;gap:3mm;align-items:center;break-inside:avoid;font-size:9pt;line-height:1.25}
+    .l b{font-size:11pt}.t{overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.lib{color:#776E96;font-size:7.5pt}
+    .q{flex:none;width:72px;height:72px}.q img,.q canvas{width:72px;height:72px}
+    @media print{.no{display:none}body{margin:6mm}}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script></head><body>
+    <p class="no">${items.length} labels. Print on A4 sticker paper or plain paper and stick inside the cover. <button onclick="print()">Print</button></p>
+    <div class="g">${items.map((it, i) => `<div class="l"><div class="q" id="q${i}"></div><div><b>${esc(it.code)}</b><div class="t">${esc(it.title)}</div><div class="lib">${esc(it.loc || S.settings.library_name)}</div></div></div>`).join('')}</div>
+    <script>window.onload=function(){var c=${codes};c.forEach(function(t,i){new QRCode(document.getElementById('q'+i),{text:t,width:144,height:144,correctLevel:QRCode.CorrectLevel.M})});setTimeout(function(){print()},500)}<\/script></body></html>`);
+  w.document.close();
+}
+
+/* spreadsheet import */
+function parseCSV(text){
+  text = text.replace(/^\ufeff/, ''); const rows = []; let row = [], f = '', q = false;
+  for(let i = 0; i < text.length; i++){
+    const ch = text[i];
+    if(q){ if(ch === '"'){ if(text[i + 1] === '"'){ f += '"'; i++; } else q = false; } else f += ch; }
+    else if(ch === '"') q = true;
+    else if(ch === ','){ row.push(f); f = ''; }
+    else if(ch === '\n' || ch === '\r'){ if(ch === '\r' && text[i + 1] === '\n') i++; row.push(f); rows.push(row); row = []; f = ''; }
+    else f += ch;
+  }
+  if(f || row.length){ row.push(f); rows.push(row); }
+  return rows.filter(r => r.some(c => c.trim()));
+}
+const IMPORT_COLS = ['title','author','category','tags','language','isbn','publisher','room','rack','row','copies','barcodes','description'];
+let IMPORT = null;
+A.importModal = () => {
+  IMPORT = null;
+  openModal('Import books from a spreadsheet', `<p>Add many books at once. Fill in the template in Excel or Google Sheets, save it as CSV, and choose the file here.</p>
+    <p class="muted small">Columns: ${IMPORT_COLS.join(', ')}. Only title is required. Separate tags with commas, and several barcodes with a | sign. Copies without a barcode get a new code like PL-0042.</p>
+    <div class="row wrap" style="margin:.8rem 0"><button class="btn ghost" onclick="A.importTemplate()">Download template</button></div>
+    <div class="field"><label for="im-file">CSV file</label><input id="im-file" type="file" accept=".csv,text/csv" onchange="A.importRead(this.files[0])"></div>
+    <div id="im-preview"></div>
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" id="im-go" disabled onclick="A.importRun()">Import books</button></div>`, true);
+};
+A.importTemplate = () => {
+  const ex = ['Miracles Through Pranic Healing','Master Choa Kok Sui','Pranic Healing','healing, beginners','English','','','1','A','2','2','PL-0101|PL-0102','Core textbook of Pranic Healing'];
+  download('library-import-template.csv', '\ufeff' + IMPORT_COLS.join(',') + '\n' + ex.map(v => /[",]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v).join(',') + '\n', 'text/csv;charset=utf-8');
+};
+A.importRead = async file => {
+  if(!file) return;
+  const rows = parseCSV(await file.text()); if(rows.length < 2) return $('#im-preview').innerHTML = '<div class="note bad">The file has no rows under the header.</div>';
+  const head = rows[0].map(h => h.trim().toLowerCase()), ix = k => head.indexOf(k);
+  if(ix('title') < 0) return $('#im-preview').innerHTML = '<div class="note bad">The first row must have a column called “title”.</div>';
+  const seen = new Set(S.copies.map(c => c.code.toLowerCase())); let next = nextCopyNum(), skipped = 0, regenerated = 0;
+  const books = [];
+  rows.slice(1).forEach(r => {
+    const g = k => (ix(k) >= 0 ? (r[ix(k)] || '') : '').trim();
+    if(!g('title')){ skipped++; return; }
+    const given = g('barcodes').split('|').map(s => s.trim()).filter(Boolean);
+    const n = Math.max(parseInt(g('copies'), 10) || 0, given.length, g('copies') === '' && !given.length ? 1 : 0);
+    const codes = [];
+    for(let i = 0; i < n; i++){
+      let c = given[i];
+      if(c && seen.has(c.toLowerCase())){ regenerated++; c = ''; }
+      if(!c){ while(seen.has(codeFmt(next).toLowerCase())) next++; c = codeFmt(next++); }
+      seen.add(c.toLowerCase()); codes.push(c);
+    }
+    books.push({book:{id:uid(), title:g('title'), author:g('author') || null, category:g('category') || null, tags:uniq(g('tags').split(',').map(s => s.trim()).filter(Boolean)), language:g('language') || null, isbn:g('isbn') || null, publisher:g('publisher') || null, room:g('room') || null, rack:g('rack') || null, row_no:g('row') || null, description:g('description') || null, cover_url:null}, codes});
+  });
+  IMPORT = books;
+  const nCopies = books.reduce((s, b) => s + b.codes.length, 0);
+  $('#im-preview').innerHTML = `<div class="note info">Ready to add <b>${plural(books.length, 'book')}</b> with <b>${plural(nCopies, 'copy', 'copies')}</b>.${skipped ? ` ${plural(skipped, 'row')} without a title will be skipped.` : ''}${regenerated ? ` ${plural(regenerated, 'barcode')} already in use got a new code.` : ''}</div>
+    <div class="tbl-wrap" style="max-height:240px;overflow:auto"><table class="tbl"><thead><tr><th>Title</th><th>Author</th><th>Location</th><th>Barcodes</th></tr></thead><tbody>${books.slice(0, 50).map(x => `<tr><td>${esc(x.book.title)}</td><td>${esc(x.book.author || '')}</td><td>${esc(locStr(x.book))}</td><td class="small">${esc(x.codes.join(', '))}</td></tr>`).join('')}</tbody></table></div>`;
+  $('#im-go').disabled = !books.length;
+};
+A.importRun = async () => {
+  if(!IMPORT || !IMPORT.length) return;
+  $('#im-go').disabled = true; $('#im-go').textContent = 'Importing…';
+  for(let i = 0; i < IMPORT.length; i += 200){
+    const chunk = IMPORT.slice(i, i + 200);
+    await addRows('books', chunk.map(x => x.book));
+    await addRows('copies', chunk.flatMap(x => x.codes.map(code => ({book_id:x.book.id, code, status:'available'}))));
+  }
+  const n = IMPORT.length; await logAct('import', {d:plural(n, 'book') + ' from a spreadsheet'}); IMPORT = null;
+  closeModal(); go('catalog'); toast(`Imported ${plural(n, 'book')}.`);
+};
+
+/* members + profiles */
+const PF_FIELDS = [
+  ['dob', 'Date of birth', 'date'], ['gender', 'Gender', 'select', ['', 'Female', 'Male', 'Other', 'Prefer not to say']], ['occupation', 'Occupation', 'text'], ['languages', 'Languages spoken', 'text', 'e.g. Hindi, English, Marathi'],
+  ['city', 'City', 'text'], ['address', 'Address', 'textarea'], ['emergency_name', 'Emergency contact name', 'text'], ['emergency_phone', 'Emergency contact number', 'tel'],
+];
+const PH_FIELDS = [['center', 'Home Pranic Healing center', 'text'], ['healer_status', 'Healing practice', 'text', 'e.g. Practising Pranic Healer, Certified Pranic Healer, Instructor'], ['interests', 'Interests and seva', 'textarea', 'Areas of interest, healing clinic volunteering, reading interests, anything useful for the library to know.']];
+function courseRowHtml(c = {}){
+  return `<div class="course-row"><input class="c-name" list="course-list" placeholder="Course" value="${esc(c.course || '')}" aria-label="Course"><input class="c-date" type="month" value="${esc(c.date || '')}" aria-label="Month completed"><input class="c-by" placeholder="Instructor" value="${esc(c.instructor || '')}" aria-label="Instructor"><input class="c-where" placeholder="Place or center" value="${esc(c.place || '')}" aria-label="Place or center"><button type="button" class="icon-btn" onclick="this.parentNode.remove()" aria-label="Remove this course">✕</button></div>`;
+}
+function readCourses(){ return [...document.querySelectorAll('#pf-courses .course-row')].map(r => ({course:r.querySelector('.c-name').value.trim(), date:r.querySelector('.c-date').value, instructor:r.querySelector('.c-by').value.trim(), place:r.querySelector('.c-where').value.trim()})).filter(c => c.course); }
+function pfField([k, label, type, extra], m){
+  const val = m[k] || '';
+  let ctl;
+  if(type === 'textarea') ctl = `<textarea id="pf-${k}">${esc(val)}</textarea>`;
+  else if(type === 'select') ctl = `<select id="pf-${k}">${extra.map(o => `<option value="${esc(o)}" ${val === o ? 'selected' : ''}>${o || 'Choose…'}</option>`).join('')}</select>`;
+  else ctl = `<input id="pf-${k}" type="${type}" value="${esc(type === 'tel' ? (val.length === 12 && val.startsWith('91') ? val.slice(2) : val) : val)}">`;
+  return `<div class="field"><label for="pf-${k}">${label}</label>${ctl}${type !== 'select' && extra ? `<div class="hint">${extra}</div>` : ''}</div>`;
+}
+function profileSections(m){
+  return `<fieldset class="group"><legend>Personal details</legend><div class="grid2">${PF_FIELDS.filter(f => f[2] !== 'textarea').map(f => pfField(f, m)).join('')}</div>${PF_FIELDS.filter(f => f[2] === 'textarea').map(f => pfField(f, m)).join('')}</fieldset>
+    <fieldset class="group"><legend>Pranic Healing</legend><div class="grid2">${PH_FIELDS.filter(f => f[2] !== 'textarea').map(f => pfField(f, m)).join('')}</div>
+      <div class="field"><label>Courses completed</label><div id="pf-courses">${coursesOf(m).map(courseRowHtml).join('')}</div><button type="button" class="btn sm ghost" onclick="$('#pf-courses').insertAdjacentHTML('beforeend',courseRowHtml())">Add a course</button></div>
+      ${PH_FIELDS.filter(f => f[2] === 'textarea').map(f => pfField(f, m)).join('')}</fieldset>`;
+}
+function readProfile(){
+  const p = {}; [...PF_FIELDS, ...PH_FIELDS].forEach(([k, , type]) => { const v = ($('#pf-' + k).value || '').trim(); p[k] = type === 'tel' ? (v ? normPhone(v) : null) : (v || null); });
+  p.courses = readCourses(); return p;
+}
+A.memberForm = id => {
+  const m = id ? member(id) : {member_code:nextMemberCode(), role:'member', status:'active', joined_on:today(), courses:[]};
+  const canRole = isAdmin();
+  const inp = (k, label, extra = '', hint = '') => `<div class="field"><label for="mf-${k}">${label}</label><input id="mf-${k}" value="${esc(m[k] || '')}" ${extra}>${hint ? `<div class="hint">${hint}</div>` : ''}</div>`;
+  const ph = m.phone && m.phone.length === 12 && m.phone.startsWith('91') ? m.phone.slice(2) : (m.phone || '');
+  openModal(id ? 'Edit member' : 'Add a member', `
+    <fieldset class="group"><legend>Membership</legend>
+      ${inp('name', 'Full name', 'autocomplete="off"')}
+      <div class="grid2"><div class="field"><label for="mf-phone">Mobile number</label><input id="mf-phone" type="tel" value="${esc(ph)}" placeholder="98xxxxxxxx"><div class="hint">Used for WhatsApp and for signing in.</div></div>${inp('email', 'Email', 'type="email"', 'Optional for members. Staff sign in with it.')}</div>
+      <div class="grid2">${inp('member_code', 'Member ID')}${inp('joined_on', 'Member since', 'type="date"')}</div>
+      <div class="grid2"><div class="field"><label for="mf-role">Role</label><select id="mf-role" ${canRole ? '' : 'disabled'}>${[['member', 'Member'], ['librarian', 'Librarian'], ['admin', 'Admin']].map(([v, t]) => `<option value="${v}" ${m.role === v ? 'selected' : ''}>${t}</option>`).join('')}</select>${canRole ? '' : '<div class="hint">Only an admin can change roles.</div>'}</div>
+      <div class="field"><label for="mf-status">Status</label><select id="mf-status"><option value="active" ${m.status === 'active' ? 'selected' : ''}>Active</option><option value="suspended" ${m.status === 'suspended' ? 'selected' : ''}>Suspended</option></select></div></div>
+      ${id ? '' : `<div class="grid2"><div class="field"><label for="mf-dep">Deposit collected now</label><input id="mf-dep" type="number" min="0" value="${Number(S.settings.deposit_amount) || 0}"></div><div class="field"><label for="mf-depm">Paid by</label><select id="mf-depm"><option value="cash">Cash</option><option value="upi">UPI</option></select></div></div>`}
+    </fieldset>
+    ${profileSections(m)}
+    <div class="field"><label for="mf-admin_notes">Notes for staff only</label><textarea id="mf-admin_notes" placeholder="Not shown to the member">${esc(m.admin_notes || '')}</textarea></div>
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.saveMember(${id ? `'${id}'` : ''})">${id ? 'Save changes' : 'Add member'}</button></div>`, true);
+};
+A.saveMember = async id => {
+  const v = k => ($('#mf-' + k).value || '').trim();
+  if(!v('name')) return toast('A name is needed.', 'bad');
+  const phone = v('phone') ? normPhone(v('phone')) : null;
+  if(phone && phone.length < 11) return toast('Enter a 10-digit mobile number.', 'bad');
+  const email = v('email').toLowerCase() || null, code = v('member_code') || null;
+  if(phone && S.members.some(m => m.id !== id && m.phone === phone)) return toast('Another member already has this mobile number.', 'bad');
+  if(email && S.members.some(m => m.id !== id && (m.email || '').toLowerCase() === email)) return toast('Another member already uses this email.', 'bad');
+  if(code && S.members.some(m => m.id !== id && (m.member_code || '').toLowerCase() === code.toLowerCase())) return toast('Another member already has this member ID.', 'bad');
+  const row = {name:v('name'), phone, email, member_code:code, joined_on:v('joined_on') || null, status:v('status'), admin_notes:v('admin_notes') || null, ...readProfile()};
+  if(!$('#mf-role').disabled) row.role = v('role');
+  if(id){
+    const before = member(id);
+    if(before.phone && phone !== before.phone && (before.auth_user_id || before.demo_pin) && !confirm('Changing the mobile number means the member needs a new login code. Continue?')) return;
+    if(before.phone !== phone && (before.auth_user_id || before.demo_pin)){ Object.assign(row, {auth_user_id:null, login_email:null, activation_code:genCode()}); if(DEMO) row.demo_pin = null; }
+    await patch('members', id, row); await logAct('member_edited', {m:id});
+    if(!DEMO && row.role && row.role !== 'member') await A.linkStaff(id, true);
+    closeModal(); render(); return toast('Member saved.');
+  }
+  const dep = Math.max(0, Number(v('dep')) || 0), role = row.role || 'member';
+  const nm = await addRow('members', {...row, role, deposit_held:dep, activation_code:role === 'member' ? genCode() : null});
+  await logAct('member_added', {m:nm.id});
+  if(dep > 0){ await addRow('payments', {member_id:nm.id, kind:'deposit', amount:dep, method:v('depm'), recorded_by:S.me.name}); await logAct('deposit', {m:nm.id, amt:dep, d:METHOD_LABEL[v('depm')]}); }
+  if(!DEMO && role !== 'member') await A.linkStaff(nm.id, true);
+  closeModal(); go('member/' + nm.id); toast('Member added.' + (role === 'member' && phone ? ' Send them their login code from the Login section.' : ''));
+};
+A.sendLoginCode = async mid => {
+  const m = member(mid); if(!m.activation_code) return toast('Make a new code first.', 'bad');
+  if(!openWA(m.phone, fill(S.settings.tpl_login, msgVars(m, null, {code:m.activation_code, link:appLink()})))) return;
+  await logAct('login_code', {m:mid});
+};
+A.resetLogin = async mid => {
+  const m = member(mid);
+  if(!confirm(`Give ${m.name} a new login code? ${loginState(m) === 'linked' ? 'Their current PIN will stop working.' : ''}`)) return;
+  const p = {auth_user_id:null, login_email:null, activation_code:genCode()}; if(DEMO) p.demo_pin = null;
+  await patch('members', mid, p); await logAct('login_reset', {m:mid}); render();
+  if(m.phone && confirm('New code made. Send it to them on WhatsApp now?')) A.sendLoginCode(mid);
+};
+A.linkStaff = async (mid, quiet) => {
+  const ok = await Remote.rpc('link_staff_account', {p_member:mid});
+  const all = await Remote.list('members'); S.members = all;
+  if(!quiet || !ok) toast(ok ? 'Login linked.' : 'No Supabase login found for this email yet. Create it under Authentication → Users first, then press “Link login”.', ok ? 'ok' : 'bad');
+  render();
+};
+A.profileSelf = () => {
+  const m = S.me;
+  openModal('Edit my profile', `${profileSections(m)}
+    <div class="field"><label for="pf-email-x">Email</label><input id="pf-email-x" type="email" value="${esc(m.email || '')}"></div>
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.saveProfileSelf()">Save my profile</button></div>`, true);
+};
+A.saveProfileSelf = async () => {
+  const p = readProfile(); p.email = ($('#pf-email-x').value || '').trim().toLowerCase() || null;
+  if(DEMO){ await patch('members', S.me.id, p); S.me = member(S.me.id); }
+  else { const prof = await Remote.rpc('update_my_profile', {p}); S.me = prof; S.members = [prof]; }
+  await logAct('profile_edited', {m:S.me.id});
+  closeModal(); render(); toast('Profile saved.');
+};
+A.money = (mid, kind) => {
+  const m = member(mid), fd = finesDue(mid), held = Number(m.deposit_held || 0);
+  const title = {deposit:'Collect deposit', refund:'Refund deposit', fine:'Collect late fees'}[kind];
+  const amt = kind === 'deposit' ? (Math.max(0, Number(S.settings.deposit_amount || 0) - held) || Number(S.settings.deposit_amount || 0)) : kind === 'refund' ? held : fd;
+  openModal(title, `<p class="muted">${esc(m.name)}, deposit held ${money(held)}${fd ? `, late fees due ${money(fd)}` : ''}.</p>
+    <div class="field"><label for="mo-amt">Amount (${esc(S.settings.currency)})</label><input id="mo-amt" type="number" min="0" value="${amt}" ${kind === 'fine' ? 'readonly' : ''}>${kind === 'fine' ? '<div class="hint">Settles all late fees due.</div>' : ''}</div>
+    <div class="field"><label for="mo-method">${kind === 'refund' ? 'Refunded by' : 'Paid by'}</label><select id="mo-method"><option value="cash">Cash</option><option value="upi">UPI</option>${kind === 'fine' ? '<option value="deposit">Take from deposit</option>' : ''}</select></div>
+    <div class="field"><label for="mo-note">Note (optional)</label><input id="mo-note"></div>
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.doMoney('${mid}','${kind}')">${title}</button></div>`);
+};
+A.doMoney = async (mid, kind) => {
+  const m = member(mid), held = Number(m.deposit_held || 0), amt = Number($('#mo-amt').value) || 0;
+  const method = $('#mo-method').value, note = $('#mo-note').value.trim() || null, by = S.me.name;
+  if(amt <= 0) return toast('Enter an amount.', 'bad');
+  if(kind === 'deposit'){
+    await addRow('payments', {member_id:mid, kind:'deposit', amount:amt, method, note, recorded_by:by});
+    await patch('members', mid, {deposit_held:held + amt}); await logAct('deposit', {m:mid, amt, d:[METHOD_LABEL[method], note].filter(Boolean).join(', ')});
+  } else if(kind === 'refund'){
+    if(amt > held) return toast(`Only ${money(held)} is held.`, 'bad');
+    await addRow('payments', {member_id:mid, kind:'deposit_refund', amount:amt, method, note, recorded_by:by});
+    await patch('members', mid, {deposit_held:held - amt}); await logAct('refund', {m:mid, amt, d:[METHOD_LABEL[method], note].filter(Boolean).join(', ')});
+  } else {
+    if(method === 'deposit' && amt > held) return toast(`Only ${money(held)} deposit is held.`, 'bad');
+    for(const l of S.loans.filter(l => l.member_id === mid && l.fine_status === 'due')) await patch('loans', l.id, {fine_status:'paid'});
+    await addRow('payments', {member_id:mid, kind:'fine', amount:amt, method, note, recorded_by:by});
+    if(method === 'deposit') await patch('members', mid, {deposit_held:held - amt});
+    await logAct('fee_paid', {m:mid, amt, d:[METHOD_LABEL[method], note].filter(Boolean).join(', ')});
+  }
+  closeModal(); render(); toast({deposit:'Deposit collected.', refund:'Deposit refunded.', fine:'Late fees collected.'}[kind]);
+};
+
+/* settings + data */
+A.saveSettings = async () => {
+  const p = {};
+  SETTINGS_FIELDS.forEach(([, fields]) => fields.forEach(([k, , type]) => { const v = $('#st-' + k).value; p[k] = type === 'number' ? Math.max(0, Number(v) || 0) : v.trim(); }));
+  if(!p.library_name) p.library_name = DEFAULT_SETTINGS.library_name;
+  const s = await DB.saveSettings(p); S.settings = {...DEFAULT_SETTINGS, ...stripNull(s)}; render(); toast('Settings saved.');
+};
+const csvCell = v => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+const toCsv = (cols, rows) => '\ufeff' + [cols.map(c => c[0]), ...rows.map(r => cols.map(c => c[1](r)))].map(a => a.map(csvCell).join(',')).join('\n');
+A.csv = () => { const k = REPORTS[S.ui.report] ? S.ui.report : 'overdue', {rows, cols} = REPORTS[k].build(); download(`${k}-${today()}.csv`, toCsv(cols, rows), 'text/csv;charset=utf-8'); };
+A.recordsCsv = () => download(`records-${today()}.csv`, toCsv([['When', a => fmtDateTime(a.created_at)], ['What', a => (ACT[a.kind] || [a.kind])[0]], ['Member', a => member(a.member_id)?.name || ''], ['Mobile', a => fmtPhone(member(a.member_id)?.phone)], ['Book', a => book(a.book_id)?.title || ''], ['Barcode', a => copy(a.copy_id)?.code || ''], ['Amount', a => a.amount ?? ''], ['Details', a => a.detail || ''], ['By', a => a.by_name || '']], recordRows()), 'text/csv;charset=utf-8');
+A.backup = () => { const out = {exported_at:nowIso(), settings:S.settings}; TABLES.forEach(t => out[t] = S[t]); download(`library-backup-${today()}.json`, JSON.stringify(out, null, 2), 'application/json'); };
+A.resetDemo = async () => { if(!confirm('Reset all demo data back to the sample library? You will be signed out.')) return; Local.reset(); history.replaceState(null, '', location.pathname); await reload(); toast('Demo data reset.'); };
+
+/* wrap every action so errors show as a message instead of failing silently */
+function showErr(e){ console.error(e); let m = (e && e.message) || String(e); if(/duplicate key/i.test(m)) m = 'That barcode, mobile number, email or member ID is already in use.'; if(/row-level security|permission denied/i.test(m)) m = 'You do not have permission to do that.'; toast(m, 'bad'); }
+Object.keys(A).forEach(k => { const f = A[k]; A[k] = (...a) => { try { const r = f(...a); if(r && r.catch) r.catch(showErr); return r; } catch(e){ showErr(e); } }; });
+
+/* =========================================================
+   CAMERA SCANNER (QR codes and barcodes)
+   ========================================================= */
+const Scan = {
+  q:null, cb:null, busy:false,
+  async open(cb){
+    this.cb = cb; this.busy = false; $('#scan-manual').value = ''; $('#scan-msg').textContent = 'Starting the camera…';
+    $('#scanner').showModal();
+    try {
+      if(!window.Html5Qrcode) await loadScript('https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js');
+      this.q = new Html5Qrcode('scan-region');
+      await this.q.start({facingMode:'environment'}, {fps:10, qrbox:(w, h) => { const s = Math.min(w, h); return {width:Math.floor(s * .85), height:Math.floor(s * .55)}; }}, t => this.done(t), () => {});
+      $('#scan-msg').textContent = 'Hold the QR code or barcode inside the box.';
+    } catch(e){ $('#scan-msg').textContent = 'The camera could not start (' + ((e && e.message) || e) + '). Type the code below instead.'; }
+  },
+  async done(text){ if(this.busy) return; this.busy = true; const cb = this.cb; await this.stop(); if($('#scanner').open) $('#scanner').close(); if(cb) cb(String(text).trim()); },
+  manual(){ const v = $('#scan-manual').value.trim(); if(v) this.done(v); },
+  async stop(){ try { if(this.q){ if(this.q.isScanning) await this.q.stop(); this.q.clear(); } } catch(e) {} this.q = null; },
+  async close(){ await this.stop(); if($('#scanner').open) $('#scanner').close(); },
+};
+
+/* =========================================================
+   DEMO DATA
+   ========================================================= */
+function seedDemo(){
+  const T = today(), at = (off, h = 11) => { const [y, m, d] = addDays(T, off).split('-').map(Number); return new Date(y, m - 1, d, h, 0).toISOString(); };
+  const desc = {
+    'Miracles Through Pranic Healing':'The core textbook of Pranic Healing: the energy body, scanning, cleansing and energizing, with step-by-step protocols for common ailments.',
+    'Autobiography of a Yogi':'Paramahansa Yogananda\'s account of his life, his teachers and his search for God.',
+  };
+  const list = [
+    ['Miracles Through Pranic Healing', 'Master Choa Kok Sui', 'Pranic Healing', 'healing, beginners, textbook', 3, '1', 'A', '1'],
+    ['Advanced Pranic Healing', 'Master Choa Kok Sui', 'Pranic Healing', 'healing, colour prana', 2, '1', 'A', '1'],
+    ['Pranic Psychotherapy', 'Master Choa Kok Sui', 'Pranic Healing', 'healing, emotions', 2, '1', 'A', '2'],
+    ['Pranic Crystal Healing', 'Master Choa Kok Sui', 'Pranic Healing', 'healing, crystals', 1, '1', 'A', '2'],
+    ['Achieving Oneness with the Higher Soul', 'Master Choa Kok Sui', 'Arhatic Yoga', 'meditation, soul', 2, '1', 'B', '1'],
+    ['The Spiritual Essence of Man', 'Master Choa Kok Sui', 'Spiritual', 'chakras, soul', 1, '1', 'B', '2'],
+    ['Om Mani Padme Hum', 'Master Choa Kok Sui', 'Esoteric', 'mantra, meditation', 1, '1', 'B', '2'],
+    ['Meditations for Soul Realization', 'Master Choa Kok Sui', 'Meditation', 'meditation, twin hearts', 2, '1', 'B', '3'],
+    ['Autobiography of a Yogi', 'Paramahansa Yogananda', 'Spiritual', 'yoga, biography', 2, '2', 'C', '1'],
+    ['The Bhagavad Gita', 'Eknath Easwaran (translator)', 'Spiritual', 'scripture', 1, '2', 'C', '1'],
+    ['The Chakras', 'C. W. Leadbeater', 'Esoteric', 'chakras, theosophy', 1, '2', 'C', '2'],
+    ['Basic Pranic Healing Course Manual', 'Prana Life', 'Course books', 'course, beginners', 4, '2', 'D', '1'],
+  ];
+  const books = [], copies = []; let k = 1;
+  list.forEach(([title, author, category, tags, n, room, rack, row_no]) => {
+    const b = {id:uid(), title, author, category, tags:tags.split(',').map(s => s.trim()), language:'English', room, rack, row_no, isbn:null, publisher:null, cover_url:null, description:desc[title] || null, created_at:at(-200)};
+    books.push(b); for(let i = 0; i < n; i++) copies.push({id:uid(), book_id:b.id, code:codeFmt(k++), status:'available', created_at:at(-200)});
+  });
+  const C1 = (c, d, i, p) => ({course:c, date:d, instructor:i, place:p});
+  const mk = (name, phone, extra = {}) => ({id:uid(), name, phone:'91' + phone, email:null, member_code:null, role:'member', status:'active', deposit_held:500, joined_on:addDays(T, -300), courses:[], created_at:at(-300), activation_code:null, demo_pin:'123456', ...extra});
+  const members = [
+    mk('Sunita Rao', '9800000001', {email:'admin@pranalife.in', role:'admin', member_code:'PLM-001', deposit_held:0, demo_pin:null, demo_password:'admin123', city:'Delhi'}),
+    mk('Meera Kapoor', '9800000002', {member_code:'PLM-002', email:'meera@example.com', dob:'1984-06-12', gender:'Female', occupation:'Teacher', languages:'Hindi, English', city:'Delhi', center:'Prana Life, Delhi', healer_status:'Practising Pranic Healer', interests:'Healing clinic volunteer on Sundays. Interested in Arhatic Yoga.', emergency_name:'Raj Kapoor', emergency_phone:'919811100002',
+      courses:[C1('Basic Pranic Healing (Level 1)', '2023-02', 'Senior instructor', 'Delhi'), C1('Advanced Pranic Healing (Level 2)', '2023-08', 'Senior instructor', 'Delhi'), C1('Achieving Oneness with the Higher Soul', '2024-11', '', 'Delhi')]}),
+    mk('Rohan Sharma', '9800000003', {member_code:'PLM-003', occupation:'Software engineer', city:'Gurugram', courses:[C1('Basic Pranic Healing (Level 1)', '2024-05', '', 'Gurugram')]}),
+    mk('Ananya Iyer', '9800000004', {member_code:'PLM-004', city:'Delhi', courses:[C1('Basic Pranic Healing (Level 1)', '2022-09', '', 'Chennai'), C1('Pranic Psychotherapy (Level 3)', '2023-12', '', 'Delhi')]}),
+    mk('Vikram Singh', '9800000005', {member_code:'PLM-005', city:'Noida'}),
+    mk('Priya Nair', '9800000006', {member_code:'PLM-006', deposit_held:0, demo_pin:null, activation_code:'PRANA6', city:'Delhi'}),
+  ];
+  const [admin, meera, rohan, ananya, vikram, priya] = members;
+  const B = t => books.find(b => b.title.startsWith(t)), C = (b, i) => copies.filter(c => c.book_id === b.id)[i];
+  const loans = [], payments = [], activity = [];
+  const act = (kind, o, when, by = 'Sunita Rao') => activity.push({id:uid(), kind, member_id:o.m || null, book_id:o.b || null, copy_id:o.c || null, loan_id:o.l || null, amount:o.amt ?? null, detail:o.d || null, by_name:by, created_at:when});
+  members.filter(m => m.deposit_held > 0).forEach(m => { payments.push({id:uid(), member_id:m.id, loan_id:null, kind:'deposit', amount:m.deposit_held, method:'cash', note:null, recorded_by:'Sunita Rao', created_at:at(-300)}); act('member_added', {m:m.id}, at(-300, 10)); act('deposit', {m:m.id, amt:m.deposit_held, d:'Cash'}, at(-300)); });
+  const L = (t, ci, m, iss, due, ret, fine = 0, fs = 'none') => {
+    const b = B(t), c = C(b, ci); const l = {id:uid(), copy_id:c.id, book_id:b.id, member_id:m.id, issued_at:at(iss), due_at:addDays(T, due), returned_at:ret == null ? null : at(ret, 17), renewals:0, fine_amount:fine, fine_status:fs, lost:false, issued_by:'Sunita Rao', notes:null};
+    if(ret == null) c.status = 'issued'; loans.push(l);
+    act('issued', {m:m.id, b:b.id, c:c.id, l:l.id, d:'Due ' + fmtDate(l.due_at)}, l.issued_at);
+    if(ret != null){ const late = daysBetween(l.due_at, ymd(l.returned_at)); act('returned', {m:m.id, b:b.id, c:c.id, l:l.id, d:late > 0 ? plural(late, 'day') + ' late' : 'On time'}, l.returned_at); }
+    return l;
+  };
+  L('Miracles', 0, meera, -80, -66, -68); const lf = L('Miracles', 1, ananya, -60, -46, -44, 10, 'paid'); L('Autobiography', 0, rohan, -50, -36, -37);
+  L('Miracles', 0, vikram, -40, -26, -27); L('Pranic Psychotherapy', 0, meera, -35, -21, -22); L('Autobiography', 1, priya, -30, -16, -18);
+  const la = L('Achieving', 0, ananya, -28, -14, -10, 20, 'due'); L('Meditations', 0, meera, -25, -11, -12); L('Miracles', 2, rohan, -24, -10, -11);
+  const over1 = L('Miracles', 0, rohan, -20, -6, null); L('Autobiography', 0, ananya, -12, 2, null); L('Advanced', 0, meera, -5, 9, null); L('The Spiritual Essence', 0, vikram, -16, -2, null);
+  payments.push({id:uid(), member_id:ananya.id, loan_id:lf.id, kind:'fine', amount:10, method:'upi', note:null, recorded_by:'Sunita Rao', created_at:at(-44, 17)});
+  act('fee_paid', {m:ananya.id, b:lf.book_id, l:lf.id, amt:10, d:'UPI'}, at(-44, 17)); act('fee_due', {m:ananya.id, b:la.book_id, l:la.id, amt:20}, at(-10, 17));
+  const reservations = [{id:uid(), book_id:B('The Spiritual Essence').id, member_id:meera.id, status:'pending', copy_id:null, ready_at:null, created_at:at(-3, 20)}];
+  act('reserved', {m:meera.id, b:reservations[0].book_id, d:'Reserved online'}, at(-3, 20), 'Meera Kapoor');
+  act('reminder', {m:rohan.id, b:over1.book_id, c:over1.copy_id, l:over1.id, d:'Overdue reminder'}, at(-3, 12));
+  return {settings:{...DEFAULT_SETTINGS}, books, copies, members, loans, reservations, payments, activity};
+}
+
+/* =========================================================
+   START
+   ========================================================= */
+async function loadAll(){
+  const [settings, ...lists] = await Promise.all([DB.getSettings(), ...TABLES.map(t => DB.list(t))]);
+  S.settings = {...DEFAULT_SETTINGS, ...stripNull(settings)};
+  TABLES.forEach((t, i) => { S[t] = lists[i]; });
+}
+async function reload(){
+  S.noProfile = false; S.availMap = null;
+  if(DEMO){
+    await loadAll(); const sid = Local.getSession(); S.me = sid ? member(sid) || null : null;
+  } else {
+    const {data} = await Remote.sb.auth.getSession(); S.session = data.session;
+    S.settings = {...DEFAULT_SETTINGS, ...stripNull(await Remote.getSettings())};
+    S.me = null;
+    if(S.session){
+      if(await Remote.rpc('is_staff')){ await loadAll(); S.me = S.members.find(m => m.auth_user_id === S.session.user.id) || null; }
+      else {
+        const prof = await Remote.rpc('my_profile');
+        if(prof){
+          const [books, copies, loans, reservations, avail] = await Promise.all([Remote.list('books'), Remote.list('copies'), Remote.list('loans'), Remote.list('reservations'), Remote.rpc('book_availability')]);
+          Object.assign(S, {books, copies, loans, reservations, payments:[], activity:[], members:[prof], me:prof});
+          S.availMap = Object.fromEntries((avail || []).map(a => [a.book_id, a]));
+        } else S.noProfile = true;
+      }
+    }
+  }
+  if(isStaff()) await expireHolds();
+  document.title = S.settings.library_name;
+  render();
+}
+async function boot(){
+  $('#modal').addEventListener('click', e => { if(e.target === e.currentTarget) closeModal(); });
+  $('#scanner').addEventListener('close', () => Scan.stop());
+  window.addEventListener('hashchange', () => { render(); window.scrollTo(0, 0); });
+  try { if(!DEMO) Remote.init(); await reload(); }
+  catch(e){
+    console.error(e);
+    $('#app').innerHTML = `<div class="fatal"><h2>The library could not open</h2><p>${esc((e && e.message) || e)}</p><p class="muted small">If you just connected Supabase, check that the URL and anon key at the top of index.html are correct and that you ran the setup SQL.</p></div>`;
+  }
+}
+boot();
+</script>
+</body>
+</html>
