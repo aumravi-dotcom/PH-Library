@@ -28,7 +28,9 @@ html,body{margin:0}
 html{background:#FAF8FF}
 body{min-height:100vh}
 body{font-family:var(--sans);font-size:15px;line-height:1.5;color:var(--ink);background:radial-gradient(1100px 520px at 100% -8%, #EFE5FF 0, rgba(239,229,255,0) 62%), radial-gradient(900px 480px at -10% 110%, #F3ECFF 0, rgba(243,236,255,0) 60%), var(--paper);background-attachment:fixed;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom,0px)}
-a{color:var(--violet-ink);text-underline-offset:2px}
+a{color:var(--violet-ink);text-decoration:none}
+a:hover{color:var(--violet)}
+.tbl td a,.sub a,.item a.title{font-weight:600}
 h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.2;margin:0}
 h1{font-size:2rem;letter-spacing:-.01em}
 h2{font-size:1.22rem}
@@ -97,7 +99,8 @@ p{margin:.4rem 0}
 .btn.lg{padding:.75rem 1.25rem;font-size:1rem}
 .btn.block{width:100%}
 .btn:disabled{opacity:.45;cursor:not-allowed}
-.link{background:none;border:0;padding:0;font:inherit;color:var(--violet-ink);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.link{background:none;border:0;padding:0;font:inherit;color:var(--violet-ink);cursor:pointer;text-decoration:none;font-weight:600}
+.link:hover{color:var(--violet)}
 input,select,textarea{font:inherit;color:var(--ink);background:#fff;border:1px solid var(--line-2);border-radius:9px;padding:.55rem .7rem;width:100%;min-width:0}
 textarea{min-height:5rem;resize:vertical;line-height:1.45}
 input:focus,select:focus,textarea:focus{border-color:var(--violet);outline:none;box-shadow:0 0 0 3px rgba(123,47,247,.16)}
@@ -139,9 +142,9 @@ fieldset.group legend{font-family:var(--serif);font-weight:600;font-size:1.02rem
 .item:first-child{border-top:0}
 .item-main{min-width:0;flex:1 1 220px}
 .item .title{font-weight:600;color:var(--ink);text-decoration:none}
-.item a.title:hover{text-decoration:underline}
+.item a.title:hover{color:var(--violet)}
 .sub{font-size:.88rem;color:var(--muted);margin-top:.1rem}
-.sub a{color:inherit}
+.sub a{color:var(--violet-ink)}
 .item-actions{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:flex-end;flex:none}
 @media (max-width:640px){.item{flex-direction:column;align-items:flex-start}.item-actions{justify-content:flex-start}}
 .note{padding:.55rem .75rem;border-radius:9px;margin:.4rem 0;font-size:.9rem;background:var(--amber-soft)}
@@ -149,6 +152,25 @@ fieldset.group legend{font-family:var(--serif);font-weight:600;font-size:1.02rem
 .note.ok{background:var(--ok-soft);color:var(--ok)}
 .note.info{background:var(--violet-soft);color:var(--violet-ink)}
 .chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem}
+.tagbox{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;min-height:44px;padding:.35rem .5rem;border:1px solid var(--line-2);border-radius:9px;background:#fff;cursor:text}
+.tagbox:focus-within{border-color:var(--violet);box-shadow:0 0 0 3px rgba(123,47,247,.16)}
+.tagbox input{border:0;box-shadow:none;min-height:32px;padding:.2rem .3rem;flex:1;min-width:140px;width:auto}
+.tagbox input:focus{box-shadow:none}
+#bf-tagchips{display:contents}
+.tagchip{display:inline-flex;align-items:center;gap:.25rem;background:var(--violet-soft);color:var(--violet-ink);font-weight:600;font-size:.84rem;border-radius:999px;padding:.2rem .3rem .2rem .7rem}
+.tagchip button{border:0;background:none;color:var(--violet-ink);cursor:pointer;font-size:.75rem;width:22px;height:22px;border-radius:50%}
+.tagchip button:hover{background:#fff}
+.tagsug{flex-direction:row;flex-wrap:wrap;gap:.35rem}
+.tagsug .pick{border-radius:999px;padding:.35rem .8rem;font-size:.86rem}
+.pick.new{background:#fff;border:1px dashed var(--violet);color:var(--violet-ink)}
+.pick:focus-visible{outline:2px solid var(--violet);outline-offset:1px}
+.pick .r{margin-left:auto;font-size:.8rem;color:var(--muted);white-space:nowrap}
+.pick.row-pick{display:flex;gap:.7rem;align-items:center;width:100%;text-align:left}
+.pick .cover.sm{width:30px;padding:3px;border-radius:2px 4px 4px 2px}
+.pick .cover.sm .cv-title{display:none}
+.sugbox{position:relative}
+.sugbox .picklist{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:20;background:#fff;border:1px solid var(--line-2);border-radius:12px;padding:.35rem;box-shadow:0 18px 40px -18px rgba(60,20,120,.45);max-height:360px;overflow:auto}
+.sugbox .picklist:empty{display:none}
 .pills{display:flex;flex-wrap:wrap;gap:.45rem}
 .pill{position:relative;display:inline-flex}
 .pill input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
@@ -210,11 +232,13 @@ fieldset.group legend{font-family:var(--serif);font-weight:600;font-size:1.02rem
 .when{font-size:.76rem;font-weight:700;color:var(--violet-ink);background:var(--violet-soft);border-radius:999px;padding:.08rem .55rem;display:inline-block;margin:.25rem .35rem 0 0}
 @media (max-width:640px){.pf-top{flex-direction:column;align-items:center;text-align:center;padding:0 1rem}.pf-meta{justify-content:center}.pf-actions{padding:0}.pf-name{font-size:1.7rem}.pf-band{height:104px}}
 .course-row{background:#FCFAFF;border:1px solid var(--line);border-radius:14px;padding:.75rem;margin-bottom:.6rem}
-.course-row .c-top{display:flex;gap:.5rem;align-items:center}
-.course-row .c-top select{flex:1}
-.course-row .c-other{margin-top:.45rem}
-.course-row .c-bot{display:grid;grid-template-columns:1fr 1fr 1.3fr 1.3fr;gap:.45rem;margin-top:.5rem}
-@media (max-width:640px){.course-row .c-bot{grid-template-columns:1fr 1fr}}
+.course-row .c-sel{width:100%}
+.course-row .c-other{margin-top:.5rem}
+.course-row .c-bot{display:grid;grid-template-columns:minmax(110px,1fr) minmax(100px,1fr) minmax(130px,1.4fr) minmax(130px,1.4fr) auto;gap:.5rem;margin-top:.5rem;align-items:center}
+.course-row .c-rm{min-height:44px;min-width:44px;border:1px solid transparent;border-radius:10px;font-size:1rem}
+.course-row .c-rm:hover{border-color:#F2C3CB;background:var(--bad-soft);color:var(--bad)}
+.course-row .rm-txt{display:none}
+@media (max-width:640px){.course-row .c-bot{grid-template-columns:1fr 1fr}.course-row .c-rm{grid-column:1/-1;justify-self:end;font-size:.9rem;min-height:38px}.course-row .rm-txt{display:inline}}
 /* member bottom tab bar (phones) */
 .tabbar{display:none}
 @media (max-width:760px){
@@ -313,8 +337,6 @@ tr.click:hover{background:var(--violet-soft)}
 .money dd.bad{color:var(--bad)}
 .pf{display:grid;grid-template-columns:max-content 1fr;gap:.35rem 1.2rem;margin:.4rem 0 0;font-size:.93rem}
 .pf dt{color:var(--muted)} .pf dd{margin:0;white-space:pre-line}
-.course-row{display:grid;grid-template-columns:2fr 1fr 1.2fr 1.2fr auto;gap:.4rem;margin-bottom:.45rem;align-items:center}
-@media (max-width:640px){.course-row{grid-template-columns:1fr 1fr;padding:.6rem;border:1px solid var(--line);border-radius:10px}.course-row .c-name{grid-column:1/-1}}
 
 /* pickers */
 .picklist{display:flex;flex-direction:column;gap:3px;margin-top:5px}
@@ -422,6 +444,7 @@ const DEFAULT_SETTINGS = {
   loan_days:14, max_books:3, renewal_days:14, max_renewals:1, hold_days:2, due_soon_days:2,
   fine_per_day:5, fine_grace_days:0, max_fine:0, deposit_amount:500,
   categories:'Pranic Healing,Arhatic Yoga,Spiritual,Esoteric,Meditation,Course books,Other',
+  tags:'healing, meditation, chakras, soul, mantra, beginners, course, scripture, biography, crystals, emotions, yoga, prosperity',
   practice_options:'Not practising yet\nHeals self and family\nPractising Pranic Healer\nAssociate Pranic Healer\nCertified Pranic Healer\nPranic Healing Instructor\nOther',
   courses:DEFAULT_COURSES.join('\n'),
   tpl_issued:'Namaste {name} 🙏 You have borrowed "{title}" from {library}. Please return it by {due}. Happy reading!',
@@ -586,6 +609,14 @@ const holdUntil = r => addDays(ymd(r.ready_at), S.settings.hold_days);
 const lastReminder = lid => S.activity.filter(a => a.kind === 'reminder' && a.loan_id === lid).sort((a, b) => cmp(b.created_at, a.created_at))[0];
 function categories(){ const base = String(S.settings.categories || '').split(',').map(s => s.trim()).filter(Boolean); S.books.forEach(b => { if(b.category && !base.includes(b.category)) base.push(b.category); }); return base; }
 const allTags = () => uniq(S.books.flatMap(tagsOf)).sort(cmp);
+// the fixed tag list: tags saved in Settings plus any already used on books
+const masterTags = () => { const out = []; [...String(S.settings.tags || '').split(','), ...S.books.flatMap(tagsOf)].map(t => t.trim()).filter(Boolean).forEach(t => { if(!out.some(o => o.toLowerCase() === t.toLowerCase())) out.push(t); }); return out.sort(cmp); };
+async function rememberTags(tags){
+  const known = String(S.settings.tags || '').split(',').map(t => t.trim()).filter(Boolean), add = tags.filter(t => !known.some(k => k.toLowerCase() === t.toLowerCase()));
+  if(!add.length) return;
+  const all = [...known, ...add].join(', ');
+  try { const s2 = await DB.saveSettings({tags:all}); S.settings = {...S.settings, ...stripNull(s2), tags:all}; } catch(e){ console.warn(e); }
+}
 const courseOptions = () => String(S.settings.courses || '').split('\n').map(s => s.trim()).filter(Boolean);
 function nextNum(list, re){ let max = 0; list.forEach(v => { const m = re.exec(v || ''); if(m) max = Math.max(max, Number(m[1])); }); return max + 1; }
 const codeFmt = n => 'PL-' + String(n).padStart(4, '0');
@@ -634,6 +665,7 @@ function statusTag(s){ const m = {available:['ok','On the shelf'], issued:['','I
 const statBox = (n, l, href, alert) => href ? `<a class="stat ${alert ? 'alert' : ''}" href="${href}"><span class="n">${n}</span><span class="l">${l}</span></a>` : `<div class="stat ${alert ? 'alert' : ''}"><span class="n">${n}</span><span class="l">${l}</span></div>`;
 const notFound = (msg, back) => `<a class="back" href="${back}">Go back</a><p class="empty">${msg}</p>`;
 const roleTag = m => m.role === 'admin' ? '<span class="tag">Admin</span>' : m.role === 'librarian' ? '<span class="tag">Librarian</span>' : '';
+function tagChipsEdit(list){ return list.map(t => `<span class="tagchip">${esc(t)}<button type="button" aria-label="Remove tag ${esc(t)}" data-t="${esc(t)}" onclick="event.stopPropagation();A.tagRemove(this.dataset.t)">✕</button></span>`).join(''); }
 const tagChips = b => tagsOf(b).map(t => `<span class="tag plain">${esc(t)}</span>`).join(' ');
 function fillDatalists(){
   const c = $('#course-list'); if(c) c.innerHTML = courseOptions().map(o => `<option value="${esc(o)}">`).join('');
@@ -806,8 +838,8 @@ function vDashboard(){
   const recent = [...S.activity].sort((a, b) => cmp(b.created_at, a.created_at)).slice(0, 8);
   return `<header class="page-head"><div><h1>${esc(greeting())}</h1><p class="muted">${new Date().toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long'})}</p></div></header>
   <section class="scanbar">
-    <label for="quick">Scan or type a book barcode to issue or return it</label>
-    <div class="row"><input id="quick" placeholder="e.g. PL-0012" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();A.quick()}"><button class="btn" onclick="A.quick()">Open</button><button class="btn ghost" onclick="Scan.open(c=>{$('#quick').value=c;A.quick()})" aria-label="Scan with camera">📷 Scan</button></div>
+    <label for="quick">Scan or type a book to issue or return it</label>
+    <div class="row"><div class="sugbox" style="flex:1"><input id="quick" data-list="quick-sug" placeholder="Scan a barcode, or type a book name or code" autocomplete="off" oninput="A.quickSuggest()" onkeydown="if(event.key==='Enter'){event.preventDefault();A.quick()}else if(event.key==='Escape'){$('#quick-sug').innerHTML=''}"><div id="quick-sug" class="picklist"></div></div><button class="btn" onclick="A.quick()">Open</button><button class="btn ghost" onclick="Scan.open(c=>{$('#quick').value=c;A.quick()})" aria-label="Scan with camera">📷 Scan</button></div>
     <p class="hint">A USB or Bluetooth barcode scanner works here too.</p>
   </section>
   <div class="stats">
@@ -842,7 +874,7 @@ function vCirc(){
   <div class="two">
     <section class="panel action-card"><h2>Issue a book</h2><p class="muted">Pick the member, then scan or search the book.</p><button class="btn lg" onclick="A.issueModal()">Issue a book</button></section>
     <section class="panel action-card"><h2>Return a book</h2><p class="muted">Scan or type the barcode on the returned book.</p>
-      <div class="row" style="margin-top:.6rem"><input id="ret-code" placeholder="Barcode" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();A.retByCode()}"><button class="btn" onclick="A.retByCode()">Return</button><button class="btn ghost" onclick="Scan.open(c=>{$('#ret-code').value=c;A.retByCode()})" aria-label="Scan with camera">📷</button></div></section>
+      <div class="row" style="margin-top:.6rem"><div class="sugbox" style="flex:1"><input id="ret-code" data-list="ret-sug" placeholder="Book name, barcode or member" autocomplete="off" oninput="A.retSuggest()" onkeydown="if(event.key==='Enter'){event.preventDefault();A.retByCode()}else if(event.key==='Escape'){$('#ret-sug').innerHTML=''}"><div id="ret-sug" class="picklist"></div></div><button class="btn" onclick="A.retByCode()">Return</button><button class="btn ghost" onclick="Scan.open(c=>{$('#ret-code').value=c;A.retByCode()})" aria-label="Scan with camera">📷</button></div></section>
   </div>
   <section class="panel"><div class="panel-head"><h2>Who has which book (${activeLoans().length})</h2><input class="search" placeholder="Filter by title, member or barcode" value="${esc(S.ui.circQ || '')}" oninput="S.ui.circQ=this.value;$('#circ-list').innerHTML=circList()"></div>
   <ul class="list" id="circ-list">${circList()}</ul></section>`;
@@ -1135,7 +1167,7 @@ const SETTINGS_FIELDS = [
   ['Library', [['library_name', 'Library name', 'text'], ['currency', 'Currency symbol', 'text'], ['country_code', 'Country code for mobile numbers', 'text', 'Added in front of 10-digit numbers. Use 91 for India.']]],
   ['Borrowing rules', [['loan_days', 'Loan period in days', 'number'], ['max_books', 'Books a member can have at once', 'number'], ['renewal_days', 'Days added on renewal', 'number'], ['max_renewals', 'Renewals allowed per loan', 'number'], ['hold_days', 'Days a returned book is kept aside for the member who reserved it', 'number', 'After this the hold ends on its own and anyone can borrow the book.'], ['due_soon_days', 'Show a reminder this many days before the due date', 'number']]],
   ['Fees and deposit', [['fine_per_day', 'Late fee per day', 'number'], ['fine_grace_days', 'Grace days before late fees start', 'number'], ['max_fine', 'Maximum late fee per book (0 means no limit)', 'number'], ['deposit_amount', 'Membership deposit', 'number']]],
-  ['Catalog and courses', [['categories', 'Book categories', 'text', 'Separate categories with commas.'], ['courses', 'Pranic Healing courses for member profiles', 'textarea', 'One course per line. Members pick from this list, or choose “Other course” and type it.'], ['practice_options', 'Healing practice choices for member profiles', 'textarea', 'One choice per line.']]],
+  ['Catalog and courses', [['categories', 'Book categories', 'text', 'Separate categories with commas.'], ['tags', 'Book tags', 'textarea', 'The tag list offered when adding books. Separate with commas. New tags typed while adding a book are added here automatically.'], ['courses', 'Pranic Healing courses for member profiles', 'textarea', 'One course per line. Members pick from this list, or choose “Other course” and type it.'], ['practice_options', 'Healing practice choices for member profiles', 'textarea', 'One choice per line.']]],
   ['WhatsApp messages', [['tpl_issued', 'When a book is issued', 'textarea'], ['tpl_due', 'Before the due date', 'textarea'], ['tpl_overdue', 'When a book is overdue', 'textarea'], ['tpl_ready', 'When a reserved book is back', 'textarea'], ['tpl_login', 'Login code for a new member', 'textarea']], 'You can use {name}, {title}, {due}, {days}, {fine}, {until}, {code}, {link} and {library}. They are filled in for each member.'],
 ];
 function vSettings(){
@@ -1377,25 +1409,64 @@ A.signOut = async () => {
   S.ui.loginTab = 'member'; S.ui.memberStep = 'login'; S.ui.staffStep = 'login'; history.replaceState(null, '', location.pathname); await reload();
 };
 
+// --- suggestions while typing (book name, barcode or member name) ---
+const qMatch = (q, ...vals) => vals.some(v => (v || '').toLowerCase().includes(q));
+function loanPick(l, action){
+  const b = book(l.book_id), m = member(l.member_id), c = copy(l.copy_id), od = overdueDays(l);
+  return `<button type="button" class="pick row-pick" onclick="${action}">${avatar(m, 'sm')}<span><b>${esc(b ? b.title : '')}</b> <span class="code">${esc(c ? c.code : '')}</span><br><span class="muted small">with ${esc(m ? m.name : '')}</span></span><span class="r">${od ? `<span class="tag bad">${od}d late</span>` : 'due ' + fmtDate(l.due_at)}</span></button>`;
+}
+A.quickSuggest = () => {
+  const q = $('#quick').value.trim().toLowerCase(), box = $('#quick-sug'); if(!q){ box.innerHTML = ''; return; }
+  const cs = S.copies.filter(c => !['lost','retired'].includes(c.status) && qMatch(q, c.code, book(c.book_id)?.title, book(c.book_id)?.author))
+    .sort((a, b) => (a.code.toLowerCase().startsWith(q) ? -1 : 0) - (b.code.toLowerCase().startsWith(q) ? -1 : 0) || cmp(book(a.book_id)?.title, book(b.book_id)?.title) || cmp(a.code, b.code)).slice(0, 8);
+  const extra = activeLoans().filter(l => !cs.some(c => c.id === l.copy_id) && qMatch(q, member(l.member_id)?.name)).slice(0, 4);
+  box.innerHTML = cs.map(c => { const b = book(c.book_id), l = loanOfCopy(c.id);
+    return `<button type="button" class="pick row-pick" onclick="A.quickOpen('${c.id}')">${cover(b, 'sm')}<span><b>${esc(b.title)}</b> <span class="code">${esc(c.code)}</span><br><span class="muted small">${l ? 'with ' + esc(member(l.member_id)?.name || '') : statusTag(c.status).replace(/<[^>]+>/g, '')}</span></span><span class="r">${l ? '<span class="tag">Return</span>' : c.status === 'available' || c.status === 'on_hold' ? '<span class="tag ok">Issue</span>' : ''}</span></button>`; }).join('')
+    + extra.map(l => loanPick(l, `A.quickOpen('${l.copy_id}')`)).join('')
+    || `<div class="muted small pad">No book, barcode or member matches “${esc(q)}”.</div>`;
+};
+A.quickOpen = cid => { $('#quick').value = ''; $('#quick-sug').innerHTML = ''; const c = copy(cid); if(!c) return; const l = loanOfCopy(c.id); if(l) A.returnModal(l.id); else A.issueModal({copyId:c.id}); };
 A.quick = () => {
   const v = $('#quick').value.trim(); if(!v) return;
-  const c = copyByCode(v); $('#quick').value = '';
-  if(!c) return toast(`No book has the barcode “${v}”.`, 'bad');
-  const l = loanOfCopy(c.id); if(l) A.returnModal(l.id); else A.issueModal({copyId:c.id});
+  const c = copyByCode(v);
+  if(c) return A.quickOpen(c.id);
+  const first = $('#quick-sug .pick'); if(first) return first.click();
+  toast(`No book has the barcode “${v}”.`, 'bad');
 };
+A.retSuggest = () => {
+  const q = $('#ret-code').value.trim().toLowerCase(), box = $('#ret-sug'); if(!q){ box.innerHTML = ''; return; }
+  const ls = activeLoans().filter(l => qMatch(q, copy(l.copy_id)?.code, book(l.book_id)?.title, member(l.member_id)?.name, member(l.member_id)?.member_code)).sort((a, b) => cmp(a.due_at, b.due_at)).slice(0, 8);
+  box.innerHTML = ls.map(l => loanPick(l, `A.retPick('${l.id}')`)).join('') || `<div class="muted small pad">No borrowed book matches “${esc(q)}”.</div>`;
+};
+A.retPick = lid => { $('#ret-code').value = ''; $('#ret-sug').innerHTML = ''; A.returnModal(lid); };
 A.retByCode = () => {
   const v = $('#ret-code').value.trim(); if(!v) return;
-  const c = copyByCode(v); if(!c) return toast(`No book has the barcode “${v}”.`, 'bad');
-  const l = loanOfCopy(c.id); if(!l) return toast(`${c.code} is not issued to anyone.`, 'bad');
-  $('#ret-code').value = ''; A.returnModal(l.id);
+  const c = copyByCode(v);
+  if(c){ const l = loanOfCopy(c.id); if(!l) return toast(`${c.code} is not issued to anyone.`, 'bad'); return A.retPick(l.id); }
+  const first = $('#ret-sug .pick'); if(first) return first.click();
+  toast(`No borrowed book matches “${v}”.`, 'bad');
 };
+// close suggestion lists when clicking elsewhere
+document.addEventListener('click', e => { document.querySelectorAll('.sugbox').forEach(b => { if(!b.contains(e.target)){ const l = b.querySelector('.picklist'); if(l) l.innerHTML = ''; } }); });
+// arrow keys move through suggestions (desk keyboards)
+document.addEventListener('keydown', e => {
+  if(e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+  const t = e.target; let list = null;
+  if(t.matches && t.matches('input[data-list]')) list = document.getElementById(t.dataset.list);
+  else if(t.classList && t.classList.contains('pick')) list = t.closest('.picklist');
+  if(!list) return;
+  const items = [...list.querySelectorAll('button.pick')]; if(!items.length) return;
+  e.preventDefault(); let i = items.indexOf(t);
+  i = e.key === 'ArrowDown' ? Math.min(items.length - 1, i + 1) : i - 1;
+  if(i < 0){ const inp = document.querySelector(`[data-list="${list.id}"]`); if(inp) inp.focus(); } else items[i].focus();
+});
 
 /* issue */
 A.issueModal = (pre = {}) => {
   IS.memberId = pre.memberId || null; IS.copyId = pre.copyId || null;
   openModal('Issue a book', `
-    <div class="field"><label for="is-mq">Member</label><input id="is-mq" placeholder="Search by name, mobile or member ID" autocomplete="off" oninput="A.isMemberSearch()"><div id="is-mlist" class="picklist"></div><div id="is-msum"></div></div>
-    <div class="field"><label for="is-cq">Book</label><div class="row" id="is-crow"><input id="is-cq" placeholder="Scan the barcode or search by title" autocomplete="off" oninput="A.isCopySearch()" onkeydown="if(event.key==='Enter'){event.preventDefault();A.isCopySearch(true)}"><button class="btn ghost" type="button" onclick="Scan.open(c=>{$('#is-cq').value=c;A.isCopySearch(true)})" aria-label="Scan with camera">📷</button></div><div id="is-clist" class="picklist"></div><div id="is-csum"></div></div>
+    <div class="field"><label for="is-mq">Member</label><input id="is-mq" data-list="is-mlist" placeholder="Type a name, mobile or member ID" autocomplete="off" oninput="A.isMemberSearch()" onkeydown="if(event.key==='Enter'){event.preventDefault();const f=$('#is-mlist .pick');if(f)f.click()}"><div id="is-mlist" class="picklist"></div><div id="is-msum"></div></div>
+    <div class="field"><label for="is-cq">Book</label><div class="row" id="is-crow"><input id="is-cq" data-list="is-clist" placeholder="Scan, or type a book name or code" autocomplete="off" oninput="A.isCopySearch()" onkeydown="if(event.key==='Enter'){event.preventDefault();if(copyByCode(this.value)){A.isCopySearch(true)}else{const f=$('#is-clist .pick');if(f)f.click();else A.isCopySearch(true)}}"><button class="btn ghost" type="button" onclick="Scan.open(c=>{$('#is-cq').value=c;A.isCopySearch(true)})" aria-label="Scan with camera">📷</button></div><div id="is-clist" class="picklist"></div><div id="is-csum"></div></div>
     <div class="field"><label for="is-due">Return by</label><input type="date" id="is-due" value="${addDays(today(), S.settings.loan_days)}"></div>
     <div id="is-warn"></div>
     <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.doIssue()">Issue book</button></div>`);
@@ -1415,8 +1486,10 @@ A.isCopySearch = exact => {
   if(c){ IS.copyId = c.id; $('#is-cq').value = ''; $('#is-clist').innerHTML = ''; isRefresh(); return; }
   const ql = q.toLowerCase();
   if(ql.length < 2){ $('#is-clist').innerHTML = exact && q ? `<div class="muted small pad">No book has the barcode “${esc(q)}”.</div>` : ''; return; }
-  const books = S.books.filter(b => (b.title + ' ' + (b.author || '')).toLowerCase().includes(ql)).slice(0, 6);
-  $('#is-clist').innerHTML = books.length ? books.map(b => {
+  const codeHits = S.copies.filter(c => c.code.toLowerCase().includes(ql) && (c.status === 'available' || c.status === 'on_hold')).slice(0, 4);
+  const books = S.books.filter(b => (b.title + ' ' + (b.author || '')).toLowerCase().includes(ql) && !codeHits.some(c => c.book_id === b.id)).slice(0, 6);
+  const codeHtml = codeHits.map(c => `<button type="button" class="pick" onclick="A.isPickCopy('${c.id}')"><b>${esc(book(c.book_id)?.title || '')}</b> <span class="code">${esc(c.code)}</span> <span class="muted">${c.status === 'on_hold' ? 'kept aside' : 'on the shelf'}</span></button>`).join('');
+  $('#is-clist').innerHTML = (codeHits.length || books.length) ? codeHtml + books.map(b => {
     const usable = copiesOf(b.id).filter(c => c.status === 'available' || c.status === 'on_hold')
       .sort((x, y) => (holdFor(x.id)?.member_id === IS.memberId ? -1 : x.status === 'available' ? 0 : 1) - (holdFor(y.id)?.member_id === IS.memberId ? -1 : y.status === 'available' ? 0 : 1));
     return usable.length ? `<button type="button" class="pick" onclick="A.isPickCopy('${usable[0].id}')"><b>${esc(b.title)}</b> <span class="muted">${esc(usable[0].code)}, ${esc(locStr(b))}</span></button>`
@@ -1660,7 +1733,9 @@ A.bookForm = id => {
     ${photoField('bf-cover_img', b.cover_img || '', 'book', 'Cover photo', false)}
     ${inp('title', 'Title')}${inp('author', 'Author')}
     <div class="grid2"><div class="field"><label for="bf-category">Category</label><select id="bf-category"><option value="">Choose…</option>${cats.map(c => `<option ${b.category === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select></div>${inp('language', 'Language', 'placeholder="English"')}</div>
-    <div class="field"><label for="bf-tags">Tags</label><input id="bf-tags" value="${esc(tagsOf(b).join(', '))}" list="tag-list" placeholder="e.g. healing, chakras, beginners"><div class="hint">Separate tags with commas. Used to find and group books.</div></div>
+    <div class="field"><label for="bf-tagq">Tags</label><input type="hidden" id="bf-tags" value="${esc(tagsOf(b).join(', '))}">
+      <div class="tagbox" onclick="$('#bf-tagq').focus()"><span id="bf-tagchips">${tagChipsEdit(tagsOf(b))}</span><input id="bf-tagq" data-list="bf-tagsug" autocomplete="off" placeholder="Type to find a tag" onfocus="A.tagSuggest()" oninput="A.tagSuggest()" onkeydown="if(event.key==='Enter'||event.key===','){event.preventDefault();A.tagEnter()}else if(event.key==='Backspace'&&!this.value){A.tagRemoveLast()}"></div>
+      <div id="bf-tagsug" class="picklist tagsug"></div><div class="hint">Pick from the library's tag list, or type a new tag and press Enter. New tags are saved to the list for next time.</div></div>
     <fieldset class="group"><legend>Where it is kept</legend><div class="grid3">${inp('room', 'Room', 'placeholder="1"')}${inp('rack', 'Rack', 'placeholder="B"')}${inp('row_no', 'Row', 'placeholder="3"')}</div></fieldset>
     <div class="grid2">${inp('publisher', 'Publisher')}${inp('cover_url', 'Or a cover image link', 'placeholder="https://… (filled in by ISBN lookup)"')}</div>
     <div class="field"><label for="bf-description">Description</label><textarea id="bf-description">${esc(b.description || '')}</textarea></div>
@@ -1671,6 +1746,28 @@ A.bookForm = id => {
     <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.saveBook(${id ? `'${id}'` : ''})">${id ? 'Save changes' : 'Add book'}</button></div>`, true);
   setTimeout(() => $(id ? '#bf-title' : '#bf-isbn').focus(), 60);
 };
+const curTags = () => ($('#bf-tags').value || '').split(',').map(t => t.trim()).filter(Boolean);
+function setTags(list){ $('#bf-tags').value = list.join(', '); $('#bf-tagchips').innerHTML = tagChipsEdit(list); A.tagSuggest(); }
+A.tagSuggest = () => {
+  const q = ($('#bf-tagq').value || '').trim().toLowerCase(), have = curTags().map(t => t.toLowerCase());
+  const opts = masterTags().filter(t => !have.includes(t.toLowerCase()) && (!q || t.toLowerCase().includes(q))).slice(0, 24);
+  const exact = masterTags().some(t => t.toLowerCase() === q);
+  $('#bf-tagsug').innerHTML = opts.map(t => `<button type="button" class="pick" data-t="${esc(t)}" onclick="A.tagAdd(this.dataset.t)">${esc(t)}</button>`).join('')
+    + (q && !exact && !have.includes(q) ? `<button type="button" class="pick new" data-t="${esc($('#bf-tagq').value.trim())}" onclick="A.tagAdd(this.dataset.t)">+ Add new tag “${esc($('#bf-tagq').value.trim())}”</button>` : '');
+};
+A.tagAdd = raw => {
+  const t = String(raw || '').replace(/,/g, ' ').trim(); if(!t) return;
+  const known = masterTags().find(k => k.toLowerCase() === t.toLowerCase()) || t;
+  const list = curTags(); if(!list.some(x => x.toLowerCase() === known.toLowerCase())) list.push(known);
+  $('#bf-tagq').value = ''; setTags(list); $('#bf-tagq').focus();
+};
+A.tagEnter = () => {
+  const typed = $('#bf-tagq').value.trim(); if(!typed) return;
+  if(masterTags().some(t => t.toLowerCase() === typed.toLowerCase())) return A.tagAdd(typed);
+  const first = $('#bf-tagsug .pick:not(.new)'); A.tagAdd(first ? first.dataset.t : typed);
+};
+A.tagRemove = t => setTags(curTags().filter(x => x !== t));
+A.tagRemoveLast = () => { const l = curTags(); l.pop(); setTags(l); };
 A.isbnLookup = async () => {
   const isbn = $('#bf-isbn').value.replace(/[^0-9Xx]/g, ''); if(isbn.length < 10) return toast('Enter a 10 or 13 digit ISBN.', 'bad');
   $('#bf-isbn').value = isbn; toast('Looking up the book…');
@@ -1685,7 +1782,9 @@ A.isbnLookup = async () => {
 A.saveBook = async id => {
   const v = k => ($('#bf-' + k).value || '').trim();
   if(!v('title')) return toast('A title is needed.', 'bad');
-  const row = {title:v('title'), author:v('author') || null, category:v('category') || null, tags:uniq(v('tags').split(',').map(s => s.trim()).filter(Boolean)), language:v('language') || null, isbn:v('isbn') || null, publisher:v('publisher') || null, room:v('room') || null, rack:v('rack') || null, row_no:v('row_no') || null, cover_url:v('cover_url') || null, cover_img:v('cover_img') || null, description:v('description') || null};
+  const tags = uniq(v('tags').split(',').map(s => s.trim()).filter(Boolean));
+  await rememberTags(tags);
+  const row = {title:v('title'), author:v('author') || null, category:v('category') || null, tags, language:v('language') || null, isbn:v('isbn') || null, publisher:v('publisher') || null, room:v('room') || null, rack:v('rack') || null, row_no:v('row_no') || null, cover_url:v('cover_url') || null, cover_img:v('cover_img') || null, description:v('description') || null};
   if(id){ await patch('books', id, row); await logAct('book_edited', {b:id}); closeModal(); render(); return toast('Book saved.'); }
   const codes = readCodes('#bf-copies');
   const nb = await addRow('books', row);
@@ -1727,26 +1826,49 @@ A.deleteBook = async bid => {
   for(const c of copiesOf(bid)) await delRow('copies', c.id);
   await delRow('books', bid); await logAct('book_deleted', {d:b.title}); go('catalog'); toast('Book deleted.');
 };
-A.labelsBook = bid => printLabels(copiesOf(bid).map(c => c.id));
+A.labelsBook = bid => A.labelsModal(copiesOf(bid).map(c => c.id), book(bid).title);
 A.labelsAll = () => {
   const ids = S.copies.filter(c => !['lost','retired'].includes(c.status)).sort((a, b) => cmp(a.code, b.code)).map(c => c.id);
   if(!ids.length) return toast('Add some books first.', 'bad');
-  printLabels(ids);
+  A.labelsModal(ids, 'all books');
 };
-function printLabels(ids){
+let LABEL_IDS = [];
+A.labelsModal = (ids, what) => {
+  LABEL_IDS = ids;
+  const recent = S.copies.filter(c => ids.includes(c.id) && c.created_at && daysBetween(ymd(c.created_at), today()) <= 7).length;
+  openModal('Print labels', `<p class="muted">${plural(ids.length, 'label')} for ${esc(what)}.</p>
+    <fieldset class="field"><legend>Label style</legend>
+      <label class="radio"><input type="radio" name="lb-style" value="qr" checked> <span><b>QR code</b>. Read by the phone camera in this app and by 2D barcode scanners.</span></label>
+      <label class="radio"><input type="radio" name="lb-style" value="bar"> <span><b>Striped barcode</b>. Read by every USB or Bluetooth barcode scanner, including the cheapest ones.</span></label>
+    </fieldset>
+    ${recent && recent < ids.length ? `<label class="radio" style="margin-bottom:.6rem"><input type="checkbox" id="lb-recent"> Only copies added in the last 7 days (${recent})</label>` : ''}
+    <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.doLabels()">Open labels to print</button></div>`);
+};
+A.doLabels = () => {
+  const style = (document.querySelector('input[name=lb-style]:checked') || {}).value || 'qr';
+  let ids = LABEL_IDS; if($('#lb-recent') && $('#lb-recent').checked) ids = ids.filter(id => { const c = copy(id); return c.created_at && daysBetween(ymd(c.created_at), today()) <= 7; });
+  closeModal(); printLabels(ids, style);
+};
+function printLabels(ids, style = 'qr'){
   const items = ids.map(id => { const c = copy(id), b = c && book(c.book_id); return {code:c.code, title:b ? b.title : '', loc:b ? locStr(b) : ''}; });
   const w = window.open('', '_blank'); if(!w) return toast('Allow pop-ups for this site to print labels.', 'bad');
-  const codes = JSON.stringify(items.map(i => i.code)).replace(/</g, '\\u003c');
+  const codes = JSON.stringify(items.map(i => i.code)).replace(/</g, '\\u003c'), bar = style === 'bar';
   w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Book labels</title><style>
     body{font-family:system-ui,sans-serif;margin:10mm;color:#2A2245}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
     .l{border:1px dashed #b9a4f5;border-radius:2mm;padding:3mm;display:flex;gap:3mm;align-items:center;break-inside:avoid;font-size:9pt;line-height:1.25}
+    .l.bar{flex-direction:column;align-items:stretch;text-align:center;gap:1mm}
     .l b{font-size:11pt}.t{overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.lib{color:#776E96;font-size:7.5pt}
     .q{flex:none;width:72px;height:72px}.q img,.q canvas{width:72px;height:72px}
+    .l.bar svg{width:100%;height:16mm}
     @media print{.no{display:none}body{margin:6mm}}</style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script></head><body>
+    ${bar ? '<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"><\/script>' : '<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>'}</head><body>
     <p class="no">${items.length} labels. Print on A4 sticker paper or plain paper and stick inside the cover. <button onclick="print()">Print</button></p>
-    <div class="g">${items.map((it, i) => `<div class="l"><div class="q" id="q${i}"></div><div><b>${esc(it.code)}</b><div class="t">${esc(it.title)}</div><div class="lib">${esc(it.loc || S.settings.library_name)}</div></div></div>`).join('')}</div>
-    <script>window.onload=function(){var c=${codes};c.forEach(function(t,i){new QRCode(document.getElementById('q'+i),{text:t,width:144,height:144,correctLevel:QRCode.CorrectLevel.M})});setTimeout(function(){print()},500)}<\/script></body></html>`);
+    <div class="g">${items.map((it, i) => bar
+      ? `<div class="l bar"><svg id="q${i}"></svg><div class="t">${esc(it.title)}</div><div class="lib">${esc(it.loc || S.settings.library_name)}</div></div>`
+      : `<div class="l"><div class="q" id="q${i}"></div><div><b>${esc(it.code)}</b><div class="t">${esc(it.title)}</div><div class="lib">${esc(it.loc || S.settings.library_name)}</div></div></div>`).join('')}</div>
+    <script>window.onload=function(){var c=${codes};c.forEach(function(t,i){${bar
+      ? "JsBarcode('#q'+i,t,{format:'CODE128',width:2,height:44,fontSize:13,margin:2,displayValue:true})"
+      : "new QRCode(document.getElementById('q'+i),{text:t,width:144,height:144,correctLevel:QRCode.CorrectLevel.M})"}});setTimeout(function(){print()},500)}<\/script></body></html>`);
   w.document.close();
 }
 
@@ -1814,6 +1936,7 @@ A.importRun = async () => {
     await addRows('books', chunk.map(x => x.book));
     await addRows('copies', chunk.flatMap(x => x.codes.map(code => ({book_id:x.book.id, code, status:'available'}))));
   }
+  await rememberTags(uniq(IMPORT.flatMap(x => x.book.tags || [])));
   const n = IMPORT.length; await logAct('import', {d:plural(n, 'book') + ' from a spreadsheet'}); IMPORT = null;
   closeModal(); go('catalog'); toast(`Imported ${plural(n, 'book')}.`);
 };
@@ -1839,11 +1962,12 @@ function langField(v){
 function courseRowHtml(c = {}){
   const list = courseOptions(), known = !c.course || list.includes(c.course), yr = new Date().getFullYear();
   const [cy, cm] = String(c.date || '').split('-');
-  return `<div class="course-row"><div class="c-top"><select class="c-sel" aria-label="Course" onchange="this.closest('.course-row').querySelector('.c-other').hidden=this.value!=='__other'"><option value="">Choose the course…</option>${list.map(o => `<option ${o === c.course ? 'selected' : ''}>${esc(o)}</option>`).join('')}<option value="__other" ${!known ? 'selected' : ''}>Other course…</option></select><button type="button" class="icon-btn" onclick="this.closest('.course-row').remove()" aria-label="Remove this course">✕</button></div>
+  return `<div class="course-row"><div class="c-top"><select class="c-sel" aria-label="Course" onchange="this.closest('.course-row').querySelector('.c-other').hidden=this.value!=='__other'"><option value="">Choose the course…</option>${list.map(o => `<option ${o === c.course ? 'selected' : ''}>${esc(o)}</option>`).join('')}<option value="__other" ${!known ? 'selected' : ''}>Other course…</option></select></div>
     <input class="c-other" placeholder="Course name" value="${esc(known ? '' : c.course)}" ${known ? 'hidden' : ''} aria-label="Course name">
     <div class="c-bot"><select class="c-month" aria-label="Month"><option value="">Month</option>${MONTHS.map((t, i) => `<option value="${pad2(i + 1)}" ${cm === pad2(i + 1) ? 'selected' : ''}>${t}</option>`).join('')}</select>
       <select class="c-year" aria-label="Year"><option value="">Year</option>${Array.from({length:yr - 1989}, (_, i) => String(yr - i)).map(o => `<option ${o === cy ? 'selected' : ''}>${o}</option>`).join('')}</select>
-      <input class="c-by" placeholder="Instructor" value="${esc(c.instructor || '')}" aria-label="Instructor"><input class="c-where" placeholder="Place" value="${esc(c.place || '')}" aria-label="Place"></div></div>`;
+      <input class="c-by" placeholder="Instructor" value="${esc(c.instructor || '')}" aria-label="Instructor"><input class="c-where" placeholder="Place" value="${esc(c.place || '')}" aria-label="Place">
+      <button type="button" class="icon-btn c-rm" onclick="this.closest('.course-row').remove()" aria-label="Remove this course" title="Remove this course">✕<span class="rm-txt"> Remove</span></button></div></div>`;
 }
 function readCourses(){
   return [...document.querySelectorAll('#pf-courses .course-row')].map(r => {
