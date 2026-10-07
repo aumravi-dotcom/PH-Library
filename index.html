@@ -162,6 +162,11 @@ fieldset.group legend{font-family:var(--serif);font-weight:600;font-size:1.02rem
 .tagchip button:hover{background:#fff}
 .tagsug{flex-direction:row;flex-wrap:wrap;gap:.35rem}
 .tagsug .pick{border-radius:999px;padding:.35rem .8rem;font-size:.86rem}
+.tagopt{display:inline-flex;align-items:center;background:var(--violet-soft);border-radius:999px}
+.tagopt .pick{background:none;padding-right:.25rem}
+.tagopt .pick:hover{outline:none;color:var(--violet)}
+.tagopt .tx{border:0;background:none;color:#9C93B8;width:26px;height:26px;border-radius:50%;cursor:pointer;margin-right:.2rem;font-size:.72rem;flex:none}
+.tagopt .tx:hover,.tagopt .tx:focus-visible{background:#fff;color:var(--bad)}
 .pick.new{background:#fff;border:1px dashed var(--violet);color:var(--violet-ink)}
 .pick:focus-visible{outline:2px solid var(--violet);outline-offset:1px}
 .pick .r{margin-left:auto;font-size:.8rem;color:var(--muted);white-space:nowrap}
@@ -233,6 +238,8 @@ fieldset.group legend{font-family:var(--serif);font-weight:600;font-size:1.02rem
 @media (max-width:640px){.pf-top{flex-direction:column;align-items:center;text-align:center;padding:0 1rem}.pf-meta{justify-content:center}.pf-actions{padding:0}.pf-name{font-size:1.7rem}.pf-band{height:104px}}
 .course-row{background:#FCFAFF;border:1px solid var(--line);border-radius:14px;padding:.75rem;margin-bottom:.6rem}
 .course-row .c-sel{width:100%}
+.course-row.bad{border-color:#EDA9B5;background:#FFF6F8}
+.course-row.bad .c-sel:invalid,.course-row.bad select{border-color:#EDA9B5}
 .course-row .c-other{margin-top:.5rem}
 .course-row .c-bot{display:grid;grid-template-columns:minmax(110px,1fr) minmax(100px,1fr) minmax(130px,1.4fr) minmax(130px,1.4fr) auto;gap:.5rem;margin-top:.5rem;align-items:center}
 .course-row .c-rm{min-height:44px;min-width:44px;border:1px solid transparent;border-radius:10px;font-size:1rem}
@@ -256,6 +263,73 @@ fieldset.group legend{font-family:var(--serif);font-weight:600;font-size:1.02rem
   .toolbar .search{flex-basis:100%}
   .toolbar select{flex:1 1 40%;min-width:0}
   .toolbar .seg{flex:none}
+}
+/* member home (My books) */
+.cover-btn{background:none;border:0;padding:0;cursor:pointer;text-align:left;display:block;width:100%;font:inherit}
+.cover.md{padding:10px 7px 7px 12px;border-radius:2px 6px 6px 2px}
+.cover.md::before{width:6px}
+.cover.md .cv-title{font-size:.74rem;line-height:1.15;padding-top:5px;-webkit-line-clamp:5}
+.cover.md .cv-author{display:none}
+.cover.md .cv-title{-webkit-line-clamp:7}
+
+.mb-hero{position:relative;border-radius:26px;padding:1.5rem 1.6rem 0;background:radial-gradient(520px 200px at 0% 0%,#DCC8FF 0,rgba(220,200,255,0) 70%),radial-gradient(420px 220px at 100% 100%,#EFE6FF 0,rgba(239,230,255,0) 70%),linear-gradient(125deg,#EEE3FF,#F8F4FF 58%,#FFFFFF);border:1px solid var(--line-2);overflow:hidden;box-shadow:0 24px 60px -42px rgba(90,40,180,.6)}
+.mb-deco{position:absolute;right:1.6rem;top:1.1rem;display:flex;align-items:flex-end;gap:4px;opacity:.55}
+.mb-deco span{width:14px;border-radius:2px;background:var(--c)}
+.mb-hero-in{position:relative;display:flex;gap:1rem;align-items:center}
+.mb-hi{margin:0;font-size:.76rem;color:var(--violet-ink);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.mb-hero h1{font-size:2rem;margin:.1rem 0 0}
+.mb-stats{position:relative;display:grid;grid-template-columns:repeat(4,1fr);margin:1.3rem -1.6rem 0;border-top:1px solid rgba(123,47,247,.12);background:rgba(255,255,255,.65);backdrop-filter:blur(6px)}
+.mb-stats div{padding:.9rem .4rem;text-align:center}
+.mb-stats div+div{border-left:1px solid rgba(123,47,247,.1)}
+.mb-stats b{display:block;font-family:var(--serif);font-size:1.6rem;line-height:1.1;font-weight:600;color:var(--ink)}
+.mb-stats span{font-size:.74rem;color:var(--muted)}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin:2rem 0 .85rem}
+.sec-h h2{font-size:1.35rem}
+.now-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(360px,100%),1fr));gap:1rem}
+.now-card{display:flex;gap:1rem;align-items:center;background:#fff;border:1px solid var(--line);border-radius:22px;padding:1rem;box-shadow:0 18px 40px -32px rgba(90,40,180,.7)}
+.now-card.late{border-color:#F4C7CF;background:linear-gradient(120deg,#FFF5F7,#fff 55%)}
+.now-card .cover-btn{width:86px;flex:none}
+.now-card .info{flex:1;min-width:0}
+.now-card h3{margin:0;font-size:1.1rem;line-height:1.25}
+.ringbox{position:relative;width:72px;height:72px;flex:none}
+.ring{width:72px;height:72px;display:block}
+.ring .rt{fill:none;stroke:var(--wash-2);stroke-width:6}
+.ring .rf{fill:none;stroke:var(--violet);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+.ring.soon .rf{stroke:#D99A1E}
+.ring.late .rf{stroke:var(--bad)}
+.ringbox .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.45rem;font-weight:600;line-height:1}
+.ringbox .num small{font-family:var(--sans);font-size:.52rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:3px;text-align:center;max-width:52px}
+.ready-banner{display:flex;gap:1rem;align-items:center;background:linear-gradient(120deg,#E3F6EC,#FFFFFF 70%);border:1px solid #BFE6D1;border-radius:20px;padding:.9rem 1.1rem;margin-top:1rem}
+.empty-card{display:flex;gap:1.4rem;align-items:center;flex-wrap:wrap;background:#fff;border:1px dashed var(--line-2);border-radius:22px;padding:1.3rem 1.4rem}
+.empty-card .spines{margin:0}
+.wait-list{display:grid;gap:.6rem}
+.wait-card{display:flex;gap:.9rem;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:.75rem .9rem}
+.shelf{display:flex;gap:1rem;overflow-x:auto;padding:.3rem .3rem .2rem;scroll-snap-type:x proximity;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.shelf .bk{position:relative;flex:none;width:92px;text-align:left;font:inherit;scroll-snap-align:start;background:none;border:0;padding:0;cursor:pointer}
+.shelf .bk .cover{transition:transform .15s ease}
+.shelf .bk:hover .cover{transform:translateY(-4px)}
+.stamp{position:absolute;bottom:6px;right:6px;z-index:3;background:rgba(255,255,255,.92);color:var(--violet-ink);font-size:.62rem;font-weight:700;border-radius:999px;padding:.08rem .4rem}
+.plank{height:12px;margin:-2px .1rem 0;border-radius:3px 3px 6px 6px;background:linear-gradient(180deg,#E3D7FD 0,#C7B3F6 60%,#B39CEF 100%);box-shadow:0 10px 16px -10px rgba(90,40,180,.6)}
+.shelf-yr+.shelf-yr{margin-top:1.4rem}
+.yr-h{display:flex;gap:.6rem;align-items:baseline;margin-bottom:.4rem}
+.yr-h b{font-family:var(--serif);font-size:1.1rem}
+.shelf.recs{padding-bottom:.8rem}
+.rec{flex:none;width:128px;scroll-snap-align:start;background:none;border:0;padding:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:.1rem;color:var(--ink);font:inherit}
+.rec .cover{margin-bottom:.45rem;transition:transform .15s ease}
+.rec:hover .cover{transform:translateY(-4px)}
+.rec .t-title{font-size:.88rem}
+@media (max-width:640px){
+  .mb-hero{padding:1.2rem 1.1rem 0;border-radius:22px}
+  .mb-hero h1{font-size:1.6rem}
+  .mb-deco{display:none}
+  .mb-stats{margin:1.1rem -1.1rem 0}
+  .mb-stats b{font-size:1.35rem}
+  .mb-stats span{font-size:.68rem}
+  .now-card{padding:.85rem;gap:.8rem}
+  .now-card .cover-btn{width:70px}
+  .ringbox,.ring{width:62px;height:62px}
+  .rec{width:112px}
+  .shelf .bk{width:80px}
 }
 /* join page */
 .join-card{width:min(760px,100%)}
@@ -614,7 +688,7 @@ const masterTags = () => { const out = []; [...String(S.settings.tags || '').spl
 async function rememberTags(tags){
   const known = String(S.settings.tags || '').split(',').map(t => t.trim()).filter(Boolean), add = tags.filter(t => !known.some(k => k.toLowerCase() === t.toLowerCase()));
   if(!add.length) return;
-  const all = [...known, ...add].join(', ');
+  const all = [...known, ...add].sort(cmp).join(', ');
   try { const s2 = await DB.saveSettings({tags:all}); S.settings = {...S.settings, ...stripNull(s2), tags:all}; } catch(e){ console.warn(e); }
 }
 const courseOptions = () => String(S.settings.courses || '').split('\n').map(s => s.trim()).filter(Boolean);
@@ -631,7 +705,7 @@ const ACT = {
   fee_paid:['Late fee paid','money'], fee_due:['Late fee added to dues','money'], fee_waived:['Late fee waived','money'], deposit:['Deposit received','money'], refund:['Deposit refunded','money'],
   reminder:['WhatsApp message','remind'],
   member_added:['Member added','people'], member_edited:['Member details updated','people'], profile_edited:['Profile updated by member','people'], login_reset:['Login reset','people'], login_code:['Login code sent','people'],
-  book_added:['Book added','catalog'], book_edited:['Book details updated','catalog'], copies_added:['Copies added','catalog'], copy_status:['Copy status changed','catalog'], barcode:['Barcode changed','catalog'], book_deleted:['Book deleted','catalog'], import:['Books imported','catalog'],
+  book_added:['Book added','catalog'], book_edited:['Book details updated','catalog'], copies_added:['Copies added','catalog'], copy_status:['Copy status changed','catalog'], barcode:['Barcode changed','catalog'], tag_removed:['Tag deleted','catalog'], book_deleted:['Book deleted','catalog'], import:['Books imported','catalog'],
 };
 const ACT_GROUPS = [['', 'All activity'], ['borrow', 'Borrowing'], ['reserve', 'Reservations'], ['money', 'Money'], ['remind', 'WhatsApp messages'], ['people', 'Members'], ['catalog', 'Catalog']];
 
@@ -666,7 +740,7 @@ const statBox = (n, l, href, alert) => href ? `<a class="stat ${alert ? 'alert' 
 const notFound = (msg, back) => `<a class="back" href="${back}">Go back</a><p class="empty">${msg}</p>`;
 const roleTag = m => m.role === 'admin' ? '<span class="tag">Admin</span>' : m.role === 'librarian' ? '<span class="tag">Librarian</span>' : '';
 function tagChipsEdit(list){ return list.map(t => `<span class="tagchip">${esc(t)}<button type="button" aria-label="Remove tag ${esc(t)}" data-t="${esc(t)}" onclick="event.stopPropagation();A.tagRemove(this.dataset.t)">✕</button></span>`).join(''); }
-const tagChips = b => tagsOf(b).map(t => `<span class="tag plain">${esc(t)}</span>`).join(' ');
+const tagChips = b => [...tagsOf(b)].sort(cmp).map(t => `<span class="tag plain">${esc(t)}</span>`).join(' ');
 function fillDatalists(){
   const c = $('#course-list'); if(c) c.innerHTML = courseOptions().map(o => `<option value="${esc(o)}">`).join('');
   const t = $('#tag-list'); if(t) t.innerHTML = allTags().map(o => `<option value="${esc(o)}">`).join('');
@@ -1004,7 +1078,7 @@ const PROFILE_KEYS = ['photo','email','dob','gender','occupation','languages','c
 function profileCompleteness(m){
   const have = PROFILE_KEYS.filter(k => m[k]).length + (coursesOf(m).length ? 1 : 0);
   const missing = [['photo', 'photo'], ['dob', 'date of birth'], ['emergency_name', 'emergency contact'], ['center', 'home foundation'], ['languages', 'languages']].filter(([k]) => !m[k]).map(x => x[1]);
-  if(!coursesOf(m).length) missing.push('courses done');
+  if(coursesOf(m).length < 3) missing.push('at least three courses');
   return {pct:Math.round(have / (PROFILE_KEYS.length + 1) * 100), missing};
 }
 function profileCards(m, admin){
@@ -1181,22 +1255,62 @@ function vSettings(){
 /* =========================================================
    MEMBER VIEWS
    ========================================================= */
+function ring(frac, cls){
+  const r = 26, c = 2 * Math.PI * r, off = c * (1 - Math.max(0, Math.min(1, frac)));
+  return `<svg class="ring ${cls}" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="${r}" class="rt"/><circle cx="32" cy="32" r="${r}" class="rf" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 32 32)"/></svg>`;
+}
+function recommendFor(me, mine){
+  const readIds = new Set(mine.map(l => l.book_id)), reserved = new Set(S.reservations.filter(r => r.member_id === me.id).map(r => r.book_id));
+  const cats = {}, tags = {}, authors = {};
+  mine.forEach(l => { const b = book(l.book_id); if(!b) return; if(b.category) cats[b.category] = (cats[b.category] || 0) + 1; if(b.author) authors[b.author] = (authors[b.author] || 0) + 1; tagsOf(b).forEach(t => tags[t] = (tags[t] || 0) + 1); });
+  return S.books.filter(b => !readIds.has(b.id) && !reserved.has(b.id) && availInfo(b.id).total)
+    .map(b => ({b, score:(cats[b.category] || 0) * 3 + (authors[b.author] || 0) * 2 + tagsOf(b).reduce((s, t) => s + (tags[t] || 0), 0) + (availInfo(b.id).avail ? 2 : 0)}))
+    .sort((x, y) => y.score - x.score || cmp(x.b.title, y.b.title)).slice(0, 10).map(x => x.b);
+}
 function vMyBooks(){
-  const me = S.me;
+  const me = S.me, h = new Date().getHours();
   const all = S.loans.filter(l => l.member_id === me.id), out = all.filter(l => !l.returned_at).sort((a, b) => cmp(a.due_at, b.due_at));
   const past = all.filter(l => l.returned_at).sort((a, b) => cmp(b.returned_at, a.returned_at));
-  const rs = S.reservations.filter(r => r.member_id === me.id && ['pending','ready'].includes(r.status));
-  const fd = finesDue(me.id);
-  const cards = out.map(l => {
-    const b = book(l.book_id) || {title:'Book'}, od = overdueDays(l), left = daysBetween(today(), l.due_at);
-    return `<div class="loan-card ${od ? 'over' : ''}">${cover(b, 'sm')}<div><h3>${esc(b.title)}</h3><div class="small muted">${esc(b.author || '')}</div><div class="small muted">Borrowed ${fmtDate(l.issued_at)}</div>
-      <div class="days">${od ? `${plural(od, 'day')} late<small>Please return it soon. Late fee so far ${money(accruedFine(l))}.</small>` : left === 0 ? 'Due today<small>Return or renew it at the library today.</small>' : `${plural(left, 'day')} left<small>Return by ${fmtDate(l.due_at)}</small>`}</div></div></div>`;
+  const rs = S.reservations.filter(r => r.member_id === me.id && ['pending','ready'].includes(r.status)), ready = rs.filter(r => r.status === 'ready'), waiting = rs.filter(r => r.status === 'pending');
+  const fd = finesDue(me.id), yr = String(new Date().getFullYear()), thisYear = past.filter(l => String(l.returned_at).slice(0, 4) === yr).length;
+  const spines = ['#CDBDF8:58','#9A7CEA:72','#E2D7FC:50','#7B2FF7:66','#B9A4F5:54','#8E6BE6:62'].map(x => { const [c, ht] = x.split(':'); return `<span style="--c:${c};height:${ht}px"></span>`; }).join('');
+  const line = out.length ? (out.some(isOverdue) ? 'One of your books is past its return date. Please bring it back soon.' : `You have ${plural(out.length, 'book')} with you. Happy reading!`) : past.length ? 'Ready for your next book? Here are some ideas below.' : 'Welcome! Find your first book on the Library shelf.';
+
+  const nowCards = out.map(l => {
+    const b = book(l.book_id) || {title:'Book'}, total = Math.max(1, daysBetween(ymd(l.issued_at), l.due_at)), used = daysBetween(ymd(l.issued_at), today());
+    const left = daysBetween(today(), l.due_at), od = overdueDays(l), cls = od ? 'late' : left <= Number(S.settings.due_soon_days) ? 'soon' : '';
+    return `<article class="now-card ${cls}"><button class="cover-btn" onclick="A.bookInfo('${l.book_id}')" aria-label="About ${esc(b.title)}">${cover(b, 'md')}</button>
+      <div class="info"><h3>${esc(b.title)}</h3><p class="muted small" style="margin:.15rem 0 .5rem">${esc(b.author || '')}</p>
+        <p class="small" style="margin:0">Borrowed ${fmtDate(l.issued_at)}</p>
+        <p class="small" style="margin:.1rem 0 0"><b>${od ? `Was due ${fmtDate(l.due_at)}` : `Return by ${fmtDate(l.due_at)}`}</b></p>
+        ${od ? `<p class="small bad-text" style="margin:.35rem 0 0">Late fee so far ${money(accruedFine(l))}</p>` : ''}</div>
+      <div class="ringbox">${ring(od ? 1 : used / total, cls)}<div class="num">${od ? od : Math.max(0, left)}<small>${od ? (od === 1 ? 'day late' : 'days late') : left === 0 ? 'due today' : left === 1 ? 'day left' : 'days left'}</small></div></div></article>`;
   }).join('');
-  return `<header class="page-head"><div><h1>Namaste, ${esc(firstName(me.name))}</h1><p class="muted">${all.length ? `You've borrowed ${plural(all.length, 'book')} from the library${me.joined_on ? ' since ' + fmtDate(me.joined_on) : ''}.` : 'Welcome to the library.'}</p></div></header>
+
+  const byYear = {}; past.forEach(l => { const y = String(l.returned_at).slice(0, 4); (byYear[y] = byYear[y] || []).push(l); });
+  const shelves = Object.keys(byYear).sort().reverse().map(y => `<div class="shelf-yr"><div class="yr-h"><b>${y}</b><span class="muted small">${plural(byYear[y].length, 'book')}</span></div>
+    <div class="shelf" role="list">${byYear[y].map(l => { const b = book(l.book_id) || {title:'Book'}; return `<button class="bk" role="listitem" onclick="A.bookInfo('${l.book_id}')" title="${esc(b.title)}, returned ${fmtDate(l.returned_at)}">${cover(b, 'md')}<span class="stamp">${esc(MONTHS[new Date(l.returned_at).getMonth()])}</span></button>`; }).join('')}</div><div class="plank"></div></div>`).join('');
+
+  const recs = recommendFor(me, all);
+  const recRow = recs.map(b => { const a = availInfo(b.id); return `<button class="rec" onclick="A.bookInfo('${b.id}')">${cover(b, 'md')}<span class="t-title">${esc(b.title)}</span><span class="t-author">${esc(b.author || '')}</span><span class="t-avail ${a.avail ? '' : 'out'}">${a.avail ? 'In the library' : 'Out now'}</span></button>`; }).join('');
+
+  return `<section class="mb-hero"><div class="mb-deco" aria-hidden="true">${spines}</div>
+    <div class="mb-hero-in">${avatar(me, 'lg')}<div><p class="mb-hi">${h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening'}</p><h1>Namaste, ${esc(firstName(me.name))}</h1><p class="muted" style="margin:.25rem 0 0">${line}</p></div></div>
+    <div class="mb-stats"><div><b>${past.length}</b><span>Books read</span></div><div><b>${thisYear}</b><span>Read in ${yr}</span></div><div><b>${out.length}</b><span>With you now</span></div><div><b>${rs.length}</b><span>Reserved</span></div></div>
+  </section>
   ${fd ? `<div class="note bad" style="margin-top:1rem">You have ${money(fd)} in late fees due. Please settle it at the library desk.</div>` : ''}
-  <section class="panel"><h2>Books with you now (${out.length})</h2>${out.length ? `<div class="loan-cards">${cards}</div>` : '<p class="empty">You have no library books right now. <a href="#shelf">See what is on the shelf</a></p>'}</section>
-  ${rs.length ? `<section class="panel"><h2>Your reservations</h2><ul class="list">${rs.map(r => { const a = availInfo(r.book_id); return `<li class="item"><div class="item-main"><span class="title">${esc(book(r.book_id)?.title || '')}</span><div class="sub">${r.status === 'ready' ? `<span class="tag ok">Kept aside for you</span> Collect it from the library by <b>${fmtDate(holdUntil(r))}</b>. After that it goes to the next reader.` : `Waiting for a copy, ${backText(a.nextBack)}. When it's back it is kept aside for you for ${plural(Number(S.settings.hold_days), 'day')}.`}</div></div>${r.status === 'pending' ? `<div class="item-actions"><button class="btn sm ghost" onclick="A.cancelRes('${r.id}')">Cancel</button></div>` : ''}</li>`; }).join('')}</ul></section>` : ''}
-  <section class="panel"><h2>Books you've read (${past.length})</h2>${past.length ? `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Book</th><th>Borrowed</th><th>Returned</th></tr></thead><tbody>${past.map(l => `<tr><td><b>${esc(book(l.book_id)?.title || '')}</b><div class="small muted">${esc(book(l.book_id)?.author || '')}</div></td><td>${fmtDate(l.issued_at)}</td><td>${l.lost ? 'Marked lost' : fmtDate(l.returned_at)}</td></tr>`).join('')}</tbody></table></div>` : '<p class="empty">Books you return will be listed here.</p>'}</section>`;
+  ${ready.map(r => `<div class="ready-banner">${cover(book(r.book_id) || {title:''}, 'sm')}<div><b>Your reserved book is ready</b><p style="margin:.15rem 0 0">“${esc(book(r.book_id)?.title || '')}” is kept aside for you. Collect it from the library by <b>${fmtDate(holdUntil(r))}</b>.</p></div></div>`).join('')}
+
+  <div class="sec-h"><h2>Reading now</h2>${out.length ? `<span class="muted small">${plural(out.length, 'book')}</span>` : ''}</div>
+  ${out.length ? `<div class="now-grid">${nowCards}</div>` : `<div class="empty-card"><div class="spines" aria-hidden="true">${spines}</div><div><b>No books with you right now</b><p class="muted" style="margin:.2rem 0 .7rem">Browse the shelf and pick your next read.</p><a class="btn" href="#shelf">Explore the shelf</a></div></div>`}
+
+  ${waiting.length ? `<div class="sec-h"><h2>Waiting for you</h2></div><div class="wait-list">${waiting.map(r => { const b = book(r.book_id) || {title:''}, a = availInfo(r.book_id); return `<div class="wait-card">${cover(b, 'sm')}<div style="flex:1;min-width:0"><b>${esc(b.title)}</b><p class="muted small" style="margin:.15rem 0 0">Reserved ${fmtDate(r.created_at)}. ${backText(a.nextBack).replace(/^./, c => c.toUpperCase())}.</p></div><button class="btn sm ghost" onclick="A.cancelRes('${r.id}')">Cancel</button></div>`; }).join('')}
+    <p class="muted small" style="margin:.5rem 0 0">When a book comes back, it is kept aside for you for ${plural(Number(S.settings.hold_days), 'day')}. We'll message you on WhatsApp.</p></div>` : ''}
+
+  ${recs.length ? `<div class="sec-h"><h2>You may like</h2><a href="#shelf" class="small">See the whole shelf</a></div><div class="shelf recs" role="list">${recRow}</div>` : ''}
+
+  <div class="sec-h"><h2>Your bookshelf</h2>${past.length ? `<span class="muted small">${plural(past.length, 'book')} read</span>` : ''}</div>
+  ${past.length ? shelves : '<p class="empty">Books you return will appear here, on your own shelf.</p>'}`;
 }
 function vShelf(){
   const u = S.ui, cats = categories(), view = shelfView();
@@ -1404,6 +1518,16 @@ A.copyJoin = async () => {
 };
 A.declineReq = async rid => { if(!confirm('Decline this join request?')) return; await patch('requests', rid, {status:'declined'}); render(); toast('Request declined.'); };
 A.shelfView = v => { S.ui.shView = v; try { localStorage.setItem('pl-shelf-view', v); } catch(e) {} render(); };
+A.bookInfo = bid => {
+  const b = book(bid); if(!b) return;
+  const a = availInfo(bid), me = S.me;
+  const mine = me && S.reservations.find(r => r.book_id === bid && r.member_id === me.id && ['pending','ready'].includes(r.status));
+  const have = me && S.loans.find(l => l.book_id === bid && l.member_id === me.id && !l.returned_at);
+  const meta = [['Category', b.category], ['Language', b.language], ['Publisher', b.publisher]].filter(r => r[1]).map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('');
+  const status = have ? '<span class="tag ok">With you</span>' : mine ? `<span class="tag">${mine.status === 'ready' ? 'Kept aside for you' : 'You reserved this'}</span>` : a.avail ? `<span class="tag ok">In the library</span> <span class="muted small">Ask at the desk to borrow it.</span>` : `<span class="tag warn">Borrowed</span> <span class="muted small">${backText(a.nextBack)}</span>`;
+  openModal(b.title, `<div class="book-hero">${cover(b, 'lg')}<div><p class="byline" style="margin-top:0">${esc(b.author || '')}</p>${meta ? `<dl class="meta">${meta}</dl>` : ''}<p>${status}</p>${b.description ? `<p class="desc">${esc(b.description)}</p>` : ''}
+    ${!have && !mine && !a.avail && a.total ? `<button class="btn" onclick="A.reserve('${bid}');closeModal()">Reserve this book</button>` : ''}</div></div>`);
+};
 A.signOut = async () => {
   if(DEMO) Local.setSession(null); else { await Fire.auth.signOut(); await Cache.clear(); }
   S.ui.loginTab = 'member'; S.ui.memberStep = 'login'; S.ui.staffStep = 'login'; history.replaceState(null, '', location.pathname); await reload();
@@ -1747,12 +1871,12 @@ A.bookForm = id => {
   setTimeout(() => $(id ? '#bf-title' : '#bf-isbn').focus(), 60);
 };
 const curTags = () => ($('#bf-tags').value || '').split(',').map(t => t.trim()).filter(Boolean);
-function setTags(list){ $('#bf-tags').value = list.join(', '); $('#bf-tagchips').innerHTML = tagChipsEdit(list); A.tagSuggest(); }
+function setTags(list){ list = [...list].sort(cmp); $('#bf-tags').value = list.join(', '); $('#bf-tagchips').innerHTML = tagChipsEdit(list); A.tagSuggest(); }
 A.tagSuggest = () => {
   const q = ($('#bf-tagq').value || '').trim().toLowerCase(), have = curTags().map(t => t.toLowerCase());
-  const opts = masterTags().filter(t => !have.includes(t.toLowerCase()) && (!q || t.toLowerCase().includes(q))).slice(0, 24);
+  const opts = masterTags().filter(t => !have.includes(t.toLowerCase()) && (!q || t.toLowerCase().includes(q))).slice(0, 60);
   const exact = masterTags().some(t => t.toLowerCase() === q);
-  $('#bf-tagsug').innerHTML = opts.map(t => `<button type="button" class="pick" data-t="${esc(t)}" onclick="A.tagAdd(this.dataset.t)">${esc(t)}</button>`).join('')
+  $('#bf-tagsug').innerHTML = opts.map(t => `<span class="tagopt"><button type="button" class="pick" data-t="${esc(t)}" onclick="A.tagAdd(this.dataset.t)">${esc(t)}</button><button type="button" class="tx" data-t="${esc(t)}" title="Delete “${esc(t)}” from the tag list" aria-label="Delete tag ${esc(t)} from the list" onclick="event.stopPropagation();A.tagDelete(this.dataset.t)">✕</button></span>`).join('')
     + (q && !exact && !have.includes(q) ? `<button type="button" class="pick new" data-t="${esc($('#bf-tagq').value.trim())}" onclick="A.tagAdd(this.dataset.t)">+ Add new tag “${esc($('#bf-tagq').value.trim())}”</button>` : '');
 };
 A.tagAdd = raw => {
@@ -1765,6 +1889,16 @@ A.tagEnter = () => {
   const typed = $('#bf-tagq').value.trim(); if(!typed) return;
   if(masterTags().some(t => t.toLowerCase() === typed.toLowerCase())) return A.tagAdd(typed);
   const first = $('#bf-tagsug .pick:not(.new)'); A.tagAdd(first ? first.dataset.t : typed);
+};
+A.tagDelete = async t => {
+  const lo = t.toLowerCase(), used = S.books.filter(b => tagsOf(b).some(x => x.toLowerCase() === lo));
+  if(!confirm(used.length ? `Delete the tag “${t}” from the list?\n\nIt is used on ${plural(used.length, 'book')}. It will be removed from ${used.length === 1 ? 'that book' : 'those books'} too.` : `Delete the tag “${t}” from the list?`)) return;
+  for(const b of used) await patch('books', b.id, {tags:tagsOf(b).filter(x => x.toLowerCase() !== lo)});
+  const keep = String(S.settings.tags || '').split(',').map(x => x.trim()).filter(x => x && x.toLowerCase() !== lo).sort(cmp).join(', ');
+  const s2 = await DB.saveSettings({tags:keep}); S.settings = {...S.settings, ...stripNull(s2), tags:keep};
+  await logAct('tag_removed', {d:`“${t}”` + (used.length ? `, removed from ${plural(used.length, 'book')}` : '')});
+  if($('#bf-tags')) setTags(curTags().filter(x => x.toLowerCase() !== lo));
+  toast(`Tag “${t}” deleted.`);
 };
 A.tagRemove = t => setTags(curTags().filter(x => x !== t));
 A.tagRemoveLast = () => { const l = curTags(); l.pop(); setTags(l); };
@@ -1782,7 +1916,7 @@ A.isbnLookup = async () => {
 A.saveBook = async id => {
   const v = k => ($('#bf-' + k).value || '').trim();
   if(!v('title')) return toast('A title is needed.', 'bad');
-  const tags = uniq(v('tags').split(',').map(s => s.trim()).filter(Boolean));
+  const tags = uniq(v('tags').split(',').map(s => s.trim()).filter(Boolean)).sort(cmp);
   await rememberTags(tags);
   const row = {title:v('title'), author:v('author') || null, category:v('category') || null, tags, language:v('language') || null, isbn:v('isbn') || null, publisher:v('publisher') || null, room:v('room') || null, rack:v('rack') || null, row_no:v('row_no') || null, cover_url:v('cover_url') || null, cover_img:v('cover_img') || null, description:v('description') || null};
   if(id){ await patch('books', id, row); await logAct('book_edited', {b:id}); closeModal(); render(); return toast('Book saved.'); }
@@ -1992,9 +2126,9 @@ function profileSections(m, opt = {}){
       <div class="grid2">${t('center', 'Home Foundation', 'placeholder="e.g. Prana Life Foundation, Delhi"')}<div class="field"><label for="pf-healer_status">Healing practice</label>${sel('pf-healer_status', practiceOptions(), m.healer_status || '', 'Choose…')}</div></div>
       <div class="field"><label for="pf-interests">Interests and seva</label><textarea id="pf-interests" placeholder="e.g. healing clinic volunteer, interested in Arhatic Yoga">${esc(m.interests || '')}</textarea></div>
     </fieldset>
-    <fieldset class="group"><legend>Courses completed</legend>
-      <p class="hint" style="margin:0 0 .7rem">Add each Pranic Healing course you have done. Month is optional.</p>
-      <div id="pf-courses">${coursesOf(m).map(courseRowHtml).join('')}</div>
+    <fieldset class="group"><legend>Courses completed${opt.minCourses ? ' <span class="req">*</span>' : ''}</legend>
+      <p class="hint" style="margin:0 0 .7rem">${opt.minCourses ? `Add at least ${opt.minCourses === 3 ? 'three' : opt.minCourses} Pranic Healing courses you have done, with the year. <span class="req">*</span>` : 'Add each Pranic Healing course you have done.'}</p>
+      <div id="pf-courses">${[...coursesOf(m), ...Array.from({length:Math.max(0, (opt.minCourses || 0) - coursesOf(m).length)}, () => ({}))].map(courseRowHtml).join('')}</div>
       <button type="button" class="btn sm ghost" style="margin-bottom:.9rem" onclick="$('#pf-courses').insertAdjacentHTML('beforeend',courseRowHtml())">+ Add a course</button>
     </fieldset>`;
 }
@@ -2117,10 +2251,25 @@ A.resetLogin = async mid => {
 };
 A.profileSelf = () => {
   const m = S.me;
-  openModal('Edit my profile', `${photoField('pf-photo', m.photo || '', 'face', 'Your photo', false)}${profileSections(m, {email:true})}
+  openModal('Edit my profile', `${photoField('pf-photo', m.photo || '', 'face', 'Your photo', false)}${profileSections(m, {email:true, minCourses:3})}
     <div class="m-actions"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="A.saveProfileSelf()">Save my profile</button></div>`, true);
 };
+// every filled course needs a year; at least `min` complete courses
+function checkCourses(min){
+  let complete = 0, firstBad = null;
+  document.querySelectorAll('#pf-courses .course-row').forEach(r => {
+    const sv = r.querySelector('.c-sel').value, name = sv === '__other' ? r.querySelector('.c-other').value.trim() : sv, year = r.querySelector('.c-year').value;
+    const bad = (name && !year) || (!name && year);
+    r.classList.toggle('bad', bad || (!name && !year && complete < min)); if(name && year) complete++;
+    if(bad && !firstBad) firstBad = r;
+  });
+  document.querySelectorAll('#pf-courses .course-row').forEach(r => { const sv = r.querySelector('.c-sel').value; if(!sv && !r.querySelector('.c-year').value && complete >= min) r.classList.remove('bad'); });
+  if(firstBad){ firstBad.scrollIntoView({behavior:'smooth', block:'center'}); toast('Please choose the year for each course.', 'bad'); return false; }
+  if(complete < min){ $('#pf-courses').scrollIntoView({behavior:'smooth', block:'center'}); toast(`Please add at least ${min === 3 ? 'three' : min} Pranic Healing courses, each with the year.`, 'bad'); return false; }
+  return true;
+}
 A.saveProfileSelf = async () => {
+  if(!checkCourses(3)) return;
   const p = readProfile(); p.photo = $('#pf-photo').value || null;
   await patch('members', S.me.id, p); S.me = member(S.me.id);
   await logAct('profile_edited', {m:S.me.id});
@@ -2162,6 +2311,7 @@ A.saveSettings = async () => {
   const p = {};
   SETTINGS_FIELDS.forEach(([, fields]) => fields.forEach(([k, , type]) => { const v = $('#st-' + k).value; p[k] = type === 'number' ? Math.max(0, Number(v) || 0) : v.trim(); }));
   if(!p.library_name) p.library_name = DEFAULT_SETTINGS.library_name;
+  if(p.tags !== undefined){ const seen = []; p.tags.split(',').map(t => t.trim()).filter(Boolean).forEach(t => { if(!seen.some(x => x.toLowerCase() === t.toLowerCase())) seen.push(t); }); p.tags = seen.sort(cmp).join(', '); }
   const s = await DB.saveSettings(p); S.settings = {...DEFAULT_SETTINGS, ...stripNull(s)}; render(); toast('Settings saved.');
 };
 const csvCell = v => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
